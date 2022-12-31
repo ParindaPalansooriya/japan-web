@@ -11,7 +11,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
-    <title>Vehicle Preview</title>
+    <title>Vehicle seller page</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
     <!-- font awesome style -->
@@ -55,6 +55,117 @@
 </head>
 
 <style>
+    /*  button section   */
+    * {
+        box-sizing: border-box;
+    }
+    .button_search {
+        border: 3px solid orange;
+        border-radius: 5px;
+        background-color: orange;
+        color: white;
+
+    }
+    .bttn {
+        border: 2px solid black;
+        border-radius: 5px;
+        background-color: white;
+        color: black;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    .Bu_one {
+        border-color: #04AA6D;
+        color: green;
+    }
+
+    .Bu_two {
+        border-color: #ff9800;
+        color: orange;
+    }
+
+    .Bu_three {
+        border-color: #f44336;
+        color: red
+    }
+    .Bu_border {
+        border-color: #ffad06;
+        color: #ffc000
+    }
+
+    /* end button section   */
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+    }
+    .container-width{
+        width:90%;
+        max-width:1150px;
+        margin:0 auto;
+    }
+    .am-sect{
+        padding-top:100px;
+        padding-bottom:100px;
+        font-family:Helvetica, serif;
+    }
+    #i3xfj{
+        border:0 solid black;
+    }
+    .gjs-row{
+        display:flex;
+        justify-content:flex-start;
+        align-items:stretch;
+        flex-wrap:nowrap;
+        padding:10px;
+    }
+    .gjs-cell{
+        min-height:250px;
+        flex-grow:1;
+        flex-basis:100%;
+    }
+    #i91j{
+        flex-basis:250px;
+
+    }
+    #i88c{
+        flex-basis:250px;
+    }
+    #i14q{
+        height:90%;
+    }
+    @keyframes fadeEffect{
+        from{
+            opacity:0;
+        }
+        to{
+            opacity:1;
+        }
+    }
+    @media (max-width: 768px){
+        .gjs-row{
+            flex-wrap:wrap;
+        }
+    }
+/* image grid container */
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto ;
+        background-color: #ffffff;
+        padding: 10px;
+    }
+    .grid-item {
+        background-color: rgba(243, 240, 240, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        padding: 0px;
+        font-size: 30px;
+        text-align: center;
+
+    }
+    /* End image grid container */
+
     /*  header class divide css code   */
     * {
         box-sizing: border-box;
@@ -82,108 +193,99 @@
         }
     }
     /*  end header class divide css code   */
-
-
-    /*  button section   */
-    * {
-        box-sizing: border-box;
-    }
-    .button_search {
-        border: 3px solid orange;
-        border-radius: 5px;
-        background-color: orange;
-        color: white;
-
-    }
-    .btn {
-        border: 2px solid black;
-        border-radius: 5px;
-        background-color: white;
-        color: black;
-        padding: 14px 28px;
-        font-size: 16px;
-
-    }
-    .Bu_one {
-        border-color: #04AA6D;
-        color: green;
-    }
-
-    .Bu_two {
-        border-color: #ff9800;
-        color: orange;
-    }
-
-    .Bu_three {
-        border-color: #f44336;
-        color: red
-    }
-    /* end button section   */
 </style>
 
-<body>
+<body class="sub_page">
 
-<div class="gjso-row" id="i7xa">
-    <div class="gjs-cell">
-        <div class="gjs-row" id="ivs4">
-            <div class="gjs-cell" id="injr">
-                dvsdvsdv
-            </div>
-            <div class="gjs-cell" id="ijl1">
-                <div class="heading_center container-center">
-                    <button class="btn Bu_one"> Button </button>
-                    <button class="btn Bu_two"> Button </button>
-                    <button class="btn Bu_three"> Button </button>
+<!-- Button section -->
+<header class="header_section">
+    <div class="gjso-row" id="i7xa">
+        <div class="gjs-cell">
+            <div class="gjs-row" id="ivs4">
+                <div class="gjs-cell" id="injr">
+                    <div class="heading_container heading_center">
+                        <div class="col-center">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="gjs-cell" id="ijl1">
+                    <div class="heading_container heading_center">
+                        <div class="col-center">
+                            <button class="bttn Bu_one"> Button </button>
+                            <button class="bttn Bu_two"> Button </button>
+                            <button class="bttn Bu_three"> Button </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="gjs-row" id="ij3c">
-    <div class="gjs-cell" id="i7ak">
-        vsdfdfv
-    </div>
-</div>
+</header>
+<!-- End color buttons -3  section -->
 
-<div class="container-width">
-    <section id="header-blue">
-        <div id="header-wrap">
-            <div class="header-left">
+
+<!-- Text field section -->
+<section class="arrival_section">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <div class="heading_container">
+                <h3>
+                    WE ARE THE BEST SELLERS
+                </h3>
             </div>
-            <div class="header-center">
-            </div>
-            <div class="header-right">
-                <h2>MAZDA 3 SEDAN</h2>
-            </div>
-        </div>
-    </section>
-</div>
-<!-- Popup box-->
-
-<div class="gjso-row" id="i7xb">
-
-</div>
-<div class="gjso-row" id="i7xc">
-
-    <div class="gjs-cell" id="injs">
-        <div class="container">
-            <button Class="swal-button" name="Action">Close</button>
+            <p style="margin-top: 20px;margin-bottom: 30px;">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Ut enim ad minim veniam, quis nostrud             </p>
         </div>
     </div>
+</section>
+<!-- end Text field section -->
 
-    <div class="gjs-cell" id="injd">
-        <div class="container">
-            <button Class="swal-button" name="Action">Action</button>
+<!-- box with filter section -->
+<body class="animsition">
+<section class="bg0 p-t-23 p-b-140">
+    <div class="container-width">
+
+<!--        <form method="get" id="i34g">-->
+<!--        </form>-->
+        <div id="i14q" class="gjs-row">
+            <div id="i91j" class="gjs-cell">
+                <h5>Vehicle Details</h5>
+
+                <div class="shadow">
+                    <div class="box">
+                        Vehicle Details From User
+<!--                        <img src="images/Car_full_photo.png" width="100" height="300">-->
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="i88c" class="gjs-cell">
+                <h5>Pick Your Imagers</h5>
+                <div class="heading_center">
+                        <div class="box">
+                            <div class="grid-container">
+                                <div class="grid-item">1</div>
+                                <div class="grid-item">2</div>
+                                <div class="grid-item">3</div>
+                                <div class="grid-item">4</div>
+                                <div class="grid-item">5</div>
+                                <div class="grid-item">6</div>
+                                <div class="grid-item">+</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</section>
+</body>
+<!-- end box with filter section -->
 
-</div>
 
-
-
-<script>
-
-</script>
 <!-- jQery -->
 <script src="js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
