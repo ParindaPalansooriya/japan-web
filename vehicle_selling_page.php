@@ -1,12 +1,12 @@
 
 <?php
 $filepath = array();
+if(isset($_REQUEST['filepath'])){
+    $filepath = $_REQUEST['filepath'];
+}
 if(isset($_POST['Submit1']))
 { 
     $filepathTemp = "images/cars/".microtime_float(). $_FILES["file"]["name"];
-    if(isset($_REQUEST['filepath'])){
-        $filepath = $_REQUEST['filepath'];
-    }
     if(move_uploaded_file($_FILES["file"]["tmp_name"], $filepathTemp)) 
     {
         array_push($filepath,$filepathTemp);
@@ -32,6 +32,46 @@ if(isset($_POST['Delete']))
         array_splice($filepath,$pos,1);
     }
 }
+
+if(isset($_POST['Submit']))
+{ 
+    require_once('./php/config.php');
+    require_once('./php/car_dao.php');
+    require_once('./php/car_image_dao.php');
+    $maxId = insertCarFull($link,
+    $_REQUEST['maker_id'],
+    $_REQUEST['model_id'],
+    $_REQUEST['interior_color_id'],
+    $_REQUEST['exterior_color_id'],
+    0,
+    $_REQUEST['body_style_id'],
+    $_REQUEST['passengers'],
+    $_REQUEST['doors'],
+    $_REQUEST['name'],
+    $_REQUEST['grade'],
+    $_REQUEST['power'],
+    $_REQUEST['model_year'],
+    $_REQUEST['evaluation'],
+    $_REQUEST['running'],
+    $_REQUEST['cooling'],
+    $_REQUEST['note'],
+    $_REQUEST['fuel'],
+    $_REQUEST['chassis'],
+    $_REQUEST['dimensions_L'],
+    $_REQUEST['dimensions_W'],
+    $_REQUEST['dimensions_H'],
+    $_REQUEST['transmission_shift'],
+    $_REQUEST['is_used'],
+    $_REQUEST['is_two_weel'],
+    $_REQUEST['is_steering_right']
+    );
+    if(isset($filepath)){
+        foreach ($filepath as $key2 => $value1) {
+            insertCarImagers($link,$value1,$key2!=0?0:1,$maxId);
+        }
+    }
+}
+// print_r($_POST);
 ?>
 <!DOCTYPE html>
 <html>
@@ -297,37 +337,238 @@ if(isset($_POST['Delete']))
                             <div class="modal-body">
                             <div class="form-group row">
                                 <label for="firstName" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                First name
+                                Vehicle Name
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" style="font-size:0.8em" class="form-control" id="firstName" placeholder="John" required>
+                                <input type="text" name="name" style="font-size:0.8em" class="form-control" id="firstName" placeholder="John" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="lastName" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Last name
+                                Grade
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" style="font-size:0.8em" class="form-control" id="lastName" placeholder="Doe" required>
+                                <input type="text" name="grade" style="font-size:0.8em" class="form-control" id="lastName" placeholder="Doe" required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="email" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                E-mail address
+                                <label for="text" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Power
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="email" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="text" name="power" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Model Year
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="model_year" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Evaluation
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="evaluation" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Running
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="running" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Chassis
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="chassis" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Dimensions Length
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="dimensions_L" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Dimensions Width
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="dimensions_W" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Dimensions Hight
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="dimensions_H" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Passengers
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="passengers" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Note
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="note" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Is this an awesome form?</label>
+                                Maker</label>
                                 <div class="col-sm-6">
-                                <select class="form-control" id="awesomeness" style="font-size:0.8em">
-                                    <option>Yes</option>
-                                    <option>No</option>
+                                <select class="form-control" name="maker_id" id="awesomeness" style="font-size:0.8em">
+                                    <option value="0">Yes</option>
+                                    <option value="1">No</option>
                                 </select>
                                 </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Car Model</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="model_id" id="awesomeness" style="font-size:0.8em">
+                                    <option value="0">Yes</option>
+                                    <option value="1">No</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Interior Color</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="interior_color_id" id="awesomeness" style="font-size:0.8em">
+                                    <option value="0">Yes</option>
+                                    <option value="1">No</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Exterior Color</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="exterior_color_id" id="awesomeness" style="font-size:0.8em">
+                                    <option value="0">Yes</option>
+                                    <option value="1">No</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Body Style</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="body_style_id" id="awesomeness" style="font-size:0.8em">
+                                    <option value="0">Yes</option>
+                                    <option value="1">No</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Fual</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="fuel" id="awesomeness" style="font-size:0.8em">
+                                    <option value="Petrol">Petrol</option>
+                                    <option value="Deasol">Deasol</option>
+                                    <option value="Hybrid">Hybrid</option>
+                                    <option value="Electric">Electric</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                doors</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="doors" id="awesomeness" style="font-size:0.8em">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Cooling</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="cooling" id="awesomeness" style="font-size:0.8em">
+                                    <option value="A/C">A/C</option>
+                                    <option value="Non A/C">Non A/C</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Transmission</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="transmission_shift" id="awesomeness" style="font-size:0.8em">
+                                    <option value="Auto">Auto</option>
+                                    <option value="Manual">Manual</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Condition</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="is_used" id="awesomeness" style="font-size:0.8em">
+                                    <option value="0">New</option>
+                                    <option value="1">Used</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Weel</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="is_two_weel" id="awesomeness" style="font-size:0.8em">
+                                    <option value="0">4 Weel</option>
+                                    <option value="1">2 Weel</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Steering</label>
+                                <div class="col-sm-6">
+                                <select class="form-control" name="is_steering_right" id="awesomeness" style="font-size:0.8em">
+                                    <option value="0">Left</option>
+                                    <option value="1">Right</option>
+                                </select>
+                                </div>
+                            </div>
+                                <div class="modal-footer">
+                                <?php
+                                if(isset($filepath)){
+                                    foreach ($filepath as $key2 => $value1) {
+                                        echo '<input type="hidden" name="filepath['.$key2.']" value="'.$value1.'" />';
+                                    }
+                                }
+                                ?>
+                                <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
+                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label>
+                                <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Submit" name="Submit" 
+                                <?php echo isset($filepath) && !empty($filepath) ? "":"disabled" ?>>Submit</button>
                             </div>
                             </div>
                         </form>
@@ -378,9 +619,6 @@ if(isset($_POST['Delete']))
                 </div>
             </div>
         </div>
-            <div class="modal-footer">
-            <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Submit" name="Submit">Submit</button>
-                            </div>
         </form>
     </div>
 </section>
@@ -495,7 +733,6 @@ if(isset($_POST['Delete']))
         })
     });
 </script>
-<<<<<<< HEAD
 
 <script>
 
@@ -510,8 +747,6 @@ function onSubmitForm(e) {
 }
 
     </script>
-=======
->>>>>>> main
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
 </body>

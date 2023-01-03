@@ -1,13 +1,17 @@
 <?php
 /* Database credentials. Assuming you are running MySQL
 server with default setting (user 'root' with no password) */
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_NAME', 'japan_web');
+// try {
+//     define('DB_SERVER', 'localhost');
+//     define('DB_USERNAME', 'root');
+//     define('DB_PASSWORD', '');
+//     define('DB_NAME', 'japan_web');
+// } catch (\Throwable $th) {
+//     echo $th;
+// }
  
 /* Attempt to connect to MySQL database */
-$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$link = mysqli_connect('localhost', 'root', '', 'japan_web');
  
 // Check connection
 if($link === false){

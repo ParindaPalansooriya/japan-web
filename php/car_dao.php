@@ -1,6 +1,6 @@
 <?php
 
-function insertCarFull(
+function insertCarFull($link,
     $maker_id,
     $model_id,
     $interior_color_id,
@@ -28,16 +28,15 @@ function insertCarFull(
     $is_steering_right
 )
 {
-    require_once "config.php";
     $sql = "INSERT INTO cars (maker_id, model_id, interior_color_id, exterior_color_id, current_action_id, body_style_id, 
     passengers, doors, name, grade, power, model_year, evaluation, running, cooling, note, fuel, chassis, dimensions_L, dimensions_W, dimensions_H,
-    transmission_shift, is_used, is_two_weel, is_steering_right) VALUES ($maker_id,
+    transmission_shift, is_used, is_two_weel, is_steering_right,is_public) VALUES ($maker_id,
     $model_id,
     $interior_color_id,
     $exterior_color_id,
     $current_action_id,
     $body_style_id,
-    $passengers,
+    '$passengers',
     $doors,
     '$name',
     '$grade',
@@ -55,14 +54,25 @@ function insertCarFull(
     '$transmission_shift',
     $is_used,
     $is_two_weel,
-    $is_steering_right)";
+    $is_steering_right,0)";
 
     mysqli_query($link, $sql);
+
+    $retuen_val = 0;
+    require_once "config.php";
+    $sql2 = "SELECT MAX(id) as max FROM cars";
+
+    if($result = mysqli_query($link, $sql2)){
+        while($row = mysqli_fetch_array($result)){
+            $retuen_val = $row['max'];
+        }
+        mysqli_free_result($result);
+    }
+    return $retuen_val;
 }
 
-function getAllCars(){
+function getAllCars($link){
     $retuen_val = [];
-    require_once "config.php";
     require_once "car_module.php";
     $sql2 = "SELECT * FROM cars";
 
@@ -104,9 +114,21 @@ function getAllCars(){
     return $retuen_val;
 }
 
-function searchString($val,$modulId,$makerId){
+function getMaxId($link){
+    $retuen_val = 0;
+    $sql2 = "SELECT MAX(id) as max FROM cars";
+
+    if($result = mysqli_query($link, $sql2)){
+        while($row = mysqli_fetch_array($result)){
+            $retuen_val = $row['max'];
+        }
+        mysqli_free_result($result);
+    }
+    return $retuen_val;
+}
+
+function searchString($link,$val,$modulId,$makerId){
     $retuen_val = [];
-    require_once "config.php";
     require_once "car_module.php";
     if(empty($a)){
         if(isset($modulId) && !isset($makerId)){
