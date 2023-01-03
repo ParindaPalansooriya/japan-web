@@ -1,297 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Basic -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!-- Site Metas -->
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
-    <title>Vehicle Preview</title>
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <!-- font awesome style -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
-    <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <!--===============================================================================================-->
-</head>
-
-<style>
-    /*  header class divide css code   */
-    * {
-        box-sizing: border-box;
-    }
-    body {
-        margin: 0;
-
-    }
-    .gjs-row{
-        display:flex;
-        justify-content:flex-start;
-        align-items:stretch;
-        flex-wrap:nowrap;
-        padding:10px;
-
-    }
-    .gjs-cell{
-        min-height:75px;
-        flex-grow:1;
-        flex-basis:100%;
-    }
-    @media (max-width: 768px){
-        .gjs-row{
-            flex-wrap:wrap;
+    <style>
+        /* Two Equal Columns */
+        * {
+            box-sizing: border-box;
         }
-    }
-    /*  end header class divide css code   */
 
+        /* Create two equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 50%;
+            padding: 10px;
+            height: 300px; /* Should be removed. Only for demonstration */
+        }
 
-    /*  button section   */
-    * {
-        box-sizing: border-box;
-    }
-    .button_search {
-        border: 3px solid orange;
-        border-radius: 5px;
-        background-color: orange;
-        color: white;
-
-    }
-    .btn {
-        border: 2px solid black;
-        border-radius: 5px;
-        background-color: white;
-        color: black;
-        padding: 14px 28px;
-        font-size: 16px;
-
-    }
-    .Bu_one {
-        border-color: #04AA6D;
-        color: green;
-    }
-
-    .Bu_two {
-        border-color: #ff9800;
-        color: orange;
-    }
-
-    .Bu_three {
-        border-color: #f44336;
-        color: red
-    }
-    /* end button section   */
-</style>
-
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        /* End Two Equal Columns */
+    </style>
+</head>
 <body>
 
-<div class="gjso-row" id="i7xa">
-    <div class="gjs-cell">
-        <div class="gjs-row" id="ivs4">
-            <div class="gjs-cell" id="injr">
-                dvsdvsdv
-            </div>
-            <div class="gjs-cell" id="ijl1">
-                <div class="heading_center container-center">
-                    <button class="btn Bu_one"> Button </button>
-                    <button class="btn Bu_two"> Button </button>
-                    <button class="btn Bu_three"> Button </button>
-                </div>
-            </div>
-        </div>
+<h2>Two Equal Columns</h2>
+
+<div class="row">
+    <div class="column" style="background-color:#ffffff;">
+        <h3>Column 1</h3>
+        <p>Some text..</p>
     </div>
-</div>
-<div class="gjs-row" id="ij3c">
-    <div class="gjs-cell" id="i7ak">
-        vsdfdfv
+    <div class="column" style="background-color:#ffffff;">
+        <h3>Column 2</h3>
+        <p>Some text..</p>
     </div>
 </div>
 
-<div class="container-width">
-    <section id="header-blue">
-        <div id="header-wrap">
-            <div class="header-left">
-            </div>
-            <div class="header-center">
-            </div>
-            <div class="header-right">
-                <h2>MAZDA 3 SEDAN</h2>
-            </div>
-        </div>
-    </section>
-</div>
-<!-- Popup box-->
-
-<div class="gjso-row" id="i7xb">
-
-</div>
-<div class="gjso-row" id="i7xc">
-
-    <div class="gjs-cell" id="injs">
-        <div class="container">
-            <button Class="swal-button" name="Action">Close</button>
-        </div>
-    </div>
-
-    <div class="gjs-cell" id="injd">
-        <div class="container">
-            <button Class="swal-button" name="Action">Action</button>
-        </div>
-    </div>
-
-</div>
-
-
-
-<script>
-
-</script>
-<!-- jQery -->
-<script src="js/jquery-3.4.1.min.js"></script>
-<!-- popper js -->
-<script src="js/popper.min.js"></script>
-<!-- bootstrap js -->
-<script src="js/bootstrap.js"></script>
-<!-- custom js -->
-<script src="js/custom.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/bootstrap/js/popper.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/select2/select2.min.js"></script>
-<script>
-    $(".js-select2").each(function(){
-        $(this).select2({
-            minimumResultsForSearch: 20,
-            dropdownParent: $(this).next('.dropDownSelect2')
-        });
-    })
-</script>
-<!--===============================================================================================-->
-<script src="vendor/daterangepicker/moment.min.js"></script>
-<script src="vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/slick/slick.min.js"></script>
-<script src="js/slick-custom.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/parallax100/parallax100.js"></script>
-<script>
-    $('.parallax100').parallax100();
-</script>
-<!--===============================================================================================-->
-<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
-<script>
-    $('.gallery-lb').each(function() { // the containers for all your galleries
-        $(this).magnificPopup({
-            delegate: 'a', // the selector for gallery item
-            type: 'image',
-            gallery: {
-                enabled:true
-            },
-            mainClass: 'mfp-fade'
-        });
-    });
-</script>
-<!--===============================================================================================-->
-<script src="vendor/isotope/isotope.pkgd.min.js"></script>
-<!--===============================================================================================-->
-<script src="vendor/sweetalert/sweetalert.min.js"></script>
-<script>
-    $('.js-addwish-b2').on('click', function(e){
-        e.preventDefault();
-    });
-
-    $('.js-addwish-b2').each(function(){
-        var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-        $(this).on('click', function(){
-            swal(nameProduct, "is added to wishlist !", "success");
-
-            $(this).addClass('js-addedwish-b2');
-            $(this).off('click');
-        });
-    });
-
-    $('.js-addwish-detail').each(function(){
-        var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
-
-        $(this).on('click', function(){
-            swal(nameProduct, "is added to wishlist !", "success");
-
-            $(this).addClass('js-addedwish-detail');
-            $(this).off('click');
-        });
-    });
-
-    /*---------------------------------------------*/
-
-    $('.js-addcart-detail').each(function(){
-        var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-        $(this).on('click', function(){
-            swal(nameProduct, "is added to cart !", "success");
-        });
-    });
-
-</script>
-<!--===============================================================================================-->
-<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script>
-    $('.js-pscroll').each(function(){
-        $(this).css('position','relative');
-        $(this).css('overflow','hidden');
-        var ps = new PerfectScrollbar(this, {
-            wheelSpeed: 1,
-            scrollingThreshold: 1000,
-            wheelPropagation: false,
-        });
-
-        $(window).on('resize', function(){
-            ps.update();
-        })
-    });
-</script>
-<!--===============================================================================================-->
-<script src="js/main.js"></script>
 </body>
 </html>
