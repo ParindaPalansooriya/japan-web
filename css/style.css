@@ -1045,7 +1045,7 @@ div.form_sub .field input[type="email"], div.form_sub .field input[type="email"]
 .form_sub input[type="email"] + input[type="submit"] {
     position: absolute;
     right: 0;
-    background: #f7a044;
+    background: #fec200;
     color: #fff;
     border: none;
     top: 0px;
@@ -1127,7 +1127,7 @@ form input[type="submit"]:focus {
 /** cpy **/
 
 .cpy_ {
-    background: #222;
+    background: #000000;
     text-align: center;
     padding: 20px 0;
 }

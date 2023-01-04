@@ -1,8 +1,8 @@
 $white: #ffffff;
 $black: #000000;
 $primary1: #f7444e;
-$primary2: #002c3e;
-$textCol: #1f1f1f;
+$primary2: #000000;
+$textCol: #000000;
 
 // import fonts -  font-family: 'Poppins', sans-serif and  font-family: 'Playfair Display', serif
 
@@ -38,7 +38,7 @@ $textCol: #1f1f1f;
 
 body {
   @include main-font;
-  color: #0c0c0c;
+  color: #000000;
   background-color: #ffffff;
   overflow-x: hidden;
 }
@@ -580,7 +580,7 @@ a:focus {
         text-align: center;
 
         &::placeholder {
-          color: #171620;
+          color: #000000;
         }
       }
 
@@ -676,7 +676,7 @@ a:focus {
     border-radius: 100%;
 
     &:hover {
-      background-color: #212121;
+      background-color: #000000;
     }
   }
 
