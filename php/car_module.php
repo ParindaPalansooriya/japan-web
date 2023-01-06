@@ -62,6 +62,134 @@ class Cars{
         $this->is_two_weel = $is_two_weel;
         $this->is_steering_right = $is_steering_right;
     }
+
+    
+    public $image;
+    public $style;
+    public $maker;
+    public $model;
+    public $ex_color;
+    public $in_color;
+
+    /**
+     * Get the value of in_color
+     */ 
+    public function getIn_color()
+    {
+        return $this->in_color;
+    }
+
+    /**
+     * Set the value of in_color
+     *
+     * @return  self
+     */ 
+    public function setIn_color($in_color)
+    {
+        $this->in_color = $in_color;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of ex_color
+     */ 
+    public function getEx_color()
+    {
+        return $this->ex_color;
+    }
+
+    /**
+     * Set the value of ex_color
+     *
+     * @return  self
+     */ 
+    public function setEx_color($ex_color)
+    {
+        $this->ex_color = $ex_color;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of model
+     */ 
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
+     * Set the value of model
+     *
+     * @return  self
+     */ 
+    public function setModel($model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of maker
+     */ 
+    public function getMaker()
+    {
+        return $this->maker;
+    }
+
+    /**
+     * Set the value of maker
+     *
+     * @return  self
+     */ 
+    public function setMaker($maker)
+    {
+        $this->maker = $maker;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of style
+     */ 
+    public function getStyle()
+    {
+        return $this->style;
+    }
+
+    /**
+     * Set the value of style
+     *
+     * @return  self
+     */ 
+    public function setStyle($style)
+    {
+        $this->style = $style;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of image
+     */ 
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set the value of image
+     *
+     * @return  self
+     */ 
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
 }
 
 ?>
