@@ -176,6 +176,9 @@ class Cars{
      */ 
     public function getImage()
     {
+        if(!isset($this->image) || empty($this->image)){
+            return "images/unnamed.png";
+        }
         return $this->image;
     }
 
@@ -187,6 +190,46 @@ class Cars{
     public function setImage($image)
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of maker_id
+     */ 
+    public function getMaker_id()
+    {
+        return $this->maker_id;
+    }
+
+    /**
+     * Set the value of maker_id
+     *
+     * @return  self
+     */ 
+    public function setMaker_id($maker_id)
+    {
+        $this->maker_id = $maker_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of model_id
+     */ 
+    public function getModel_id()
+    {
+        return $this->model_id;
+    }
+
+    /**
+     * Set the value of model_id
+     *
+     * @return  self
+     */ 
+    public function setModel_id($model_id)
+    {
+        $this->model_id = $model_id;
 
         return $this;
     }

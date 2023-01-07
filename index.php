@@ -1,3 +1,13 @@
+<?php 
+require_once('./php/config.php');
+require_once "./php/car_module.php";
+require_once "./php/car_dao.php";
+$new_cars = getAllCarsForLists($link);
+$recoment_foryou_cars = getAllCarsForLists($link);
+?>
+
+
+
 <!DOCTYPE html>
 <html>
    <head>
@@ -186,6 +196,60 @@
         border-radius: 5px;
     }
 
+    /* ===========================
+   ====== Search Box ====== 
+   =========================== */
+
+.search
+{
+	border: 2px solid orange;
+	overflow: auto;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.search input[type="text"]
+{
+	border: 0px;
+	width: 50%;
+	padding: 10px 10px;
+}
+
+.search input[type="text"]:focus
+{
+	outline: 0;
+}
+
+.search input[type="submit"]
+{
+	border: 0px;
+	background: none;
+	background-color: orange;
+	color: #fff;
+	float: right;
+	/* padding: 10px; */
+	-moz-border-radius-top-right: 5px;
+	-webkit-border-radius-top-right: 5px;
+	-moz-border-radius-bottom-right: 5px;
+	-webkit-border-radius-bottom-right: 5px;
+        cursor:pointer;
+}
+
+/* ===========================
+   ====== Medua Query for Search Box ====== 
+   =========================== */
+
+@media only screen and (min-width : 150px) and (max-width : 780px)
+{
+	.search
+	{
+		width: 80%;
+		margin: 0 auto;
+	}
+
+}
+
    </style>
    <body>
       <div class="hero_area">
@@ -213,14 +277,12 @@
                                     you’re sure to find what you’re looking for.  </p>
 
                                  <div class="form_sub">
-                                    <form>
-                                       <fieldset>
-                                          <div class="field">
-                                             <input type="email" placeholder="SEARCH CAR MODEL" name="email" />
-                                             <input type="submit" value="SEARCH NOW" />
-                                          </div>
-                                       </fieldset>
-                                    </form>
+                                    <div class="search">
+                                       <form class="search-form" action="buy_new_car.php" enctype="multipart/form-data" method="post">
+                                          <input type="text" name="search-product" placeholder="Search for Maker, Name, Grade">
+                                          <input type="submit" value="Submit" name="Search">
+                                       </form>
+                                    </div>
                                  </div>
                            </div>
                         </div>
@@ -247,6 +309,7 @@
             <div class="shadow">
             <div class="row">
                <div class="col-md-4">
+               <a style="text-decoration: none" href="buy_new_car.php">
                   <div class="box ">
                      <div class="img-box">
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
@@ -272,10 +335,10 @@
                      </div>
                      <div class="detail-box">
                         <h5>
-                           BUY NEW CAR
+                           BUY A CAR
                         </h5>
                         <h6>
-                           MORE THAT 1,250 NEW CARS LISTED
+                           MORE THAT 1,250 CARS LISTED
                         </h6>
                         <div class="form_sub1">
 
@@ -298,9 +361,11 @@
                         </div>
                      </div>
                   </div>
+               </a>
                </div>
 
                <div class="col-md-4">
+               <a style="text-decoration: none" href="vehicle_selling_page.php">
                   <div class="box ">
                      <div class="img-box">
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
@@ -341,6 +406,7 @@
                         </div>
                      </div>
                   </div>
+               </a>
                </div>
 
                <div class="col-md-4">
@@ -420,402 +486,80 @@
       <!-- Card section -->
 
       <div class="scroll-container">
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
+      <?php
+         if(isset($new_cars)){
+            foreach ($new_cars as $key2 => $value1) {
+               ?> 
+               <div class="col-sm-12 col-md-6 col-lg-4">
+                  <div class="card border rounded m-3">
+                     <div class="shadow">
+                        <div class="card-body">
+                           <div class="row d-flex  justify-content-between align-items-center px-0">
+                              <div class="col-7 text-left">
+                                 <h5 class="card-title itemtitle"><?php echo $value1->name; ?></h5>
+                              </div>
+                              <div class="col-5 text-right">
+                                 <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
+                                    <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
+                                    <button type="button" class="btn btn-sm  addtocart_icon" disabled>
+                                       <!-- <i class="fas fa-arrow-right"></i> -->
 
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
+                                       <!-- remove below after adding the fontawesome icons -->
+                                       >>
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
+
+
+                              <div class="col-6 text-left">
+                                 <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
+                              </div>
+                              <div class="col-6 text-right">
+                                 <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>
+                              </div>
+
+                           </div>
+                           <div class="row mt-4  px-0">
+                              <div class="col-12  px-0">
+                                 <img src="<?php echo $value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
+                              </div>
+                           </div>
+                           <!-- <div class="row mt-4 ">
+                              <div class=" d-flex row mt-4">
+                                 <div class="col-md-12">
+                                    <span class="badge badge-warning mx-2 featurebadge">ABS</span>
+                                    <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
+                                    <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
+                                 </div>
+                              </div>
+                           </div> -->
+                           <div class=" d-flex row mt-4">
+                              <div class="col-md-12">
+                                 <div class=" p-2 featuremain">
+                                    <h4><?php echo $value1->power; ?> cc</h4>
+                                    <small  class="featuremain_tag">Capacity</small>
+                                 </div>
+                                 <div class=" p-2 featuremain">
+                                    <h4><?php echo $value1->model_year; ?></h4>
+                                    <small class="featuremain_tag">Registered Year</small>
+                                 </div>
+                                 <div class=" p-2 featuremain">
+                                    <h4><?php echo $value1->running; ?><small>k</small></h4>
+                                    <small class="featuremain_tag">Kilometers Span</small>
+                                 </div>
+                              </div>
+
                            </div>
                         </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
                      </div>
                   </div>
                </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+               <?php
+            }
+         }
+      ?>
       </div>
 
 
@@ -879,402 +623,80 @@
 
       <!-- Recommended vehical card section -->
       <div class="scroll-container">
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
+      <?php
+         if(isset($recoment_foryou_cars)){
+            foreach ($recoment_foryou_cars as $key2 => $value1) {
+               ?> 
+               <div class="col-sm-12 col-md-6 col-lg-4">
+                  <div class="card border rounded m-3">
+                     <div class="shadow">
+                        <div class="card-body">
+                           <div class="row d-flex  justify-content-between align-items-center px-0">
+                              <div class="col-7 text-left">
+                                 <h5 class="card-title itemtitle"><?php echo $value1->name; ?></h5>
+                              </div>
+                              <div class="col-5 text-right">
+                                 <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
+                                    <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
+                                    <button type="button" class="btn btn-sm  addtocart_icon" disabled>
+                                       <!-- <i class="fas fa-arrow-right"></i> -->
 
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
+                                       <!-- remove below after adding the fontawesome icons -->
+                                       >>
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
+
+
+                              <div class="col-6 text-left">
+                                 <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
+                              </div>
+                              <div class="col-6 text-right">
+                                 <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>
+                              </div>
+
+                           </div>
+                           <div class="row mt-4  px-0">
+                              <div class="col-12  px-0">
+                                 <img src="<?php echo $value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
+                              </div>
+                           </div>
+                           <!-- <div class="row mt-4 ">
+                              <div class=" d-flex row mt-4">
+                                 <div class="col-md-12">
+                                    <span class="badge badge-warning mx-2 featurebadge">ABS</span>
+                                    <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
+                                    <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
+                                 </div>
+                              </div>
+                           </div> -->
+                           <div class=" d-flex row mt-4">
+                              <div class="col-md-12">
+                                 <div class=" p-2 featuremain">
+                                    <h4><?php echo $value1->power; ?> cc</h4>
+                                    <small  class="featuremain_tag">Capacity</small>
+                                 </div>
+                                 <div class=" p-2 featuremain">
+                                    <h4><?php echo $value1->model_year; ?></h4>
+                                    <small class="featuremain_tag">Registered Year</small>
+                                 </div>
+                                 <div class=" p-2 featuremain">
+                                    <h4><?php echo $value1->running; ?><small>k</small></h4>
+                                    <small class="featuremain_tag">Kilometers Span</small>
+                                 </div>
+                              </div>
+
                            </div>
                         </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
                      </div>
                   </div>
                </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="col-sm-12 col-md-6 col-lg-4">
-            <div class="card border rounded m-3">
-               <div class="shadow">
-                  <div class="card-body">
-                     <div class="row d-flex  justify-content-between align-items-center px-0">
-                        <div class="col-7 text-left">
-                           <h5 class="card-title itemtitle">MAXDA 3 SEDAN</h5>
-                        </div>
-                        <div class="col-5 text-right">
-                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                              <button type="button" class="btn btn-sm  addtocart_button ">Add to cart</button>
-                              <button type="button" class="btn btn-sm  addtocart_icon">
-                                 <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                 <!-- remove below after adding the fontawesome icons -->
-                                 >>
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
-                        <div class="col-6 text-left">
-                           <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
-                        </div>
-                        <div class="col-6 text-right">
-                           <p class="card-text car_manufacturer float-end">MAZDA</p>
-                        </div>
-
-                     </div>
-                     <div class="row mt-4  px-0">
-                        <div class="col-12  px-0">
-                           <img src="images/carimage.png" class="w-100 img-fluid  px-0" alt="Full width image">
-                        </div>
-                     </div>
-                     <div class="row mt-4 ">
-                        <div class=" d-flex row mt-4">
-                           <div class="col-md-12">
-                              <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                              <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                              <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class=" d-flex row mt-4">
-                        <div class="col-md-12">
-                           <div class=" p-2 featuremain">
-                              <h4>1500 cc</h4>
-                              <small  class="featuremain_tag">Capacity</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>2019</h4>
-                              <small class="featuremain_tag">Registered Year</small>
-                           </div>
-                           <div class=" p-2 featuremain">
-                              <h4>79<small>k</small></h4>
-                              <small class="featuremain_tag">Kilometers Span</small>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+               <?php
+            }
+         }
+      ?>
       </div>
       <!-- End recommended vehical card section -->
 
