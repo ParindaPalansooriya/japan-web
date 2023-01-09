@@ -523,6 +523,9 @@ $recoment_foryou_cars = getAllCarsForLists($link);
                            </div>
                            <div class="row mt-4  px-0">
                               <div class="col-12  px-0">
+                                 
+                              <!-- Default cropping(320px*240px) needs to be set when uploading images to the website  -->
+                              
                                  <img src="<?php echo $value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
                               </div>
                            </div>
