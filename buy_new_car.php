@@ -6,15 +6,17 @@ $searchString=null;
 parse_str($_SERVER['QUERY_STRING'], $queries);
 if(isset($queries) && !empty($queries)){
 
-   $fillIds = $queries['fill'];
-   if(isset($fillIds)){
-      $_selectedMakersTemp =  preg_split ("/\,/", $fillIds);
-      foreach ($_selectedMakersTemp as $key => $value) {
-         if(in_array($value,$selectedMakers)){
-            $pos = array_search($value, $selectedMakers,true);
-            array_splice($selectedMakers,$pos,1);
-         }else{
-            array_push($selectedMakers,$value);
+   if(array_key_exists("fill",$queries)){
+      $fillIds = $queries['fill'];
+      if(isset($fillIds) &&!empty($fillIds)){
+         $_selectedMakersTemp =  preg_split ("/\,/", $fillIds);
+         foreach ($_selectedMakersTemp as $key => $value) {
+            if(in_array($value,$selectedMakers)){
+               $pos = array_search($value, $selectedMakers,true);
+               array_splice($selectedMakers,$pos,1);
+            }else{
+               array_push($selectedMakers,$value);
+            }
          }
       }
    }
@@ -529,13 +531,10 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
                                                    </div>
                                                    <div class="col-5 text-right">
                                                       <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
+                                                      <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
                                                          <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
-                                                         <button type="button" class="btn btn-sm  addtocart_icon" disabled>
-                                                            <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                                            <!-- remove below after adding the fontawesome icons -->
-                                                            >>
-                                                         </button>
+                                                         <!-- <button type="button" class="btn btn-sm  addtocart_icon" disabled>>></button> -->
+                                                      </a>
                                                       </div>
                                                    </div>
                                                 </div>
@@ -543,7 +542,7 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
 
 
                                                    <div class="col-6 text-left">
-                                                      <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
+                                                      <p class="card-text pricetext font-weigh-bold"><?php echo $value1->getPrice(); ?></p>
                                                    </div>
                                                    <div class="col-6 text-right">
                                                       <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>
@@ -603,7 +602,6 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
          </section>
       </body>
          <!-- end box with filter section -->
-
 
          <!-- jQery -->
       <script src="js/jquery-3.4.1.min.js"></script>

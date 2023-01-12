@@ -1,9 +1,9 @@
 <?php 
-require_once('./php/config.php');
+require_once './php/config.php';
 require_once "./php/car_module.php";
 require_once "./php/car_dao.php";
-$new_cars = getAllCarsForLists($link);
-$recoment_foryou_cars = getAllCarsForLists($link);
+$new_cars = getAllFirld10Cars($link);
+$recoment_foryou_cars = getAllFirld10Cars($link);
 ?>
 
 
@@ -175,7 +175,7 @@ $recoment_foryou_cars = getAllCarsForLists($link);
       /* width */
       ::-webkit-scrollbar {
          width: 4px;
-         height: 4px;
+         height: 10px;
       }
       /* Track */
       ::-webkit-scrollbar-track {
@@ -500,13 +500,15 @@ $recoment_foryou_cars = getAllCarsForLists($link);
                               </div>
                               <div class="col-5 text-right">
                                  <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                                    <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
-                                    <button type="button" class="btn btn-sm  addtocart_icon" disabled>
+                                    <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
+                                       <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
+                                       <!-- <button type="button" class="btn btn-sm  addtocart_icon" disabled>>></button> -->
+                                    </a>
                                        <!-- <i class="fas fa-arrow-right"></i> -->
 
                                        <!-- remove below after adding the fontawesome icons -->
-                                       >>
-                                    </button>
+                                       <!-- >>
+                                    </button> -->
                                  </div>
                               </div>
                            </div>
@@ -637,13 +639,15 @@ $recoment_foryou_cars = getAllCarsForLists($link);
                               </div>
                               <div class="col-5 text-right">
                                  <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                                    <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
-                                    <button type="button" class="btn btn-sm  addtocart_icon" disabled>
+                                 <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
+                                       <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
+                                       <!-- <button type="button" class="btn btn-sm  addtocart_icon" disabled>>></button> -->
+                                    </a>
                                        <!-- <i class="fas fa-arrow-right"></i> -->
 
                                        <!-- remove below after adding the fontawesome icons -->
-                                       >>
-                                    </button>
+                                       <!-- >>
+                                    </button> -->
                                  </div>
                               </div>
                            </div>

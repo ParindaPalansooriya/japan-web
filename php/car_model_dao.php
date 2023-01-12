@@ -19,8 +19,8 @@ function getAllCarModels($link){
         while($row = mysqli_fetch_array($result)){
             $car = new CarModel(
                 $row['id'],
-                $row['name'],
-                $row['image']
+                $row['image'],
+                $row['name']
             );
             array_push($retuen_val,$car);
         }

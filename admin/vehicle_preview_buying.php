@@ -1,49 +1,56 @@
 
 <?php 
+
+session_start();
+// echo $_SESSION['valid'];
+echo (time()-$_SESSION['timeout'])/60;
+// echo $_SESSION['username'];
+
 $queries = array();
 $carId=null;
+$inqId=null;
 
 parse_str($_SERVER['QUERY_STRING'], $queries);
 if(isset($queries) && !empty($queries)){
    if(isset($queries['id']) && !empty($queries['id'])){
       $carId = $queries['id'];
    }
-}
-
-require_once('./php/config.php');
-require_once "./php/car_module.php";
-require_once "./php/car_dao.php";
-require_once "./php/car_image_module.php";
-require_once "./php/car_image_dao.php";
-require_once "./php/user_inquary_dao.php";
-
-$imagers = array();
-
-
-if (isset($carId) && isset($_POST['submit'])) {
-    // print_r($_POST['submit']);
-    $user_name = $_REQUEST['user_name'];
-    $email = $_REQUEST['email'];
-    $mobile = $_REQUEST['mobile'];
-    $nearest_port = $_REQUEST['nearest_port'];
-    $message = $_REQUEST['message'];
-    if(insertUserInquary($link,$carId,$user_name,$email,$mobile,$nearest_port,$message)==1){
-        header("Location: index.php"); 
-        exit();
+   if(isset($queries['inqid']) && !empty($queries['inqid'])){
+        $inqId = $queries['inqid'];
     }
 }
 
-if(isset($carId)){
-    $car = getCarsById($link,$carId);
-    // if(isset($car)){
-    //     echo $car->id;
-    // }
+require_once('../php/config.php');
+require_once "../php/car_module.php";
+require_once "../php/car_dao.php";
+require_once "../php/car_image_module.php";
+require_once "../php/car_image_dao.php";
+require_once "../php/user_inquary_dao.php";
+
+$imagers = array();
+
+if(isset($carId) && isset($inqId)){
+    $car = getCarsByIdWithbidPrice($link,$carId);
     $imagers = getAllCarImagers($link,$carId);
     if(!isset($imagers) || empty($imagers)){
         array_push($imagers,"images/noimage.jpg");
     }
-    // print_r($imagers);
+    $user_inquary = getUserInquaryById($link,$inqId);
+    if(isset($_POST['Action'])){
+        if($_POST['Action']==0){
+            if(deleteUserInueary($link,$inqId)>0){
+                echo "<script>window.close();</script>";
+            }
+        }
+        if($_POST['Action']==1){
+            moveCarToSoledList($link,$carId,$inqId);
+            echo "<script>window.close();</script>";
+        }
+    }
+}else{
+    echo "<script>window.close();</script>";
 }
+print_r($_POST);
 ?>
 
 
@@ -59,54 +66,54 @@ if(isset($carId)){
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
+    <link rel="shortcut icon" href="../images/Car_logo_sample.jpg" type="">
     <title>Vehicle Preview</title>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
     <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="../css/responsive.css" rel="stylesheet" />
     <!-- Image preview  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css'>
-    <link rel="stylesheet" href="./css/style_image.css">
+    <link rel="stylesheet" href="../css/style_image.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/daterangepicker/daterangepicker.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/slick/slick.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/MagnificPopup/magnific-popup.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/util.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
 </head>
 
@@ -133,12 +140,12 @@ if(isset($carId)){
     }
     .bttn2 {
         border: 3px solid orange;
-        border-radius: 10px;
-        background-color: orange;
-        color: white;
+        border-radius: 5px;
+        background-color: white;
+        color: green;
         padding: 8px 28px;
-        font-size: 16px;
-        font-weight: 800;
+        font-size: 13px;
+        font-weight: 600;
 
     }
     .Bu_one {
@@ -402,7 +409,7 @@ if(isset($carId)){
                                     <?php if(isset($imagers)){
                                         foreach ($imagers as $key => $value) { ?>
                                             <div class="carousel-item <?php if($key==0){echo "active";} ?>"  style="max-width: 800px; object-fit: contain;" data-slide-number=<?php echo $key; ?>>
-                                                <img src="<?php echo $value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
+                                                <img src="../<?php echo $value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
                                             </div>
                                        <?php }
                                     }?>
@@ -419,7 +426,7 @@ if(isset($carId)){
                                         <?php if(isset($imagers)){
                                             foreach ($imagers as $key => $value) { ?>
                                             <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 <?php if($key==0){echo 'selected';}?>" data-target="#myCarousel" data-slide-to=<?php echo $key; ?>>
-                                                <img src="<?php echo $value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
+                                                <img src="../<?php echo $value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
                                             </div>
                                         <?php }
                                         }?>
@@ -477,21 +484,40 @@ if(isset($carId)){
                             <?php if( null !== $car->getNote() && !empty($car->getNote())){?>
                                 <p style="padding-bottom: 15px; margin-top: 10px;">note : <?php echo $car->getNote(); ?></p>
                             <?php } ?>
+                            <p style="padding-bottom: 15px;"><h5> User Ditails</h5></p>
                         <div class="gjs-cell">
-                            <div class="heading_container heading_center">
-                                <button id="Bttn" Class="swal-button" name="Action">Action</button>
+                            
+                            <div class="heading_container heading_center" style="padding-top: 15px;">
+                                <table class="table custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"><?php echo $user_inquary->getUser_name(); ?></th>
+                                            <th scope="col"><?php echo $user_inquary->getMobile(); ?></th>
+                                            <th scope="col"><?php echo $user_inquary->getEmail(); ?></th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                         </div>
                     </div>
                 </div>
+                    <table class="table custom-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                        <button id="Bttn1" Class="swal-button" name="Action" value="0">Remove</button>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn2" Class="bttn2" name="Action" value="1">Soled</button>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
             </div>
         </div>
     </div>
     <?php }?>
-</body>
-<!-- end box with filter section -->
-
 
 <!-- Trigger/Open The Modal -->
 <!-- The Modal -->
@@ -499,50 +525,16 @@ if(isset($carId)){
 
     <!-- Modal content -->
     <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Please Fill All Details</p>
         <div class="container-width">
         <div class="box">
-                    <form id="formAwesome" action="vehicle_preview.php?id=<?php echo $carId; ?>" enctype="multipart/form-data" method="post">
-                            <div class="modal-body">
-                            <div class="form-group row">
-                                <label for="text" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Your Name
-                                </label>
-                                <input type="text" name="user_name" style="font-size:0.8em" class="form-control" id="user_name"  required>
-                            </div>
-                            <div class="form-group row">
-                                <label for="text" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Email Address
-                                </label>
-                                <input type="email" name="email" style="font-size:0.8em" class="form-control" id="email"  required>
-                            </div>
-                            <div class="form-group row">
-                                <label for="text" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Contact Number
-                                </label>
-                                <input type="text" name="mobile" style="font-size:0.8em" class="form-control" id="mobile" required>
-                            </div>
-                            <div class="form-group row">
-                                <label for="text" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Nearest Port
-                                </label>
-                                <input type="text" name="nearest_port" style="font-size:0.8em" class="form-control" id="nearest_port"  required>
-                            </div>
-                            <div class="form-group row">
-                                <label for="text" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Special Message
-                                </label>
-                                <input type="text" name="message" style="font-size:0.8em" class="form-control" id="message">
-                            </div>
-                            <div class="gjs-cell">
-                                <div class="heading_container heading_center">
-                                    <button id="Bttn" Class="swal-button" name="submit">Action</button>
-                                </div>
-                            </div>
-                            </div>
-                        </form>
-                    </div>
+            <form action="vehicle_preview_buying.php?id=<?php echo $carId;?>&inqid=<?php echo $inqId;?>" method="post">
+            <div class="heading_container heading_center" >
+                <h4 id="title" style="padding-bottom: 15px; margin-top: 10px;">Please Conform</h4>
+                <button id="Bttn21" Class="swal-button" name="Action" value="0">Remove</button>
+                <button id="Bttn22" Class="bttn2" name="Action" value="1">Soled</button>
+            </div>
+            </form>
+        </div>
     </div>
     </div>
 
@@ -556,45 +548,56 @@ if(isset($carId)){
     var modal = document.getElementById("myModal");
 
     // Get the button that opens the modal
-    var btn = document.getElementById("Bttn");
+    var btn1 = document.getElementById("Bttn1");
+    var btn2 = document.getElementById("Bttn2");
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+    
+    var btn21 = document.getElementById("Bttn21");
+    var btn22 = document.getElementById("Bttn22");
 
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
+    var title = document.getElementById("title");
+
+    btn1.onclick = function() {
         modal.style.display = "block";
+        btn22.style.display = "none";
+        btn21.style.display = "block";
+        title.innerHTML = "Please conform to remove this Request";
     }
 
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
+    btn2.onclick = function() {
+        modal.style.display = "block";
+        btn21.style.display = "none";
+        btn22.style.display = "block";
+        title.innerHTML = "Please conform to Add this Item to Saled List";
     }
 
-    // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
     }
 </script>
+
+
+</body>
+<!-- end box with filter section -->
 <!-- jQery -->
-<script src="js/jquery-3.4.1.min.js"></script>
+<script src="../js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
-<script src="js/popper.min.js"></script>
+<script src="../js/popper.min.js"></script>
 <!-- bootstrap js -->
-<script src="js/bootstrap.js"></script>
+<script src="../js/bootstrap.js"></script>
 <!-- custom js -->
-<script src="js/custom.js"></script>
+<script src="../js/custom.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/animsition/js/animsition.min.js"></script>
+<script src="../vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/bootstrap/js/popper.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../vendor/bootstrap/js/popper.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/select2/select2.min.js"></script>
+<script src="../vendor/select2/select2.min.js"></script>
 <script>
     $(".js-select2").each(function(){
         $(this).select2({
@@ -604,18 +607,18 @@ if(isset($carId)){
     })
 </script>
 <!--===============================================================================================-->
-<script src="vendor/daterangepicker/moment.min.js"></script>
-<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<script src="../vendor/daterangepicker/moment.min.js"></script>
+<script src="../vendor/daterangepicker/daterangepicker.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/slick/slick.min.js"></script>
-<script src="js/slick-custom.js"></script>
+<script src="../vendor/slick/slick.min.js"></script>
+<script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/parallax100/parallax100.js"></script>
+<script src="../vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
 <!--===============================================================================================-->
-<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <script>
     $('.gallery-lb').each(function() { // the containers for all your galleries
         $(this).magnificPopup({
@@ -629,9 +632,9 @@ if(isset($carId)){
     });
 </script>
 <!--===============================================================================================-->
-<script src="vendor/isotope/isotope.pkgd.min.js"></script>
+<script src="../vendor/isotope/isotope.pkgd.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/sweetalert/sweetalert.min.js"></script>
+<script src="../vendor/sweetalert/sweetalert.min.js"></script>
 <script>
     $('.js-addwish-b2').on('click', function(e){
         e.preventDefault();
@@ -669,7 +672,7 @@ if(isset($carId)){
 
 </script>
 <!--===============================================================================================-->
-<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script>
     $('.js-pscroll').each(function(){
         $(this).css('position','relative');
@@ -686,13 +689,13 @@ if(isset($carId)){
     });
 </script>
 <!--===============================================================================================-->
-<script src="js/main.js"></script>
+<script src="../js/main.js"></script>
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'></script>
 <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js'></script>
-<script  src="./js/script.js"></script>
+<script  src="../js/script.js"></script>
 
 </body>
 </html>
