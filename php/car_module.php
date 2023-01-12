@@ -70,6 +70,9 @@ class Cars{
     public $model;
     public $ex_color;
     public $in_color;
+    public $price;
+
+    public $userInwuary;
 
     /**
      * Get the value of in_color
@@ -230,6 +233,549 @@ class Cars{
     public function setModel_id($model_id)
     {
         $this->model_id = $model_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of interior_color_id
+     */ 
+    public function getInterior_color_id()
+    {
+        return $this->interior_color_id;
+    }
+
+    /**
+     * Set the value of interior_color_id
+     *
+     * @return  self
+     */ 
+    public function setInterior_color_id($interior_color_id)
+    {
+        $this->interior_color_id = $interior_color_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of exterior_color_id
+     */ 
+    public function getExterior_color_id()
+    {
+        return $this->exterior_color_id;
+    }
+
+    /**
+     * Set the value of exterior_color_id
+     *
+     * @return  self
+     */ 
+    public function setExterior_color_id($exterior_color_id)
+    {
+        $this->exterior_color_id = $exterior_color_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of current_action_id
+     */ 
+    public function getCurrent_action_id()
+    {
+        return $this->current_action_id;
+    }
+
+    /**
+     * Set the value of current_action_id
+     *
+     * @return  self
+     */ 
+    public function setCurrent_action_id($current_action_id)
+    {
+        $this->current_action_id = $current_action_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of body_style_id
+     */ 
+    public function getBody_style_id()
+    {
+        return $this->body_style_id;
+    }
+
+    /**
+     * Set the value of body_style_id
+     *
+     * @return  self
+     */ 
+    public function setBody_style_id($body_style_id)
+    {
+        $this->body_style_id = $body_style_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of passengers
+     */ 
+    public function getPassengers()
+    {
+        return $this->passengers;
+    }
+
+    /**
+     * Set the value of passengers
+     *
+     * @return  self
+     */ 
+    public function setPassengers($passengers)
+    {
+        $this->passengers = $passengers;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of doors
+     */ 
+    public function getDoors()
+    {
+        return $this->doors;
+    }
+
+    /**
+     * Set the value of doors
+     *
+     * @return  self
+     */ 
+    public function setDoors($doors)
+    {
+        $this->doors = $doors;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of name
+     */ 
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @return  self
+     */ 
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of grade
+     */ 
+    public function getGrade()
+    {
+        return $this->grade;
+    }
+
+    /**
+     * Set the value of grade
+     *
+     * @return  self
+     */ 
+    public function setGrade($grade)
+    {
+        $this->grade = $grade;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of power
+     */ 
+    public function getPower()
+    {
+        return $this->power;
+    }
+
+    /**
+     * Set the value of power
+     *
+     * @return  self
+     */ 
+    public function setPower($power)
+    {
+        $this->power = $power;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of model_year
+     */ 
+    public function getModel_year()
+    {
+        return $this->model_year;
+    }
+
+    /**
+     * Set the value of model_year
+     *
+     * @return  self
+     */ 
+    public function setModel_year($model_year)
+    {
+        $this->model_year = $model_year;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of evaluation
+     */ 
+    public function getEvaluation()
+    {
+        return $this->evaluation;
+    }
+
+    /**
+     * Set the value of evaluation
+     *
+     * @return  self
+     */ 
+    public function setEvaluation($evaluation)
+    {
+        $this->evaluation = $evaluation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of running
+     */ 
+    public function getRunning()
+    {
+        return $this->running;
+    }
+
+    /**
+     * Set the value of running
+     *
+     * @return  self
+     */ 
+    public function setRunning($running)
+    {
+        $this->running = $running;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of cooling
+     */ 
+    public function getCooling()
+    {
+        return $this->cooling;
+    }
+
+    /**
+     * Set the value of cooling
+     *
+     * @return  self
+     */ 
+    public function setCooling($cooling)
+    {
+        $this->cooling = $cooling;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of note
+     */ 
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set the value of note
+     *
+     * @return  self
+     */ 
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of fuel
+     */ 
+    public function getFuel()
+    {
+        return $this->fuel;
+    }
+
+    /**
+     * Set the value of fuel
+     *
+     * @return  self
+     */ 
+    public function setFuel($fuel)
+    {
+        $this->fuel = $fuel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of chassis
+     */ 
+    public function getChassis()
+    {
+        return $this->chassis;
+    }
+
+    /**
+     * Set the value of chassis
+     *
+     * @return  self
+     */ 
+    public function setChassis($chassis)
+    {
+        $this->chassis = $chassis;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of dimensions_L
+     */ 
+    public function getDimensions_L()
+    {
+        return $this->dimensions_L;
+    }
+
+    /**
+     * Set the value of dimensions_L
+     *
+     * @return  self
+     */ 
+    public function setDimensions_L($dimensions_L)
+    {
+        $this->dimensions_L = $dimensions_L;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of dimensions_W
+     */ 
+    public function getDimensions_W()
+    {
+        return $this->dimensions_W;
+    }
+
+    /**
+     * Set the value of dimensions_W
+     *
+     * @return  self
+     */ 
+    public function setDimensions_W($dimensions_W)
+    {
+        $this->dimensions_W = $dimensions_W;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of dimensions_H
+     */ 
+    public function getDimensions_H()
+    {
+        return $this->dimensions_H;
+    }
+
+    /**
+     * Set the value of dimensions_H
+     *
+     * @return  self
+     */ 
+    public function setDimensions_H($dimensions_H)
+    {
+        $this->dimensions_H = $dimensions_H;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of transmission_shift
+     */ 
+    public function getTransmission_shift()
+    {
+        return $this->transmission_shift;
+    }
+
+    /**
+     * Set the value of transmission_shift
+     *
+     * @return  self
+     */ 
+    public function setTransmission_shift($transmission_shift)
+    {
+        $this->transmission_shift = $transmission_shift;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of is_public
+     */ 
+    public function getIs_public()
+    {
+        return $this->is_public;
+    }
+
+    /**
+     * Set the value of is_public
+     *
+     * @return  self
+     */ 
+    public function setIs_public($is_public)
+    {
+        $this->is_public = $is_public;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of is_used
+     */ 
+    public function getIs_used()
+    {
+        return $this->is_used;
+    }
+
+    /**
+     * Set the value of is_used
+     *
+     * @return  self
+     */ 
+    public function setIs_used($is_used)
+    {
+        $this->is_used = $is_used;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of is_two_weel
+     */ 
+    public function getIs_two_weel()
+    {
+        return $this->is_two_weel;
+    }
+
+    /**
+     * Set the value of is_two_weel
+     *
+     * @return  self
+     */ 
+    public function setIs_two_weel($is_two_weel)
+    {
+        $this->is_two_weel = $is_two_weel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of is_steering_right
+     */ 
+    public function getIs_steering_right()
+    {
+        return $this->is_steering_right;
+    }
+
+    /**
+     * Set the value of is_steering_right
+     *
+     * @return  self
+     */ 
+    public function setIs_steering_right($is_steering_right)
+    {
+        $this->is_steering_right = $is_steering_right;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of price
+     */ 
+    public function getPrice()
+    {
+        if(!isset($this->price)){
+            return 0;
+        }
+        return $this->price;
+    }
+
+    /**
+     * Set the value of price
+     *
+     * @return  self
+     */ 
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userInwuary
+     */ 
+    public function getUserInwuary()
+    {
+        return $this->userInwuary;
+    }
+
+    /**
+     * Set the value of userInwuary
+     *
+     * @return  self
+     */ 
+    public function setUserInwuary($userInwuary)
+    {
+        $this->userInwuary = $userInwuary;
 
         return $this;
     }

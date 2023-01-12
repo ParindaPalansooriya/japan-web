@@ -1,3 +1,17 @@
+<?php
+
+session_start();
+echo $_SESSION['valid'];
+echo $_SESSION['timeout'];
+echo $_SESSION['username'];
+require_once '../php/config.php';
+require_once "../php/car_module.php";
+require_once "../php/car_dao.php";
+
+$sellingRequest = getAllUserSellingCarsForAdminLists($link);
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,44 +27,44 @@
     <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
     <title>User_Selling_Requests</title>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
     <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="../css/responsive.css" rel="stylesheet" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/daterangepicker/daterangepicker.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/slick/slick.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/MagnificPopup/magnific-popup.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/util.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
 </head>
 
@@ -297,55 +311,43 @@
                     <thead>
                     <tr>
                         <th scope="col">Image</th>
-                        <th scope="col">Car Name/Grade<br>Venue/Exhibiton Num</th>
+                        <th scope="col">Car Name / Maker<br>Body Style / Condition</th>
                         <th scope="col">Model<br>Power</th>
                         <th scope="col">Model Year<br>Running</th>
-                        <th scope="col">Color/Color Code<br>Shift/Cooling</th>
+                        <th scope="col">Color / Color Code<br>Shift / Cooling</th>
                         <th scope="col">User Name<br>Contact Number<br>Expect Value</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-<!--   1st details row-->
-                    <tr>
-                        <td> <img src="images/images002.png" width="120" height="65"></td>
-                        <td>Car Name/Grade<br>Venue/Exhibiton Num</td>
-                        <td>SModel<br>Power</td>
-                        <td>Model Year<br>Running</td>
-                        <td>Color/Color Code<br>Shift/Cooling</td>
-                        <td>User Name<br>Contact Number<br>Expect Value</td>
-                        <td>
-                            <button  id="bttn" Class="swal-button" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  End of 1st details row-->
-<!--  2nd details row    Samples    -->
-                    <tr>
-                        <td> <img src="images/images002.png" width="120" height="65"></td>
-                        <td>Car Name/Grade<br>Venue/Exhibiton Num</td>
-                        <td>SModel<br>Power</td>
-                        <td>Model Year<br>Running</td>
-                        <td>Color/Color Code<br>Shift/Cooling</td>
-                        <td>User Name<br>Contact Number<br>Expect Value</td>
-                        <td>
-                            <button Class="swal-button" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  End of 2nd details row-->
-<!--  3rd details row Samples -->
-                    <tr>
-                        <td> <img src="images/images002.png" width="120" height="65"></td>
-                        <td>Car Name/Grade<br>Venue/Exhibiton Num</td>
-                        <td>SModel<br>Power</td>
-                        <td>Model Year<br>Running</td>
-                        <td>Color/Color Code<br>Shift/Cooling</td>
-                        <td>User Name<br>Contact Number<br>Expect Value</td>
-                        <td>
-                            <button  Class="swal-button" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  end of 3rd details row-->
 
+                    <?php 
+                    
+                    if(isset($sellingRequest) && !empty($sellingRequest)){
+                        foreach ($sellingRequest as $key => $value) {
+                        ?>
+                        <tr>
+                            <td> <img src="../<?php echo $value->getImage();?>" alt="" width="120" height="65"></td>
+                            <td><?php echo $value->getName();?> / <?php echo $value->getMaker();?>
+                            <br><?php echo $value->getStyle();?> / <?php echo $value->getIs_used()==0?"New":"Used";?></td>
+                            <td><?php echo $value->getModel();?><br><?php echo $value->getPower();?></td>
+                            <td><?php echo $value->getModel_year();?><br><?php echo $value->getRunning();?></td>
+                            <td><?php echo $value->getIn_color();?> / <?php echo $value->getEx_color();?><br>
+                            <?php echo $value->getTransmission_shift();?> / <?php echo $value->getCooling();?></td>
+                            <td><?php echo $value->getUserInwuary()->getUser_name();?><br>
+                            <?php echo $value->getUserInwuary()->getMobile();?><br>
+                            <?php echo $value->getPrice();?></td>
+                            <td>
+                                <a href="vehicle_preview.php?id=<?php echo $value->getId();?>" target="_blank">
+                                    <button Class="swal-button" name="Action">Action</button>
+                                </a>
+                            </td>
+                        </tr>
+                        <?php
+                        }
+                    }
+                    
+                    ?>
 
                     </tbody>
                 </table>
@@ -429,22 +431,22 @@
     }
 </script>
 <!-- jQery -->
-<script src="js/jquery-3.4.1.min.js"></script>
+<script src="../js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
-<script src="js/popper.min.js"></script>
+<script src="../js/popper.min.js"></script>
 <!-- bootstrap js -->
-<script src="js/bootstrap.js"></script>
+<script src="../js/bootstrap.js"></script>
 <!-- custom js -->
-<script src="js/custom.js"></script>
+<script src="../js/custom.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/animsition/js/animsition.min.js"></script>
+<script src="../vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/bootstrap/js/popper.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../vendor/bootstrap/js/popper.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/select2/select2.min.js"></script>
+<script src="../vendor/select2/select2.min.js"></script>
 <script>
     $(".js-select2").each(function(){
         $(this).select2({
@@ -454,18 +456,18 @@
     })
 </script>
 <!--===============================================================================================-->
-<script src="vendor/daterangepicker/moment.min.js"></script>
-<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<script src="../vendor/daterangepicker/moment.min.js"></script>
+<script src="../vendor/daterangepicker/daterangepicker.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/slick/slick.min.js"></script>
-<script src="js/slick-custom.js"></script>
+<script src="../vendor/slick/slick.min.js"></script>
+<script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/parallax100/parallax100.js"></script>
+<script src="../vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
 <!--===============================================================================================-->
-<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <script>
     $('.gallery-lb').each(function() { // the containers for all your galleries
         $(this).magnificPopup({
@@ -479,9 +481,9 @@
     });
 </script>
 <!--===============================================================================================-->
-<script src="vendor/isotope/isotope.pkgd.min.js"></script>
+<script src="../vendor/isotope/isotope.pkgd.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/sweetalert/sweetalert.min.js"></script>
+<script src="../vendor/sweetalert/sweetalert.min.js"></script>
 <script>
     $('.js-addwish-b2').on('click', function(e){
         e.preventDefault();
@@ -519,7 +521,7 @@
 
 </script>
 <!--===============================================================================================-->
-<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script>
     $('.js-pscroll').each(function(){
         $(this).css('position','relative');
@@ -536,6 +538,6 @@
     });
 </script>
 <!--===============================================================================================-->
-<script src="js/main.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>

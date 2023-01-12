@@ -11,7 +11,7 @@ server with default setting (user 'root' with no password) */
 // }
  
 /* Attempt to connect to MySQL database */
-$link = mysqli_connect('localhost', 'root', '', 'japan_web');
+$link = mysqli_connect('sql.freedb.tech', 'freedb_paridb', 'ywfY@N6B96hVbGw', 'freedb_japan_web');
  
 // Check connection
 if($link === false){
@@ -163,6 +163,20 @@ if($link === false){
     }
 
     try {
+        $user_inquary_add_status = "ALTER TABLE `user_inquary` ADD `status` int(1) NOT NULL default '0'";
+        mysqli_query($link, $user_inquary_add_status);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try { // 1: selling, 0:buying
+        $user_inquary_add_status = "ALTER TABLE `user_inquary` ADD `type` int(1) NOT NULL default '0'";
+        mysqli_query($link, $user_inquary_add_status);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
         $cars = "CREATE TABLE IF NOT EXISTS cars ( 
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
             maker_id INT NOT NULL DEFAULT 1, 
@@ -200,6 +214,7 @@ if($link === false){
     try {
         $soled_cars = "CREATE TABLE IF NOT EXISTS soled_cars ( 
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+            inquary_id INT NOT NULL DEFAULT 0, 
             maker_id INT NOT NULL DEFAULT 1, 
             model_id INT NOT NULL DEFAULT 1, 
             interior_color_id INT NOT NULL DEFAULT 1, 

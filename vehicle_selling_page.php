@@ -1,12 +1,27 @@
 
 <?php
+
+
+require_once('./php/config.php');
+require_once('./php/car_makers_dao.php');
+require_once('./php/car_model_dao.php');
+require_once('./php/body_style_dao.php');
+require_once('./php/interior_color_dao.php');
+require_once('./php/exterior_color_dao.php');
+
+$style = getAllBodyStyle($link);
+$in_cor = getAllInteriorColor($link);
+$ex_cor = getAllExteriorColor($link);
+$maker = getAllCarMakers($link);
+$model = getAllCarModels($link);
+
 $filepath = array();
 if(isset($_REQUEST['filepath'])){
     $filepath = $_REQUEST['filepath'];
 }
 if(isset($_POST['Submit1']))
 { 
-    $filepathTemp = "images/cars/".microtime_float(). $_FILES["file"]["name"];
+    $filepathTemp = "images/cars/".microtime_float().".png";
     if(move_uploaded_file($_FILES["file"]["tmp_name"], $filepathTemp)) 
     {
         array_push($filepath,$filepathTemp);
@@ -35,9 +50,10 @@ if(isset($_POST['Delete']))
 
 if(isset($_POST['Submit']))
 { 
-    require_once('./php/config.php');
     require_once('./php/car_dao.php');
     require_once('./php/car_image_dao.php');
+    require_once('./php/car_price_dao.php');
+    require_once('./php/user_inquary_dao.php');
     $maxId = insertCarFull($link,
     $_REQUEST['maker_id'],
     $_REQUEST['model_id'],
@@ -70,8 +86,12 @@ if(isset($_POST['Submit']))
             insertCarImagers($link,$value1,$key2!=0?0:1,$maxId);
         }
     }
+    insertCarPrice($link,$maxId,0,0,0,$_REQUEST['expectation'],0);
+    insertUserSellingInquary($link,$maxId,$_REQUEST['c_name'],$_REQUEST['email'],$_REQUEST['mobile']);
+    header("Location: index.php"); 
+    exit();
 }
-// print_r($_POST);
+print_r($_POST);
 ?>
 <!DOCTYPE html>
 <html>
@@ -332,7 +352,9 @@ if(isset($_POST['Submit']))
             <div id="i91j" class="gjs-cell">
                 <h5>Vehicle Details</h5>
                 <div >
-                    <div class="box">
+                <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
+                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label>
+                    <div class="box" style="display: <?php echo isset($filepath) && !empty($filepath) ? "block":"none" ?>;" >
                     <form id="formAwesome" action="vehicle_selling_page.php" enctype="multipart/form-data" method="post">
                             <div class="modal-body">
                             <div class="form-group row">
@@ -364,7 +386,7 @@ if(isset($_POST['Submit']))
                                 Model Year
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="model_year" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="number" name="model_year" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -380,7 +402,7 @@ if(isset($_POST['Submit']))
                                 Running
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="running" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="number" name="running" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -396,7 +418,7 @@ if(isset($_POST['Submit']))
                                 Dimensions Length
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="dimensions_L" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="number" name="dimensions_L" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -404,7 +426,7 @@ if(isset($_POST['Submit']))
                                 Dimensions Width
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="dimensions_W" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="number" name="dimensions_W" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -412,7 +434,7 @@ if(isset($_POST['Submit']))
                                 Dimensions Hight
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="dimensions_H" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="number" name="dimensions_H" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -420,7 +442,7 @@ if(isset($_POST['Submit']))
                                 Passengers
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="passengers" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="number" name="passengers" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -436,8 +458,13 @@ if(isset($_POST['Submit']))
                                 Maker</label>
                                 <div class="col-sm-6">
                                 <select class="form-control" name="maker_id" id="awesomeness" style="font-size:0.8em">
-                                    <option value="0">Yes</option>
-                                    <option value="1">No</option>
+                                    <?php 
+                                    if(isset($maker)){
+                                        foreach ($maker as $key => $value) {
+                                            ?><option value="<?php echo $value->getId() ?>"><?php echo $value->getName() ?></option><?php
+                                        }
+                                    }
+                                    ?>
                                 </select>
                                 </div>
                             </div>
@@ -446,8 +473,13 @@ if(isset($_POST['Submit']))
                                 Car Model</label>
                                 <div class="col-sm-6">
                                 <select class="form-control" name="model_id" id="awesomeness" style="font-size:0.8em">
-                                    <option value="0">Yes</option>
-                                    <option value="1">No</option>
+                                    <?php 
+                                    if(isset($model)){
+                                        foreach ($model as $key => $value) {
+                                            ?><option value="<?php echo $value->getId() ?>"><?php echo $value->getName() ?></option><?php
+                                        }
+                                    }
+                                    ?>
                                 </select>
                                 </div>
                             </div>
@@ -456,8 +488,13 @@ if(isset($_POST['Submit']))
                                 Interior Color</label>
                                 <div class="col-sm-6">
                                 <select class="form-control" name="interior_color_id" id="awesomeness" style="font-size:0.8em">
-                                    <option value="0">Yes</option>
-                                    <option value="1">No</option>
+                                    <?php 
+                                    if(isset($in_cor)){
+                                        foreach ($in_cor as $key => $value) {
+                                            ?><option value="<?php echo $value->getId() ?>"><?php echo $value->getName() ?></option><?php
+                                        }
+                                    }
+                                    ?>
                                 </select>
                                 </div>
                             </div>
@@ -466,8 +503,13 @@ if(isset($_POST['Submit']))
                                 Exterior Color</label>
                                 <div class="col-sm-6">
                                 <select class="form-control" name="exterior_color_id" id="awesomeness" style="font-size:0.8em">
-                                    <option value="0">Yes</option>
-                                    <option value="1">No</option>
+                                    <?php 
+                                    if(isset($ex_cor)){
+                                        foreach ($ex_cor as $key => $value) {
+                                            ?><option value="<?php echo $value->getId() ?>"><?php echo $value->getName() ?></option><?php
+                                        }
+                                    }
+                                    ?>
                                 </select>
                                 </div>
                             </div>
@@ -476,8 +518,13 @@ if(isset($_POST['Submit']))
                                 Body Style</label>
                                 <div class="col-sm-6">
                                 <select class="form-control" name="body_style_id" id="awesomeness" style="font-size:0.8em">
-                                    <option value="0">Yes</option>
-                                    <option value="1">No</option>
+                                    <?php 
+                                    if(isset($style)){
+                                        foreach ($style as $key => $value) {
+                                            ?><option value="<?php echo $value->getId() ?>"><?php echo $value->getName() ?></option><?php
+                                        }
+                                    }
+                                    ?>
                                 </select>
                                 </div>
                             </div>
@@ -555,6 +602,39 @@ if(isset($_POST['Submit']))
                                     <option value="0">Left</option>
                                     <option value="1">Right</option>
                                 </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Expectation
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="number" name="expectation" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Contact Name
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="c_name" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Contact Number
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="mobile" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Contact Emal
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="email" name="email" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
                                 </div>
                             </div>
                                 <div class="modal-footer">
