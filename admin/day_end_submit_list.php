@@ -1,21 +1,23 @@
+<?php 
 
-<?php
+$today = date("Y-m-d");
+$userId = 1;
+require_once('../php/config.php');
+require_once('../php/user_submits_dao.php');
 
-session_start();
-echo $_SESSION['valid'];
-echo $_SESSION['timeout'];
-echo $_SESSION['username'];
-require_once '../php/config.php';
-require_once "../php/car_module.php";
-require_once "../php/car_dao.php";
+parse_str($_SERVER['QUERY_STRING'], $queries);
+if(isset($queries) && !empty($queries)){
+   if(isset($queries['date']) && !empty($queries['date'])){
+      $today = $queries['date'];
+   }
+}
 
-$sellingRequest = getAllCarsForAdminLists($link);
-
+$summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
 ?>
 
 
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -26,8 +28,8 @@ $sellingRequest = getAllCarsForAdminLists($link);
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
-    <title>Car_Listed_Page</title>
+    <link rel="shortcut icon" href="../images/Car_logo_sample.jpg" type="">
+    <title>Attendance_form</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
@@ -75,13 +77,7 @@ $sellingRequest = getAllCarsForAdminLists($link);
     * {
         box-sizing: border-box;
     }
-    .button_search {
-        border: 3px solid orange;
-        border-radius: 5px;
-        background-color: orange;
-        color: white;
 
-    }
     .bttn {
         border: 2px solid black;
         border-radius: 5px;
@@ -105,12 +101,40 @@ $sellingRequest = getAllCarsForAdminLists($link);
         border-color: #f44336;
         color: red
     }
-    .Bu_border {
-        border-color: #ffad06;
-        color: #ffc000
-    }
 
     /* end button section   */
+
+    /*  button2 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: white;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* end button2 section   */
+
+    /*  button3 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt2 {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* End button3 section   */
 
     /*  Class for button and header  */
     * {
@@ -270,7 +294,6 @@ $sellingRequest = getAllCarsForAdminLists($link);
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
-    /*   end  Header left/center/right code*/
 </style>
 
 <body>
@@ -284,7 +307,19 @@ $sellingRequest = getAllCarsForAdminLists($link);
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                        <h3>Manage Your Store</h3>
+                            <h3>Daily Attendance</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gjs-cell" id="ijl1">
+                    <div class="heading_container heading_center">
+                        <div class="col-center">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
+                                    <button class="bttn Bu_one" class="form-control" >Pick Date</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -294,7 +329,9 @@ $sellingRequest = getAllCarsForAdminLists($link);
 </header>
     <!-- End color buttons -3  section -->
 
-    <!-- List section -->
+    <!-- Attendance list section -->
+<section>
+
     <div class="content">
 
         <div class="container">
@@ -303,55 +340,39 @@ $sellingRequest = getAllCarsForAdminLists($link);
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Image</th>
-                        <th scope="col">Car Name / Maker<br>Body Style / Condition</th>
-                        <th scope="col">Model<br>Power</th>
-                        <th scope="col">Model Year<br>Running</th>
-                        <th scope="col">Color / Color Code<br>Shift / Cooling</th>
-                        <th scope="col">Public<br>User Bid<br>Bougth</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Sale name</th>
+                        <th scope="col">What was done</th>
                     </tr>
                     </thead>
                     <tbody>
-
-                    <?php 
-                    
-                    if(isset($sellingRequest) && !empty($sellingRequest)){
-                        foreach ($sellingRequest as $key => $value) {
-                        ?>
-                        <tr>
-                            <td> <img src="../<?php echo $value->getImage();?>" alt="" width="120" height="65"></td>
-                            <td><?php echo $value->getName();?> / <?php echo $value->getMaker();?>
-                            <br><?php echo $value->getStyle();?> / <?php echo $value->getIs_used()==0?"New":"Used";?></td>
-                            <td><?php echo $value->getModel();?><br><?php echo $value->getPower();?></td>
-                            <td><?php echo $value->getModel_year();?><br><?php echo $value->getRunning();?></td>
-                            <td><?php echo $value->getIn_color();?> / <?php echo $value->getEx_color();?><br>
-                            <?php echo $value->getTransmission_shift();?> / <?php echo $value->getCooling();?></td>
-                            <td><?php echo $value->getPrice()->getPublic();?><br>
-                            <?php echo $value->getPrice()->getPrice1();?><br>
-                            <?php echo $value->getPrice()->getBuying();?></td>
-                            <td>
-                                <div Class="bttn Bu_one"><?php echo $value->getCurrent_action_text();?></div><br>
-                                <a href="vehicle_preview_full.php?id=<?php echo $value->getId();?>" target="_blank">
-                                    <button Class="swal-button" name="Action">Update</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <?php
-                        }
-                    }
-                    
+<!--   1st details row-->
+                    <?php
+                        foreach ($summery as $key => $value) {
                     ?>
+                        <tr>
+                            <td><?php echo $value->getTime(); ?></td>
+                            <td><?php echo $value->getSales_name(); ?></td>
+                            <td><?php echo $value->getNote(); ?></td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+<!--  End of 1st details row-->
+<!--  2nd details row    Samples    -->
 
+<!--  End of 2nd details row-->
+<!--  3rd details row Samples -->
+
+<!--  end of 3rd details row-->
                     </tbody>
                 </table>
             </div>
-
-
         </div>
-
     </div>
-    <!-- end List section -->
+</section>
+<!-- End Attendance list section -->
+
 </div>
 
 <!-- Trigger/Open The Modal -->
@@ -428,7 +449,7 @@ $sellingRequest = getAllCarsForAdminLists($link);
 <script src="../vendor/slick/slick.min.js"></script>
 <script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="../vendor/parallax100/parallax100.js"></script>
+<script src="vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>

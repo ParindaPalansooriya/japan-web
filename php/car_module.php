@@ -285,6 +285,26 @@ class Cars{
         return $this->current_action_id;
     }
 
+    public function getCurrent_action_text()
+    {
+        if($this->current_action_id==0){
+            return "No Block";
+        }
+        if($this->current_action_id==1){
+            return "A Block";
+        }
+        if($this->current_action_id==2){
+            return "B Block";
+        }
+        if($this->current_action_id==3){
+            return "C Block";
+        }
+        if($this->current_action_id==4){
+            return "D Block";
+        }
+        return $this->current_action_id;
+    }
+
     /**
      * Set the value of current_action_id
      *

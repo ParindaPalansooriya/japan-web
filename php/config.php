@@ -11,7 +11,7 @@ server with default setting (user 'root' with no password) */
 // }
  
 /* Attempt to connect to MySQL database */
-$link = mysqli_connect('sql.freedb.tech', 'freedb_paridb', 'ywfY@N6B96hVbGw', 'freedb_japan_web');
+$link = mysqli_connect('localhost', 'root', '', 'japan_web');
  
 // Check connection
 if($link === false){
@@ -85,6 +85,23 @@ if($link === false){
             is_active INT(1) NOT NULL DEFAULT 0
             )";
         mysqli_query($link, $control_users);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
+        $user_day_submits = "CREATE TABLE IF NOT EXISTS user_day_submits ( 
+            id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+            user_id INT NOT NULL DEFAULT 0, 
+            date VARCHAR(15) NOT NULL DEFAULT 'null', 
+            time VARCHAR(7) NOT NULL DEFAULT 'null', 
+            sales_name VARCHAR(255) NOT NULL DEFAULT 'null', 
+            customer_name VARCHAR(255) DEFAULT 'null', 
+            customer_contact VARCHAR(30) DEFAULT 'null', 
+            type INT(1) NOT NULL DEFAULT 0,
+            note VARCHAR(500) NOT NULL DEFAULT 'null'
+            )";
+        mysqli_query($link, $user_day_submits);
     } catch (Throwable $th) {
         console_log($th);
     }
@@ -250,6 +267,6 @@ if($link === false){
 }
 
 function console_log($val){
-    echo $val;
+    // echo $val;
 }
 ?>

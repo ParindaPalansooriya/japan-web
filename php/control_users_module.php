@@ -5,7 +5,7 @@ class ControlUsers{
     public $id;
     public $user_name;
     public $password;
-    public $user_type
+    public $user_type;
     public $is_active;
 
 
@@ -16,7 +16,7 @@ class ControlUsers{
         $this->user_name = $user_name;
         $this->password = $password;
         $this->user_type = $user_type;
-        $this->is_active = $is_active
+        $this->is_active = $is_active;
 
     }
 }

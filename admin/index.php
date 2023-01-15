@@ -411,13 +411,36 @@
                                 </a>
                             </td>
                             <td style="padding-top: 100px;">
-                                <a href="attendance_form.php">
-                                    <button  id="butt2" Class="butt5" name="Action">Attendence</button>
+                                <a href="car_listed_page.php">
+                                    <button  id="butt5" Class="butt5" name="Action">Store Manage</button>
                                 </a>
                             </td>
-                            <td style="padding-top: 100px;">
-                                <a href="car_listed_page.php">
-                                    <button  id="butt2" Class="butt2" name="Action">Store Manage</button>
+                        </tr>
+                        </tbody>
+                        <div>
+                        <h3>Admin Panel</h3>
+                        </div>
+                        <tbody>
+                        <!--  1st details row-->
+                        <tr>
+                            <td style="padding-top: 20px;">
+                                <a href="day_end_submit.php" target="_blank">
+                                    <button  id="butt2" Class="butt2" name="Action">Day Summery</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;">
+                                <a href="day_end_customer_submit.php" target="_blank">
+                                    <button  id="butt3" Class="butt3" name="Action">Custom Summery</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;">
+                                <a href="day_end_submit_list.php" target="_blank">
+                                    <button  id="butt4" Class="butt4" name="Action">Day Summery List</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;">
+                                <a href="day_end_customer_submit_list.php" target="_blank">
+                                    <button  id="butt5" Class="butt5" name="Action">Custom Summery List</button>
                                 </a>
                             </td>
                         </tr>
