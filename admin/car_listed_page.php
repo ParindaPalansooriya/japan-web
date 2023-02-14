@@ -26,7 +26,7 @@ $sellingRequest = getAllCarsForAdminLists($link);
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
+    <link rel="shortcut icon" href="../images/logo.png" type="">
     <title>Car_Listed_Page</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
@@ -320,7 +320,7 @@ $sellingRequest = getAllCarsForAdminLists($link);
                         foreach ($sellingRequest as $key => $value) {
                         ?>
                         <tr>
-                            <td> <img src="../<?php echo $value->getImage();?>" alt="" width="120" height="65"></td>
+                            <td> <img src="<?php echo "../images/cars/".$value->getImage();?>" alt="" width="120" height="65"></td>
                             <td><?php echo $value->getName();?> / <?php echo $value->getMaker();?>
                             <br><?php echo $value->getStyle();?> / <?php echo $value->getIs_used()==0?"New":"Used";?></td>
                             <td><?php echo $value->getModel();?><br><?php echo $value->getPower();?></td>

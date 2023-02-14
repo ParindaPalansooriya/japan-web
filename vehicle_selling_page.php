@@ -55,42 +55,51 @@ if(isset($_POST['Submit']))
     require_once('./php/car_price_dao.php');
     require_once('./php/user_inquary_dao.php');
     $maxId = insertCarFull($link,
-    $_REQUEST['maker_id'],
-    $_REQUEST['model_id'],
-    $_REQUEST['interior_color_id'],
-    $_REQUEST['exterior_color_id'],
+    getData('maker_id',0),
+    getData('model_id',0),
+    getData('interior_color_id',0),
+    getData('exterior_color_id',0),
     0,
-    $_REQUEST['body_style_id'],
-    $_REQUEST['passengers'],
-    $_REQUEST['doors'],
-    $_REQUEST['name'],
-    $_REQUEST['grade'],
-    $_REQUEST['power'],
-    $_REQUEST['model_year'],
-    $_REQUEST['evaluation'],
-    $_REQUEST['running'],
-    $_REQUEST['cooling'],
-    $_REQUEST['note'],
-    $_REQUEST['fuel'],
-    $_REQUEST['chassis'],
-    $_REQUEST['dimensions_L'],
-    $_REQUEST['dimensions_W'],
-    $_REQUEST['dimensions_H'],
-    $_REQUEST['transmission_shift'],
-    $_REQUEST['is_used'],
-    $_REQUEST['is_two_weel'],
-    $_REQUEST['is_steering_right']
+    getData('body_style_id',0),
+    getData('passengers',0),
+    getData('doors',0),
+    getData('name',"No Data"),
+    getData('grade',0),
+    getData('power',0),
+    getData('model_year',0),
+    getData('evaluation',"No Data"),
+    getData('running',"No Data"),
+    getData('cooling',"No Data"),
+    getData('note',"No Data"),
+    getData('fuel',"No Data"),
+    getData('chassis',"No Data"),
+    getData('dimensions_L',0),
+    getData('dimensions_W',0),
+    getData('dimensions_H',0),
+    getData('transmission_shift',0),
+    getData('is_used',0),
+    getData('is_two_weel',0),
+    getData('is_steering_right',0)
     );
     if(isset($filepath)){
         foreach ($filepath as $key2 => $value1) {
             insertCarImagers($link,$value1,$key2!=0?0:1,$maxId);
         }
     }
-    insertCarPrice($link,$maxId,0,0,0,$_REQUEST['expectation'],0);
-    insertUserSellingInquary($link,$maxId,$_REQUEST['c_name'],$_REQUEST['email'],$_REQUEST['mobile']);
+    insertCarPrice($link,$maxId,0,0,0,getData('expectation',0),0);
+    insertUserSellingInquary($link,$maxId,getData('c_name',"No Data"),getData('email',"No Data"),getData('mobile',"No Data"));
     header("Location: index.php"); 
     exit();
 }
+
+
+function getData($key,$defualt){
+    if(array_key_exists($key,$_REQUEST)){
+        return $_REQUEST[$key];
+    }
+    return $defualt;
+}
+
 print_r($_POST);
 ?>
 <!DOCTYPE html>
@@ -105,7 +114,7 @@ print_r($_POST);
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
+    <link rel="shortcut icon" href="images/logo.png" type="">
     <title>Vehicle seller page</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -362,10 +371,10 @@ print_r($_POST);
                                 Vehicle Name
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="name" style="font-size:0.8em" class="form-control" id="firstName" placeholder="John" required>
+                                <input type="text" name="name" style="font-size:0.8em" class="form-control" id="firstName" placeholder="Nissan">
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label for="lastName" style="font-size:0.8em" class="col-sm-6 col-form-label">
                                 Grade
                                 </label>
@@ -603,14 +612,14 @@ print_r($_POST);
                                     <option value="1">Right</option>
                                 </select>
                                 </div>
-                            </div>
+                            </div> -->
                             <hr>
                             <div class="form-group row">
                                 <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
                                 Expectation
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="number" name="expectation" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="number" name="expectation" style="font-size:0.8em" class="form-control" id="email" placeholder="10,000" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -618,7 +627,7 @@ print_r($_POST);
                                 Contact Name
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="c_name" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="text" name="c_name" style="font-size:0.8em" class="form-control" id="email" placeholder="Jone" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -626,7 +635,7 @@ print_r($_POST);
                                 Contact Number
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="mobile" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="text" name="mobile" style="font-size:0.8em" class="form-control" id="email" placeholder="0X-XXXX-XXXX" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -634,7 +643,7 @@ print_r($_POST);
                                 Contact Emal
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="email" name="email" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required>
+                                <input type="email" name="email" style="font-size:0.8em" class="form-control" id="email" placeholder="john@email.com">
                                 </div>
                             </div>
                                 <div class="modal-footer">

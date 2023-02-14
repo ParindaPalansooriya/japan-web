@@ -1,17 +1,12 @@
 <?php
 /* Database credentials. Assuming you are running MySQL
 server with default setting (user 'root' with no password) */
-// try {
-//     define('DB_SERVER', 'localhost');
-//     define('DB_USERNAME', 'root');
-//     define('DB_PASSWORD', '');
-//     define('DB_NAME', 'japan_web');
-// } catch (\Throwable $th) {
-//     echo $th;
-// }
  
 /* Attempt to connect to MySQL database */
 $link = mysqli_connect('localhost', 'root', '', 'japan_web');
+// $link = mysqli_connect('sql303.epizy.com', 'epiz_33557197', 'zspoqJEknmtJb', 'epiz_33557197_japan_web');
+// $link = mysqli_connect('sql.freedb.tech', 'freedb_paridb', 'ywfY@N6B96hVbGw', 'freedb_japan_web');
+// $link = mysqli_connect('localhost', 'id20189640_parinda', '@1p8rTEMurqLhSiS', 'id20189640_japan_web');
  
 // Check connection
 if($link === false){
@@ -180,6 +175,52 @@ if($link === false){
     }
 
     try {
+        $contact_us = "CREATE TABLE IF NOT EXISTS contact_us ( 
+            id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+            username VARCHAR(100) NOT NULL DEFAULT 'No_Name', 
+            contact1 VARCHAR(150) NOT NULL DEFAULT 'No_data', 
+            contact2 VARCHAR(150) NOT NULL DEFAULT 'No_data',
+            status INT(1) NOT NULL DEFAULT 0, 
+            message TEXT
+            )";
+        mysqli_query($link, $contact_us);
+    } catch (Throwable $th) {
+        console_log($th);
+        
+    }
+
+    try {
+        $car_additinal = "CREATE TABLE IF NOT EXISTS car_additinal ( 
+            car_id INT NOT NULL PRIMARY KEY, 
+            supplier VARCHAR(100) NOT NULL DEFAULT 'No_Name', 
+            perfecture VARCHAR(150) NOT NULL DEFAULT 'No_data', 
+            bank VARCHAR(30) NOT NULL DEFAULT 'No_data'
+            )";
+        mysqli_query($link, $car_additinal);
+    } catch (Throwable $th) {
+        console_log($th);
+        
+    }
+
+    try {
+        $car_deductions = "CREATE TABLE IF NOT EXISTS car_deductions ( 
+            car_id INT NOT NULL PRIMARY KEY, 
+            rtax VARCHAR(20) NOT NULL DEFAULT '0', 
+            atax VARCHAR(20) NOT NULL DEFAULT '0', 
+            au_cha VARCHAR(20) NOT NULL DEFAULT '0', 
+            trasport VARCHAR(20) NOT NULL DEFAULT '0', 
+            storage VARCHAR(20) NOT NULL DEFAULT '0', 
+            insurance VARCHAR(20) NOT NULL DEFAULT '0', 
+            repair VARCHAR(20) NOT NULL DEFAULT '0', 
+            other VARCHAR(20) NOT NULL DEFAULT '0'
+            )";
+        mysqli_query($link, $car_deductions);
+    } catch (Throwable $th) {
+        console_log($th);
+        
+    }
+
+    try {
         $user_inquary_add_status = "ALTER TABLE `user_inquary` ADD `status` int(1) NOT NULL default '0'";
         mysqli_query($link, $user_inquary_add_status);
     } catch (Throwable $th) {
@@ -260,6 +301,15 @@ if($link === false){
             is_public INT(1) NOT NULL DEFAULT 0 
             )";
         mysqli_query($link, $soled_cars);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    
+
+    try { // 1: selling, 0:buying
+        $user_inquary_add_status = "ALTER TABLE `soled_cars` ADD `date` VARCHAR(12) NOT NULL default CURDATE()";
+        mysqli_query($link, $user_inquary_add_status);
     } catch (Throwable $th) {
         console_log($th);
     }

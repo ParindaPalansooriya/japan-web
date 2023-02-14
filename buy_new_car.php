@@ -57,7 +57,7 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
       <meta name="keywords" content="" />
       <meta name="description" content="" />
       <meta name="author" content="" />
-      <link rel="shortcut icon" href="images/car_logo_sample.jpg" type="">
+      <link rel="shortcut icon" href="images/logo.png" type="">
       <title>Buy New Car</title>
       <!-- bootstrap core css -->
       <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -274,9 +274,15 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
                      <div class="gjs-cell" id="ijl1">
                         <div class="heading_container heading_center">
                            <div class="col-center">
-                              <button class="bttn Bu_one"> Button </button>
-                              <button class="bttn Bu_two"> Button </button>
-                              <button class="bttn Bu_three"> Button </button>
+                                 <a href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                                    <button  id="butt2" Class="bttn Bu_one" name="Action">1 sale</button>
+                                 </a>
+                                 <a href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
+                                    <button  id="butt2" Class="bttn Bu_two" name="Action">2 sale</button>
+                                 </a>
+                                 <a href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
+                                    <button  id="butt2" Class="bttn Bu_three" name="Action">3 sale</button>
+                                 </a>
                            </div>
                         </div>
                      </div>
@@ -370,7 +376,7 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
                            </ul>
                         </div>
 
-                        <div class="filter-col2 p-r-15 p-b-27">
+                        <!-- <div class="filter-col2 p-r-15 p-b-27">
                            <div class="mtext-102 cl2 p-b-15">
                               Price
                            </div>
@@ -412,9 +418,9 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
                                  </a>
                               </li>
                            </ul>
-                        </div>
+                        </div> -->
 
-                        <div class="filter-col3 p-r-15 p-b-27">
+                        <!-- <div class="filter-col3 p-r-15 p-b-27">
                            <div class="mtext-102 cl2 p-b-15">
                               Color
                            </div>
@@ -480,9 +486,9 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
                                  </a>
                               </li>
                            </ul>
-                        </div>
+                        </div> -->
 
-                        <div class="filter-col4 p-b-27">
+                        <!-- <div class="filter-col4 p-b-27">
                            <div class="mtext-102 cl2 p-b-15">
                               Tags
                            </div>
@@ -508,7 +514,7 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
                                  Crafts
                               </a>
                            </div>
-                        </div>
+                        </div> -->
                      </div>
                   </div>
                </div>
@@ -520,6 +526,9 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
                            <?php
                               if(isset($new_cars)){
                                  foreach ($new_cars as $key2 => $value1) {
+                                    if (!file_exists("images/cars/".$value1->getImage())) {
+                                       $value1->setImage("noimage.jpg");
+                                    }
                                     ?> 
                                     <div class="col-sm-12 col-md-6 col-lg-4">
                                        <div class="card border rounded m-3">
@@ -539,19 +548,18 @@ $new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
                                                    </div>
                                                 </div>
                                                 <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-
-
                                                    <div class="col-6 text-left">
                                                       <p class="card-text pricetext font-weigh-bold"><?php echo $value1->getPrice(); ?></p>
                                                    </div>
                                                    <div class="col-6 text-right">
-                                                      <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>
+                                                      <p class="card-text car_manufacturer float-end"><?php echo $value1->getMaker(); ?></p>
                                                    </div>
+                                                   <p class="card-text car_manufacturer float-end" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
 
                                                 </div>
                                                 <div class="row mt-4  px-0">
                                                    <div class="col-12  px-0">
-                                                      <img src="<?php echo $value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
+                                                      <img src="<?php echo "images/cars/".$value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
                                                    </div>
                                                 </div>
                                                 <!-- <div class="row mt-4 ">

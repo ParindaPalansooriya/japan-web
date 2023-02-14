@@ -1,21 +1,53 @@
-
 <?php
-    ob_start();
-    session_start();
-    $_SESSION['valid'] = true;
-    $_SESSION['timeout'] = time();
-    $_SESSION['username'] = 'tutorialspoint';
 
-    require_once '../php/config.php';
-    require_once "../php/car_module.php";
-    require_once "../php/car_dao.php";
+use Shuchkin\SimpleXLSXGen;
 
-    $sellingCount = sizeof(getAllUserSellingCarsForAdminLists($link));
-    $buyingCount = sizeof(getAllUserBuyingCarsForAdminLists($link));
-    $contactCount = 0;
+$today = date("Y-m-d");
+$userId = 1;
+require_once('../php/config.php');
+require_once('../php/car_dao.php');
 
+$summery = getAllCarsForReport($link);
+
+// print_r($_POST);
+if(isset($_POST['download']))
+{
+    $data = [];
+
+    $titles = [
+        'Code','Store','Supplier','Perfecture','Car Model','Maker','Model Year'
+    ];
+    array_push($data,$titles);
+
+    foreach ($summery as $key => $value) {
+        $temp = [
+            $value->getId(),
+            $value->getCurrent_action_text()!==null?$value->getCurrent_action_text():"--",
+            $value->getAdditional()!==null?$value->getAdditional()->getSupplier():"--",
+            $value->getAdditional()!==null?$value->getAdditional()->getPerfecture():"--",
+            $value->getModel()!==null?$value->getModel():"--",
+            $value->getMaker()!==null?$value->getMaker():"--",
+            $value->getModel_year()!==null?$value->getModel_year():"--"
+        ];
+        array_push($data,$temp);
+    }
+    require_once "./sheet/SimpleXLSXGen.php";
+
+    $file_url = './sheet/store_report_'.$today.'.xlsx';
+
+    SimpleXLSXGen::fromArray($data)->saveAs($file_url);
+
+    header('Content-Type: application/octet-stream');
+    header("Content-Transfer-Encoding: Binary"); 
+    header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\""); 
+    readfile($file_url); 
+    if (file_exists($file_url)) {
+        unlink($file_url);
+    }
+}
 
 ?>
+
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
@@ -71,6 +103,14 @@
     <link rel="stylesheet" type="text/css" href="../css/util.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
 </head>
 
 <style>
@@ -124,36 +164,6 @@
     /*  button3 section   */
     * {
         box-sizing: border-box;
-    }
-
-    .butt3 {
-        border: 2px solid #04AA6D;
-        border-radius: 5px;
-        background-color: #ffffff;
-        color: #04AA6D;
-        padding: 8px 28px;
-        font-size: 16px;
-
-    }
-
-    .butt4 {
-        border: 2px solid #f44336;
-        border-radius: 5px;
-        background-color: #ffffff;
-        color: #f44336;
-        padding: 8px 28px;
-        font-size: 16px;
-
-    }
-
-    .butt5 {
-        border: 2px solid palevioletred;
-        border-radius: 5px;
-        background-color: #ffffff;
-        color: palevioletred;
-        padding: 8px 28px;
-        font-size: 16px;
-
     }
 
     .butt2 {
@@ -325,7 +335,68 @@
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
-    /*   end  Header left/center/right code*/
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+  	min-width: 1000px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    color: #fff;
+    background: #40b2cd;		
+    padding: 16px 25px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box .input-group-addon {
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+    padding: 6px 0;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+ }
 </style>
 
 <body>
@@ -339,7 +410,18 @@
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                        <h3>Admin Panel</h3>
+                            <h3>Current Store</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gjs-cell" id="ijl1">
+                    <div class="heading_container heading_center">
+                        <div class="col-center">
+                            <form class="form-inline" method="post">
+                                <div class="form-group">
+                                    <button class="bttn Bu_one" class="form-control" name="download" >Download</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -354,27 +436,74 @@
 
     <div class="content">
 
-        <div class="container">
-            <br>
-            <h4>Notifications</h4>
-            <br>
+        <div class="container">			
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="search-box">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Code">
+                            </div>
+                        </div>
+                    </div>
             <div class="table-responsive">
 
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col" style="width:70%">User Contact Requests</th>
-                        <th scope="col"><?php echo $contactCount ?></th>
-                    </tr>
-                    <tr>
-                        <th scope="col" style="width:70%">User Selling Request</th>
-                        <th scope="col"><?php echo $sellingCount ?></th>
-                    </tr>
-                    <tr>
-                        <th scope="col" style="width:70%">User Orders</th>
-                        <th scope="col"><?php echo $buyingCount ?></th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Store</th>
+                        <th scope="col">Supplier</th>
+                        <th scope="col">Perfecture</th>
+                        <th scope="col">Bank</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Car Model</th>
+                        <th scope="col">Maker</th>
+                        <th scope="col">Model Year</th>
+                        <th scope="col">Chassis</th>
+                        <th scope="col">Buying</th>
+                        <th scope="col">Selling</th>
+                        <th scope="col">Public</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
+                    <tbody>
+<!--   1st details row-->
+                    <?php
+                        foreach ($summery as $key => $value) {
+                    ?>
+                        <tr>
+                            <td><?php echo $value->getId(); ?></td>
+                            <td><?php echo $value->getCurrent_action_text(); ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getSupplier():""; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture():""; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank():""; ?></td>
+                            <td><?php echo $value->getName(); ?></td>
+                            <td><?php echo $value->getModel(); ?></td>
+                            <td><?php echo $value->getMaker(); ?></td>
+                            <td><?php echo $value->getModel_year(); ?></td>
+                            <td><?php echo $value->getChassis(); ?></td>
+                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getBuying():""; ?></td>
+                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getSelling():""; ?></td>
+                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic():""; ?></td>
+                            <td><form class="form-inline" action="add_vehicle.php" method="post">
+                                <div class="form-group">
+                                    <input type="hidden" id="carId" name="carId" value="<?php echo $value->getId();?>">
+                                    <button class="bttn Bu_one" class="form-control" name="download" >Edit</button>
+                                </div>
+                            </form></td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
+<!--  End of 1st details row-->
+<!--  2nd details row    Samples    -->
+
+<!--  End of 2nd details row-->
+<!--  3rd details row Samples -->
+
+<!--  end of 3rd details row-->
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -382,155 +511,8 @@
 </section>
 <!-- End Attendance list section -->
 
-    <br>
-    <br>
-    <br>
-
-    <!-- List 2 section -->
-    <section>
-        <div class="content">
-            <div class="container">
-                <div class="table-responsive">
-                    <table class="table custom-table">
-                        <tbody>
-                        <!--   1st details row-->
-                        <tr>
-                            <td style="padding-top: 100px;">
-                                <a href="buy_new_car.php">
-                                    <button  id="butt2" Class="butt2" name="Action">Contact Requests</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 100px;">
-                                <a href="user_selling_requests.php">
-                                    <button  id="butt3" Class="butt3" name="Action">Selling Request</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 100px;">
-                                <a href="user_buying_requests.php">
-                                    <button  id="butt4" Class="butt4" name="Action">Orders</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 100px;">
-                                <a href="car_listed_page.php">
-                                    <button  id="butt5" Class="butt5" name="Action">Store Manage</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 100px;">
-                                <a href="add_vehicle.php" target="_blank">
-                                    <button  id="butt5" Class="butt5" name="Action">Add to Store</button>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                        <div>
-                        <h3>Admin Panel</h3>
-                        </div>
-                        <tbody>
-                        <!--  1st details row-->
-                        <tr>
-                            <td style="padding-top: 20px;">
-                                <a href="day_end_submit.php" target="_blank">
-                                    <button  id="butt2" Class="butt2" name="Action">Day Summery</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;">
-                                <a href="day_end_customer_submit.php" target="_blank">
-                                    <button  id="butt3" Class="butt3" name="Action">Custom Summery</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;">
-                                <a href="day_end_submit_list.php" target="_blank">
-                                    <button  id="butt4" Class="butt4" name="Action">Day Summery List</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;">
-                                <a href="day_end_customer_submit_list.php" target="_blank">
-                                    <button  id="butt5" Class="butt5" name="Action">Custom Summery List</button>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <td style="padding-top: 100px;">
-                                <!-- <a>Pick Youe Report Date</a>
-                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>"> -->
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                        <tr>
-                            <td style="padding-top: 20px;">
-                                <a href="day_end_submit.php" target="_blank">
-                                    <button  id="butt2" Class="butt2" name="Action">Day Summery Reprots</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;">
-                                <a href="day_end_customer_submit.php" target="_blank">
-                                    <button  id="butt3" Class="butt3" name="Action">Custom Summery Reprots</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;">
-                                <a href="day_end_submit_list.php" target="_blank">
-                                    <button  id="butt4" Class="butt4" name="Action">Sales Reprots</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;">
-                                <a href="store_reports.php" target="_blank">
-                                    <button  id="butt5" Class="butt5" name="Action">Store Reprots</button>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
 </div>
 
-<!-- Trigger/Open The Modal -->
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
-    </div>
-
-</div>
-
-
-
-<!-- Popup box-->
-<script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("bttn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
 <!-- jQery -->
 <script src="../js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
@@ -563,7 +545,7 @@
 <script src="../vendor/slick/slick.min.js"></script>
 <script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="../vendor/parallax100/parallax100.js"></script>
+<script src="vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
@@ -640,5 +622,27 @@
 </script>
 <!--===============================================================================================-->
 <script src="../js/main.js"></script>
+
+<script>
+$(document).ready(function(){
+	// Activate tooltips
+	$('[data-toggle="tooltip"]').tooltip();
+    
+	// Filter table rows based on searched term
+    $("#search").on("keyup", function() {
+        var term = $(this).val().toLowerCase();
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(1)").text().toLowerCase();
+            console.log(name);
+            if(name.search(term) < 0){                
+                $row.hide();
+            } else{
+                $row.show();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

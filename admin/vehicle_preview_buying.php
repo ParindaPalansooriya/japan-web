@@ -66,7 +66,7 @@ print_r($_POST);
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="../images/Car_logo_sample.jpg" type="">
+    <link rel="shortcut icon" href="../images/logo.png" type="">
     <title>Vehicle Preview</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
@@ -409,7 +409,7 @@ print_r($_POST);
                                     <?php if(isset($imagers)){
                                         foreach ($imagers as $key => $value) { ?>
                                             <div class="carousel-item <?php if($key==0){echo "active";} ?>"  style="max-width: 800px; object-fit: contain;" data-slide-number=<?php echo $key; ?>>
-                                                <img src="../<?php echo $value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
+                                                <img src="<?php echo "../images/cars/".$value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
                                             </div>
                                        <?php }
                                     }?>
@@ -426,7 +426,7 @@ print_r($_POST);
                                         <?php if(isset($imagers)){
                                             foreach ($imagers as $key => $value) { ?>
                                             <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 <?php if($key==0){echo 'selected';}?>" data-target="#myCarousel" data-slide-to=<?php echo $key; ?>>
-                                                <img src="../<?php echo $value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
+                                                <img src="<?php echo "../images/cars/".$value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
                                             </div>
                                         <?php }
                                         }?>
@@ -454,6 +454,7 @@ print_r($_POST);
                             </table></div>
                             <div class="row">
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
+                                    <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Make : <?php echo $car->getMaker(); ?></p>
                                     <p style="padding-bottom: 5px;">Model : <?php echo $car->getModel(); ?></p>
                                     <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>

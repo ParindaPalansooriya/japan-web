@@ -9,6 +9,12 @@ function insertCarPrice($link,
         $price2
 )
 {
+    try{
+        $sql0 = "DELETE FROM car_price WHERE car_id = $car_id";
+        mysqli_query($link, $sql0);
+    }catch (Throwable $th) {
+        console_log($th);
+    }
     $sql = "INSERT INTO car_price (car_id, buying, selling, public, price1, price2) VALUES ('$car_id','$buying','$selling','$public','$price1','$price2')";
 
     mysqli_query($link, $sql);

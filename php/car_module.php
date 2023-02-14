@@ -70,9 +70,12 @@ class Cars{
     public $model;
     public $ex_color;
     public $in_color;
+    
     public $price;
 
     public $userInwuary;
+    public $additional;
+    public $deductions;
 
     /**
      * Get the value of in_color
@@ -291,16 +294,28 @@ class Cars{
             return "No Block";
         }
         if($this->current_action_id==1){
-            return "A Block";
+            return "1 Kojo";
         }
         if($this->current_action_id==2){
-            return "B Block";
+            return "1 Sale";
         }
         if($this->current_action_id==3){
-            return "C Block";
+            return "2 Kojo";
         }
         if($this->current_action_id==4){
-            return "D Block";
+            return "2 Sale";
+        }
+        if($this->current_action_id==5){
+            return "3 Kojo";
+        }
+        if($this->current_action_id==6){
+            return "3 Sale";
+        }
+        if($this->current_action_id==7){
+            return "Miho Kojo";
+        }
+        if($this->current_action_id==-1){
+            return "Export";
         }
         return $this->current_action_id;
     }
@@ -768,6 +783,11 @@ class Cars{
         return $this->price;
     }
 
+    public function getPriceObject()
+    {
+        return $this->price;
+    }
+
     /**
      * Set the value of price
      *
@@ -796,6 +816,46 @@ class Cars{
     public function setUserInwuary($userInwuary)
     {
         $this->userInwuary = $userInwuary;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of additional
+     */ 
+    public function getAdditional()
+    {
+        return $this->additional;
+    }
+
+    /**
+     * Set the value of additional
+     *
+     * @return  self
+     */ 
+    public function setAdditional($additional)
+    {
+        $this->additional = $additional;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deductions
+     */ 
+    public function getDeductions()
+    {
+        return $this->deductions;
+    }
+
+    /**
+     * Set the value of deductions
+     *
+     * @return  self
+     */ 
+    public function setDeductions($deductions)
+    {
+        $this->deductions = $deductions;
 
         return $this;
     }

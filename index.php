@@ -20,7 +20,7 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
       <meta name="keywords" content="" />
       <meta name="description" content="" />
       <meta name="author" content="" />
-      <link rel="shortcut icon" href="images/car_logo_sample.jpg" type="">
+      <link rel="shortcut icon" href="images/logo.png" type="">
       <title>Web title</title>
       <!-- bootstrap core css -->
       <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -33,6 +33,9 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
       <!-- Card  -->
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+
 
    </head>
    <style>
@@ -213,6 +216,7 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
 {
 	border: 0px;
 	width: 50%;
+   background: rgba(76, 175, 80, 0.0);
 	padding: 10px 10px;
 }
 
@@ -240,11 +244,32 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
    ====== Medua Query for Search Box ====== 
    =========================== */
 
+   @media (max-width: 700px) {
+        .card-columns.custom-columns {
+            column-count: 1;
+        }
+    }
+    @media (min-width: 700px) {
+        .card-columns.custom-columns {
+            column-count: 2;
+        }
+    }
+    @media (min-width: 1000px) {
+        .card-columns.custom-columns {
+            column-count: 3;
+        }
+    }
+    @media (min-width: 1400px) {
+        .card-columns.custom-columns {
+            column-count: 4;
+        }
+    }
+
 @media only screen and (min-width : 150px) and (max-width : 780px)
 {
 	.search
 	{
-		width: 80%;
+		width: 100%;
 		margin: 0 auto;
 	}
 
@@ -254,7 +279,33 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
    <body>
       <div class="hero_area">
       <!-- head section -->
-         <section class="slider_section ">
+
+      <section data-bs-version="5.1" class="header18  mbr-fullscreen" id="header18-k" style="background-image: url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg'); height: 100vh">
+         <div class="align-center container">
+            <div class="row justify-content-center">
+               <div class="col-12 col-lg-10">
+                                    <div class="detail-box">
+                                          <img src="images/logo.png" style="margin-bottom: 50px; object-fit: contain;" width="200px" height="200px">
+                                          <h2 style="margin-bottom: 30px;">
+                                             GET THE LATEST NEW OR <br>USED CAR AT A FAIR PRICE
+                                          </h2>
+                                          <p style="margin-bottom: 50px;">
+                                             Passenger cars, vans, light trucks and even margin cars or damaged vehicles,
+                                             you’re sure to find what you’re looking for.  </p>
+
+                                             <div class="search">
+                                                <form  action="buy_new_car.php" enctype="multipart/form-data" method="post">
+                                                   <input type="text" name="search-product" placeholder="Search for Maker, Name, Grade">
+                                                   <input type="submit" value="Submit" name="Search">
+                                                </form>
+                                             </div>
+                                    </div>
+               </div>
+            </div>
+         </div>
+         </section>
+
+         <!-- <section class="slider_section ">
             <div class="slider_bg_box">
 
                <img src="images/Car_full_photo.png">
@@ -265,9 +316,9 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
                      <div class="container-fluid">
                         <div class="row">
                            <div class="col-md-7 col-lg-0 ">
-                              <div class="detail-box">
+                              <div class="detail-box" style="max-width: 800px;">
                                  <div class="heading_container heading_center">
-                                 <img src="images/Car_logo_sample.jpg" width="150" height="150">
+                                 <img src="images/logo.png" style="margin-bottom: 50px;" width="150" height="150">
                                  </div>
                                  <h2>
                                     GET THE LATEST NEW OR <br>USED CAR AT A FAIR PRICE
@@ -291,14 +342,20 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
                </div>
                </div>
             </div>
-         </section>
+         </section> -->
 
       <!-- color buttons -3  section -->
-         <div class="heading_container heading_center">
+         <div class="heading_container heading_center"  style="margin-top: 100px;">
             <div class="col-center">
-               <button class="bttn Bu_one"> Button</button>
-               <button class="bttn Bu_two"> Button </button>
-               <button class="bttn Bu_three"> Button </button>
+               <a href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                  <button  id="butt2" Class="bttn Bu_one" name="Action">1 sale</button>
+               </a>
+               <a href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
+                  <button  id="butt2" Class="bttn Bu_two" name="Action">2 sale</button>
+               </a>
+               <a href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
+                  <button  id="butt2" Class="bttn Bu_three" name="Action">3 sale</button>
+               </a>
             </div>
             <!-- End color buttons -3  section -->
          </div>
@@ -382,17 +439,17 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
                      </div>
                      <div class="detail-box">
                         <h5>
-                           SELL YOUR CAR
+                           車を売る
                         </h5>
                         <h6>
-                           MORE THAT 2,120 used CARS LISTED
+                           2,120台以上の中古車がリストされています
                         </h6>
                         <div class="form_sub1">
                            <svg class="img-res" xmlns="http://www.w3.org/2000/svg" width="261" height="41" viewBox="0 0 261 41">
                               <g id="Group_82" data-name="Group 82" transform="translate(0 0.161)">
                                  <rect id="Rectangle_7" data-name="Rectangle 7" width="261" height="41" transform="translate(0 -0.161)" fill="#fec200"/>
                                  <rect id="Rectangle_8" data-name="Rectangle 8" width="41" height="41" transform="translate(220 -0.161)" fill="#ffe266"/>
-                                 <text id="FIND_YOUR_NEW_CAR" data-name="FIND YOUR NEW CAR" transform="translate(106 25.839)" fill="#fff" font-size="13" font-family="Montserrat-Light, Montserrat" font-weight="300" letter-spacing="0.07em"><tspan x="-78.624" y="0">FIND YOUR NEW CAR</tspan></text>
+                                 <text id="FIND_YOUR_NEW_CAR" data-name="FIND YOUR NEW CAR" transform="translate(106 25.839)" fill="#fff" font-size="13" font-family="Montserrat-Light, Montserrat" font-weight="300" letter-spacing="0.07em"><tspan x="-78.624" y="0">あなたの車を売る</tspan></text>
                                  <g id="right-arrow" transform="translate(236.99 17.125)">
                                     <g id="Group_73" data-name="Group 73" transform="translate(0 0.003)">
                                        <path id="Path_56" data-name="Path 56" d="M213.751.2a.242.242,0,0,0-.342.342l5.144,5.145-5.145,5.144a.242.242,0,1,0,.336.348l.006-.006,5.315-5.315a.242.242,0,0,0,0-.342Z" transform="translate(-208.987 -0.134)" fill="#fff" stroke="#fff" stroke-width="1"/>
@@ -443,7 +500,7 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
                               <g id="Group_82" data-name="Group 82" transform="translate(0 0.161)">
                                  <rect id="Rectangle_7" data-name="Rectangle 7" width="261" height="41" transform="translate(0 -0.161)" fill="#fec200"/>
                                  <rect id="Rectangle_8" data-name="Rectangle 8" width="41" height="41" transform="translate(220 -0.161)" fill="#ffe266"/>
-                                 <text id="FIND_YOUR_NEW_CAR" data-name="FIND YOUR NEW CAR" transform="translate(106 25.839)" fill="#fff" font-size="13" font-family="Montserrat-Light, Montserrat" font-weight="300" letter-spacing="0.07em"><tspan x="-78.624" y="0">FIND YOUR NEW CAR</tspan></text>
+                                 <text id="FIND_YOUR_NEW_CAR" data-name="FIND YOUR NEW CAR" transform="translate(106 25.839)" fill="#fff" font-size="13" font-family="Montserrat-Light, Montserrat" font-weight="300" letter-spacing="0.07em"><tspan x="-78.624" y="0">GO TO PAGE</tspan></text>
                                  <g id="right-arrow" transform="translate(236.99 17.125)">
                                     <g id="Group_73" data-name="Group 73" transform="translate(0 0.003)">
                                        <path id="Path_56" data-name="Path 56" d="M213.751.2a.242.242,0,0,0-.342.342l5.144,5.145-5.145,5.144a.242.242,0,1,0,.336.348l.006-.006,5.315-5.315a.242.242,0,0,0,0-.342Z" transform="translate(-208.987 -0.134)" fill="#fff" stroke="#fff" stroke-width="1"/>
@@ -466,7 +523,7 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
       <!-- end shadow box section -->
       
       <!-- text section -->
-      <section class="arrival_section">
+      <section class="arrival_section" style="margin-top: 100px;">
          <div class="container">
                   <div class="heading_container heading_center">
                      <div class="heading_container">
@@ -490,10 +547,10 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
          if(isset($new_cars)){
             foreach ($new_cars as $key2 => $value1) {
                ?> 
-               <div class="col-sm-12 col-md-6 col-lg-4">
+               <div class="col-sm-12 col-md-6 col-lg-4"  style="min-width: 500px;">
                   <div class="card border rounded m-3">
                      <div class="shadow">
-                        <div class="card-body">
+                        <div class="card-body" style="min-width: 400px;">
                            <div class="row d-flex  justify-content-between align-items-center px-0">
                               <div class="col-7 text-left">
                                  <h5 class="card-title itemtitle"><?php echo $value1->name; ?></h5>
@@ -516,16 +573,17 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
 
 
                               <div class="col-6 text-left">
-                                 <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
+                                 <p class="card-text pricetext font-weigh-bold"><?php echo $value1->getPrice(); ?></p>
                               </div>
                               <div class="col-6 text-right">
                                  <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>
                               </div>
-
+                              <p class="card-text car_manufacturer float-end" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
                            </div>
                            <div class="row mt-4  px-0">
+                              
                               <div class="col-12  px-0">
-                                 <img src="<?php echo $value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
+                                 <img src="<?php echo "images/cars/".$value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
                               </div>
                            </div>
                            <!-- <div class="row mt-4 ">
@@ -629,10 +687,10 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
          if(isset($recoment_foryou_cars)){
             foreach ($recoment_foryou_cars as $key2 => $value1) {
                ?> 
-               <div class="col-sm-12 col-md-6 col-lg-4">
+               <div class="col-sm-12 col-md-6 col-lg-4" style="min-width: 500px;">
                   <div class="card border rounded m-3">
                      <div class="shadow">
-                        <div class="card-body">
+                        <div class="card-body" style="min-width: 400px;">
                            <div class="row d-flex  justify-content-between align-items-center px-0">
                               <div class="col-7 text-left">
                                  <h5 class="card-title itemtitle"><?php echo $value1->name; ?></h5>
@@ -655,7 +713,7 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
 
 
                               <div class="col-6 text-left">
-                                 <p class="card-text pricetext font-weigh-bold">$11,383.00</p>
+                                 <p class="card-text pricetext font-weigh-bold"><?php echo $value1->getPrice(); ?></p>
                               </div>
                               <div class="col-6 text-right">
                                  <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>
@@ -664,7 +722,7 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
                            </div>
                            <div class="row mt-4  px-0">
                               <div class="col-12  px-0">
-                                 <img src="<?php echo $value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
+                                 <img src="<?php echo "images/cars/".$value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
                               </div>
                            </div>
                            <!-- <div class="row mt-4 ">

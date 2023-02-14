@@ -38,6 +38,9 @@ if(isset($carId)){
             if(updateAction($link,$carId,$_POST['Action'])>0){
                 echo '<script>alert("Block Updated success")</script>';
             }
+        }else if($_POST['Action']==0){
+            moveCarToSoledList($link,$carId,-2);
+            echo "<script>window.close();</script>";
         }
     }
     $car = getCarsByIdWithbidPrice($link,$carId);
@@ -62,7 +65,7 @@ if(isset($carId)){
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="../images/Car_logo_sample.jpg" type="">
+    <link rel="shortcut icon" href="../images/logo.png" type="">
     <title>Vehicle Preview</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
@@ -396,7 +399,7 @@ if(isset($carId)){
                                     <?php if(isset($imagers)){
                                         foreach ($imagers as $key => $value) { ?>
                                             <div class="carousel-item <?php if($key==0){echo "active";} ?>"  style="max-width: 800px; object-fit: contain;" data-slide-number=<?php echo $key; ?>>
-                                                <img src="../<?php echo $value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
+                                                <img src="<?php echo "../images/cars/".$value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
                                             </div>
                                        <?php }
                                     }?>
@@ -413,7 +416,7 @@ if(isset($carId)){
                                         <?php if(isset($imagers)){
                                             foreach ($imagers as $key => $value) { ?>
                                             <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 <?php if($key==0){echo 'selected';}?>" data-target="#myCarousel" data-slide-to=<?php echo $key; ?>>
-                                                <img src="../<?php echo $value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
+                                                <img src="<?php echo "../images/cars/".$value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
                                             </div>
                                         <?php }
                                         }?>
@@ -441,6 +444,7 @@ if(isset($carId)){
                             </table></div>
                             <div class="row">
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
+                                    <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Make : <?php echo $car->getMaker(); ?></p>
                                     <p style="padding-bottom: 5px;">Model : <?php echo $car->getModel(); ?></p>
                                     <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>
@@ -546,16 +550,33 @@ if(isset($carId)){
                                         <button id="Bttn1" Class="swal-button" name="Action" value="0">Remove</button>
                                 </th>
                                 <th scope="col">
-                                        <button id="Bttn2" Class="bttn2" name="Action" value="1">Add to A block</button>
+                                        <button id="Bttn2" Class="bttn2" name="Action" value="1">1 Kojo</button>
                                 </th>
                                 <th scope="col">
-                                        <button id="Bttn3" Class="bttn2" name="Action" value="2">Add to B block</button>
+                                        <button id="Bttn3" Class="bttn2" name="Action" value="2">1Sale</button>
                                 </th>
                                 <th scope="col">
-                                        <button id="Bttn4" Class="bttn2" name="Action" value="3">Add to C block</button>
+                                        <button id="Bttn4" Class="bttn2" name="Action" value="3">2 Kojo</button>
                                 </th>
                                 <th scope="col">
-                                        <button id="Bttn5" Class="bttn2" name="Action" value="4">Add to D block</button>
+                                        <button id="Bttn5" Class="bttn2" name="Action" value="4">2Sale</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <thead>
+                            <tr>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn6" Class="bttn2" name="Action" value="5">3 Kojo</button>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn7" Class="bttn2" name="Action" value="6">3Sale</button>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn8" Class="bttn2" name="Action" value="7">Miho Kojo</button>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn9" Class="bttn2" name="Action" value="-1">Export</button>
                                 </th>
                             </tr>
                         </thead>
@@ -577,10 +598,14 @@ if(isset($carId)){
             <div class="heading_container heading_center" >
                 <h4 id="title" style="padding-bottom: 15px; margin-top: 10px;">Please Conform</h4>
                 <button id="Bttn21" Class="swal-button" name="Action" value="0">Remove</button>
-                <button id="Bttn22" Class="bttn2" name="Action" value="1">Add to A block</button>
-                <button id="Bttn23" Class="bttn2" name="Action" value="2">Add to B block</button>
-                <button id="Bttn24" Class="bttn2" name="Action" value="3">Add to C block</button>
-                <button id="Bttn25" Class="bttn2" name="Action" value="4">Add to D block</button>
+                <button id="Bttn22" Class="bttn2" name="Action" value="1">1 Kojo</button>
+                <button id="Bttn23" Class="bttn2" name="Action" value="2">1Sale</button>
+                <button id="Bttn24" Class="bttn2" name="Action" value="3">2 Kojo</button>
+                <button id="Bttn25" Class="bttn2" name="Action" value="4">2Sale</button>
+                <button id="Bttn26" Class="bttn2" name="Action" value="5">3 Kojo</button>
+                <button id="Bttn27" Class="bttn2" name="Action" value="6">3Sale</button>
+                <button id="Bttn28" Class="bttn2" name="Action" value="7">Miho Kojo</button>
+                <button id="Bttn29" Class="bttn2" name="Action" value="-1">Export</button>
             </div>
             </form>
         </div>
@@ -602,6 +627,10 @@ if(isset($carId)){
     var btn3 = document.getElementById("Bttn3");
     var btn4 = document.getElementById("Bttn4");
     var btn5 = document.getElementById("Bttn5");
+    var btn6 = document.getElementById("Bttn6");
+    var btn7 = document.getElementById("Bttn7");
+    var btn8 = document.getElementById("Bttn8");
+    var btn9 = document.getElementById("Bttn9");
 
     
     var btn21 = document.getElementById("Bttn21");
@@ -609,6 +638,10 @@ if(isset($carId)){
     var btn23 = document.getElementById("Bttn23");
     var btn24 = document.getElementById("Bttn24");
     var btn25 = document.getElementById("Bttn25");
+    var btn26 = document.getElementById("Bttn26");
+    var btn27 = document.getElementById("Bttn27");
+    var btn28 = document.getElementById("Bttn28");
+    var btn29 = document.getElementById("Bttn29");
 
     var title = document.getElementById("title");
 
@@ -618,6 +651,10 @@ if(isset($carId)){
         btn23.style.display = "none";
         btn24.style.display = "none";
         btn25.style.display = "none";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
         btn21.style.display = "block";
         title.innerHTML = "Please conform to remove this Item";
     }
@@ -629,7 +666,11 @@ if(isset($carId)){
         btn24.style.display = "none";
         btn22.style.display = "block";
         btn25.style.display = "none";
-        title.innerHTML = "Please conform to Add this Item to A block";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to 1 Kojo";
     }
 
     btn3.onclick = function() {
@@ -639,7 +680,11 @@ if(isset($carId)){
         btn23.style.display = "block";
         btn24.style.display = "none";
         btn25.style.display = "none";
-        title.innerHTML = "Please conform to Add this Item to B block";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to 1 Sale";
     }
 
     btn4.onclick = function() {
@@ -649,7 +694,11 @@ if(isset($carId)){
         btn24.style.display = "block";
         btn22.style.display = "none";
         btn25.style.display = "none";
-        title.innerHTML = "Please conform to Add this Item to C block";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to 2 Kojo";
     }
 
     btn5.onclick = function() {
@@ -659,7 +708,67 @@ if(isset($carId)){
         btn24.style.display = "none";
         btn25.style.display = "block";
         btn22.style.display = "none";
-        title.innerHTML = "Please conform to Add this Item to D block";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to 2 Sale";
+    }
+
+    btn6.onclick = function() {
+        modal.style.display = "block";
+        btn21.style.display = "none";
+        btn23.style.display = "none";
+        btn24.style.display = "none";
+        btn25.style.display = "none";
+        btn22.style.display = "none";
+        btn26.style.display = "block";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to 3 Kojo";
+    }
+
+    btn7.onclick = function() {
+        modal.style.display = "block";
+        btn21.style.display = "none";
+        btn23.style.display = "none";
+        btn24.style.display = "none";
+        btn25.style.display = "none";
+        btn22.style.display = "none";
+        btn26.style.display = "none";
+        btn27.style.display = "block";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to 3 Sale";
+    }
+
+    btn8.onclick = function() {
+        modal.style.display = "block";
+        btn21.style.display = "none";
+        btn23.style.display = "none";
+        btn24.style.display = "none";
+        btn25.style.display = "none";
+        btn22.style.display = "none";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "block";
+        btn29.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to Miho Kojo";
+    }
+
+    btn9.onclick = function() {
+        modal.style.display = "block";
+        btn21.style.display = "none";
+        btn23.style.display = "none";
+        btn24.style.display = "none";
+        btn25.style.display = "none";
+        btn22.style.display = "none";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "block";
+        title.innerHTML = "Please conform to Add this Item to Export";
     }
 
     window.onclick = function(event) {

@@ -6,9 +6,24 @@ function insertCarImagers($link,
     $car_id
 )
 {
-    $sql = "INSERT INTO car_imagers (car_id, image, is_main) VALUES ($car_id,'$image',$is_main)";
+    $myArray = explode('/', $image);
+    try{
+        // print_r(end($myArray));
+        $sql0 = "DELETE FROM car_imagers WHERE car_id = $car_id && image = '".end($myArray)."'";
+        mysqli_query($link, $sql0);
+    }catch (Throwable $th) {
+        console_log($th);
+    }
+    $sql = "INSERT INTO car_imagers (car_id, image, is_main) VALUES ($car_id,'".end($myArray)."',$is_main)";
 
     mysqli_query($link, $sql);
+}
+
+function deleteImage($link,$car_id,$image)
+{
+    $myArray = explode('/', $image);
+    $sql = "DELETE FROM car_imagers WHERE car_id = $car_id && image = '".end($myArray)."'";
+    return mysqli_query($link, $sql);
 }
 
 function getAllCarImagers($link,$car_id){
