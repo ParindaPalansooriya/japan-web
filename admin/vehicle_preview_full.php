@@ -1,10 +1,17 @@
 
 <?php 
 
+ob_start();
 session_start();
-// echo $_SESSION['valid'];
-echo (time()-$_SESSION['timeout'])/60;
-// echo $_SESSION['username'];
+
+$id = $_SESSION['id'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
 
 $queries = array();
 $carId=null;

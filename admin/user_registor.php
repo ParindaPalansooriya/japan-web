@@ -17,14 +17,14 @@ require_once('../php/config.php');
 
 if(isset($_POST['Submit']))
 { 
-    require_once('../php/customer_dao.php');
-    if(insertCustomer($link,$_REQUEST['c_name'],$_REQUEST['c_1'],$_REQUEST['c_2'],$_REQUEST['address'],$_REQUEST['date'])>0){
-        echo '<script>alert("Successfuly Submited")</script>';
+    require_once('../php/control_users_dao.php');
+    if(insertControlUsers($link,$_REQUEST['name'],$_REQUEST['pass'],$_REQUEST['type'],0)>0){
+        echo '<script>alert("User Successfully Registered!")</script>';
     }else{
-        echo '<script>alert("Submition Error")</script>';
+        echo '<script>alert("Something Wrong! Please Try Again")</script>';
     }
 }
-// print_r($_POST);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -254,49 +254,36 @@ if(isset($_POST['Submit']))
     <div class="container-width">
         <div id="i14q" class="gjs-row">
             <div id="i91j" class="gjs-cell">
-                <h5>Add Loyalty Customer</h5>
+                <h5>Day End Worksheet</h5>
                 <div >
                     <div class="box" >
-                    <form action="insert_customer.php" enctype="multipart/form-data" method="post">
+                    <form action="user_registor.php" enctype="multipart/form-data" method="post">
                             <div class="modal-body">
                                 <div class="form-group row">
                                     <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Birth Date
+                                    User Name
                                     </label>
                                     <div class="col-sm-6">
-                                    <input type="date" name="date" style="font-size:0.8em" class="form-control" id="date" value="<?php echo date("Y-m-d");?> " >
+                                    <input type="text" name="name" style="font-size:0.8em" class="form-control" id="name" placeholder="john.doe@email.com" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Customer Name
+                                    <label for="text" name="pass" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                    Password
                                     </label>
                                     <div class="col-sm-6">
-                                    <input type="text" name="c_name" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
+                                    <input type="text" name="pass" style="font-size:0.8em" class="form-control" id="pass" placeholder="john.doe@email.com" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Contact Number 1
-                                    </label>
+                                    <label for="type" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                    Steering</label>
                                     <div class="col-sm-6">
-                                    <input type="text" name="c_1" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Contact Number 2
-                                    </label>
-                                    <div class="col-sm-6">
-                                    <input type="text" name="c_2" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Address
-                                    </label>
-                                    <div class="col-sm-6">
-                                    <textarea name="address" style="font-size:0.8em" class="form-control" id="done" placeholder="john.doe@email.com" required></textarea>
+                                    <select class="form-control" name="type" id="type" style="font-size:0.8em">
+                                        <option value="3" <?php //echo $car !== null && $car->getIs_steering_right()=="3"? "selected":"" ;?>>Store Employee</option>
+                                        <option value="2" <?php //echo $car !== null && $car->getIs_steering_right()=="2"? "selected":"" ;?>>Store Admin</option>
+                                        <option value="1" <?php //echo $car !== null && $car->getIs_steering_right()=="1"? "selected":"" ;?>>Supper Admin</option>
+                                    </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">

@@ -1,8 +1,19 @@
 <?php 
 
+ob_start();
+session_start();
+
+$id = $_SESSION['id'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($type) || $type>2 || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
+
 use Shuchkin\SimpleXLSXGen;
 $today = date("Y-m-d");
-$userId = 1;
 require_once('../php/config.php');
 require_once('../php/user_submits_dao.php');
 

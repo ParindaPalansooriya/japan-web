@@ -1,7 +1,6 @@
 <?php
 
 function insertControlUsers($link,
-        $id,
         $user_name,
         $password,
         $user_type,
@@ -13,7 +12,7 @@ function insertControlUsers($link,
         return -2;
     }
 
-    $sql = "INSERT INTO control_users (id, username, password1, user_type, is_active) VALUES ('$id','$user_name','$password','$user_type','$is_active')";
+    $sql = "INSERT INTO control_users (username, password1, user_type, is_active) VALUES ('$user_name','$password','$user_type','$is_active')";
 
     return mysqli_query($link, $sql);
 }

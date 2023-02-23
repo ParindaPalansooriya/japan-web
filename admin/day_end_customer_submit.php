@@ -1,6 +1,17 @@
 
 <?php
-$userId = 1;
+
+ob_start();
+session_start();
+
+$id = $_SESSION['id'];
+
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
+
 require_once('../php/config.php');
 
 if(isset($_POST['Submit']))
@@ -12,7 +23,7 @@ if(isset($_POST['Submit']))
         echo "Submit Error";
     }
 }
-print_r($_POST);
+// print_r($_POST);
 ?>
 <!DOCTYPE html>
 <html>

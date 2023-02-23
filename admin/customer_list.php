@@ -1,8 +1,18 @@
 <?php 
 
-use Shuchkin\SimpleXLSXGen;
+ob_start();
+session_start();
+
+$id = $_SESSION['id'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
+
 $today = null;
-$userId = 1;
 require_once('../php/config.php');
 require_once('../php/customer_dao.php');
 

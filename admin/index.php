@@ -2,7 +2,20 @@
 <?php
 ob_start();
 session_start();
-if(!isset($_SESSION['id']) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+
+parse_str($_SERVER['QUERY_STRING'], $queries);
+if(isset($queries) && !empty($queries)){
+   if(isset($queries['logout']) && !empty($queries['logout'])){
+    session_destroy();
+    header("Location: login.php");
+   }
+}
+
+$id = $_SESSION['id'];
+$username = $_SESSION['username'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
     header("Location: login.php"); 
 }else{
     $_SESSION['timeout'] = time();
@@ -160,6 +173,16 @@ if(!isset($_SESSION['id']) || !isset($_SESSION['timeout']) || ($_SESSION['timeou
         padding: 8px 28px;
         font-size: 16px;
 
+    }
+
+    .butt6 {
+        border: 1px solid teal;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: teal;
+        padding: 5px 30px;
+        font-size: 14px;
+        margin-top: 15px;
     }
 
     .butt2 {
@@ -346,6 +369,11 @@ if(!isset($_SESSION['id']) || !isset($_SESSION['timeout']) || ($_SESSION['timeou
                     <div class="heading_container heading_center">
                         <div class="col-center">
                         <h3>Admin Panel</h3>
+                        <h4>Welcome Back, <?php echo $username ?>!</h4>
+                        <h5><?php echo $type==1?"Supper Admin":($type==2?"Store Admin":"Store Employee"); ?></h5>
+                        <a href="index.php?logout=1">
+                            <button  id="butt5" Class="butt6" name="Action">Logout</button>
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -448,12 +476,12 @@ if(!isset($_SESSION['id']) || !isset($_SESSION['timeout']) || ($_SESSION['timeou
                                     <button  id="butt3" Class="butt3" name="Action">Custom Summery</button>
                                 </a>
                             </td>
-                            <td style="padding-top: 20px;">
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>2){echo 'display: none';} ?>">
                                 <a href="day_end_submit_list.php" target="_blank">
                                     <button  id="butt4" Class="butt4" name="Action">Day Summery List</button>
                                 </a>
                             </td>
-                            <td style="padding-top: 20px;">
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>2){echo 'display: none';} ?>">
                                 <a href="day_end_customer_submit_list.php" target="_blank">
                                     <button  id="butt5" Class="butt5" name="Action">Custom Summery List</button>
                                 </a>
@@ -470,24 +498,34 @@ if(!isset($_SESSION['id']) || !isset($_SESSION['timeout']) || ($_SESSION['timeou
                         </tbody>
                         <tbody>
                         <tr>
-                            <td style="padding-top: 20px;">
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                 <a href="insert_customer.php" target="_blank">
                                     <button  id="butt1" Class="butt2" name="Action">Add Customer</button>
                                 </a>
                             </td>
-                            <td style="padding-top: 20px;">
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                 <a href="customer_list.php" target="_blank">
                                     <button  id="butt2" Class="butt3" name="Action">Custom List</button>
                                 </a>
                             </td>
-                            <td style="padding-top: 20px;">
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                 <a href="sales_report.php" target="_blank">
                                     <button  id="butt4" Class="butt4" name="Action">Sales Reprots</button>
                                 </a>
                             </td>
-                            <td style="padding-top: 20px;">
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                 <a href="store_reports.php" target="_blank">
                                     <button  id="butt5" Class="butt5" name="Action">Store Reprots</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="user_registor.php" target="_blank">
+                                    <button  id="butt5" Class="butt2" name="Action">Add Controll User</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="users_list.php" target="_blank">
+                                    <button  id="butt5" Class="butt3" name="Action">User List</button>
                                 </a>
                             </td>
                         </tr>

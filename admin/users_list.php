@@ -1,15 +1,39 @@
 <?php 
 
-$today = null;
-$userId = 1;
+ob_start();
+session_start();
+
+$id = $_SESSION['id'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
+
+$useId = null;
+$action = null;
+
 require_once('../php/config.php');
 require_once('../php/control_users_dao.php');
 
 parse_str($_SERVER['QUERY_STRING'], $queries);
 if(isset($queries) && !empty($queries)){
-   if(isset($queries['date']) && !empty($queries['date'])){
-      $today = $queries['date'];
+   if(isset($queries['id']) && !empty($queries['id'])){
+      $useId = $queries['id'];
    }
+   if(isset($queries['action'])){
+      $action = $queries['action'];
+   }
+}
+
+if(isset($useId) && !empty($useId) && isset($action)){
+    if(updateUserStatus($link,$useId,$action)>0){
+        echo '<script>alert("User Successfully '.($action==1?"Actived":"Deactived").'")</script>';
+    }else{
+        echo '<script>alert("Something Wrong! Please Try Again")</script>';
+    }
 }
 
 $summery = getAllControlUsers($link);
@@ -307,19 +331,7 @@ $summery = getAllControlUsers($link);
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <h3>Customer List</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
-                                    <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">Pick Date</button>
-                                </div>
-                            </form>
+                            <h3>User List</h3>
                         </div>
                     </div>
                 </div>
@@ -340,11 +352,10 @@ $summery = getAllControlUsers($link);
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Birth Day</th>
-                        <th scope="col">Contact Number 1</th>
-                        <th scope="col">Contact Number 2</th>
-                        <th scope="col">Address</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -353,11 +364,14 @@ $summery = getAllControlUsers($link);
                         foreach ($summery as $key => $value) {
                     ?>
                         <tr>
-                            <td><?php echo $value->getName(); ?></td>
-                            <td><?php echo $value->getBday(); ?></td>
-                            <td><?php echo $value->getContact_num1(); ?></td>
-                            <td><?php echo $value->getContact_num2(); ?></td>
-                            <td><?php echo $value->getAddress(); ?></td>
+                            <td><?php echo $value->getUser_name(); ?></td>
+                            <td><?php echo $value->getUser_type()==1?"Supper Admin":($value->getUser_type()==2?"Store Admin":"Store Employee"); ?></td>
+                            <td><?php echo $value->getIs_active()==1?"Actived":"Deactived"; ?></td>
+                            <td>
+                                <a href="users_list.php?id=<?php echo $value->getId();?>&action=<?php echo $value->getIs_active()==1?0:1;?>">
+                                    <button Class="swal-button" name="Action"><?php echo $value->getIs_active()==1?"Deactive":"Active";?></button>
+                                </a>
+                            </td>
                         </tr>
                     <?php
                         }

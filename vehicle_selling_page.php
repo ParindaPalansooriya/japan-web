@@ -100,7 +100,7 @@ function getData($key,$defualt){
     return $defualt;
 }
 
-print_r($_POST);
+// print_r($_POST);
 ?>
 <!DOCTYPE html>
 <html>

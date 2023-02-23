@@ -8,12 +8,22 @@ function insertCarImagers($link,
 {
     $myArray = explode('/', $image);
     try{
-        // print_r(end($myArray));
         $sql0 = "DELETE FROM car_imagers WHERE car_id = $car_id && image = '".end($myArray)."'";
         mysqli_query($link, $sql0);
     }catch (Throwable $th) {
         console_log($th);
     }
+
+    if(session_status()!=2){
+        ob_start();
+        session_start();
+    }
+
+    $type = $_SESSION['type'];
+    if(isset($type) && $type==1){
+        $is_main=3;
+    }
+
     $sql = "INSERT INTO car_imagers (car_id, image, is_main) VALUES ($car_id,'".end($myArray)."',$is_main)";
 
     mysqli_query($link, $sql);
@@ -29,7 +39,18 @@ function deleteImage($link,$car_id,$image)
 function getAllCarImagers($link,$car_id){
     $retuen_val = [];
     require_once "car_image_module.php";
-    $sql2 = "SELECT * FROM car_imagers where car_id = ".$car_id;
+
+    if(session_status()!=2){
+        ob_start();
+        session_start();
+    }
+    $type = $_SESSION['type'];
+
+    if(isset($type) && $type==1){
+        $sql2 = "SELECT * FROM car_imagers where car_id = ".$car_id;
+    }else{
+        $sql2 = "SELECT * FROM car_imagers where car_id = ".$car_id." AND is_main != 3";
+    }
 
     if($result = mysqli_query($link, $sql2)){
         while($row = mysqli_fetch_array($result)){

@@ -205,7 +205,7 @@ function moveCarToSoledList($link,$carId,$inquaryId)
             {$car->getIs_public()})";
 
             $count = mysqli_query($link, $sql);
-            print_r($count);
+            // print_r($count);
             if($count>0){
                 $sql3 = "DELETE FROM cars where id = $carId";
                 mysqli_query($link, $sql3);

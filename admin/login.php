@@ -9,17 +9,21 @@
 
         if(isset($_REQUEST['username']) && !empty($_REQUEST['username']) && isset($_REQUEST['pass']) && !empty($_REQUEST['pass'])){
             $object = getlogin($link,$_REQUEST['username'],$_REQUEST['pass']);
-            if(isset($object) && $object->getIs_active()==1){
-                echo '<script>alert("Login Success!\nWelcome Back '.$object->getUser_name().' ")</script>';
-                ob_start();
-                session_start();
-                $_SESSION['timeout'] = time();
-                $_SESSION['id'] = $object->getId();
-                $_SESSION['type'] = $object->getUser_type();
-                $_SESSION['username'] = $object->getUser_name();
-                header("Location: index.php"); 
+            if(isset($object)){
+                if($object->getIs_active()==1){
+                    echo '<script>alert("Login Success!\nWelcome Back '.$object->getUser_name().' ")</script>';
+                    ob_start();
+                    session_start();
+                    $_SESSION['timeout'] = time();
+                    $_SESSION['id'] = $object->getId();
+                    $_SESSION['type'] = $object->getUser_type(); // 1=supper admin, 2=store admin, 3=store worker
+                    $_SESSION['username'] = $object->getUser_name();
+                    header("Location: index.php"); 
+                }else{
+                    echo '<script>alert("User Deactived")</script>';
+                }
             }else{
-                echo '<script>alert("User Deactived")</script>';
+                echo '<script>alert("Please Check User Name and Password.\nTry Again")</script>';
             }
         }else{
             echo '<script>alert("Fill All")</script>';

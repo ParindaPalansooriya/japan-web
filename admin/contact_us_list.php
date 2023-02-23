@@ -1,5 +1,16 @@
 <?php 
 
+ob_start();
+session_start();
+
+$id = $_SESSION['id'];
+
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
+
 $seeAll = true;
 
 if(isset($_REQUEST['seeAll'])){

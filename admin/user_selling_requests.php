@@ -1,9 +1,14 @@
 <?php
-
+ob_start();
 session_start();
-echo $_SESSION['valid'];
-echo $_SESSION['timeout'];
-echo $_SESSION['username'];
+
+$id = $_SESSION['id'];
+
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
 require_once '../php/config.php';
 require_once "../php/car_module.php";
 require_once "../php/car_dao.php";

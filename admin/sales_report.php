@@ -2,7 +2,15 @@
 
 ob_start();
 session_start();
-$userType = $_SESSION['type'];
+
+$id = $_SESSION['id'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
 
 use Shuchkin\SimpleXLSXGen;
 
@@ -84,7 +92,7 @@ if(isset($_POST['download']))
         array_push($data,$temp);
     }
 
-    print_r($data);
+    // print_r($data);
     require_once "./sheet/SimpleXLSXGen.php";
 
     $file_url = './sheet/sale_report_'.$today.'.xlsx';
