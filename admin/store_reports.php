@@ -1,46 +1,104 @@
 <?php
 
+ob_start();
+session_start();
+$userType = $_SESSION['type'];
+
 use Shuchkin\SimpleXLSXGen;
 
 $today = date("Y-m-d");
-$userId = 1;
 require_once('../php/config.php');
 require_once('../php/car_dao.php');
 
 $summery = getAllCarsForReport($link);
 
-// print_r($_POST);
 if(isset($_POST['download']))
 {
     $data = [];
 
     $titles = [
-        'Code','Store','Supplier','Perfecture','Car Model','Maker','Model Year'
+        '<style height="50"><b><middle><center>Code</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Store</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Supplier</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Perfecture</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Car Model</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Maker</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Model Year</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Chassis</center></middle></b></style>'
     ];
+
+    if($userType==1){
+        array_push($titles,'<style height="50"><b><middle><center>Bank</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Bid</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Buying</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>R TAX</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Automobile TAX</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>AU Chargers</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Trasport</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Storage</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Insurance</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Repair</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Other</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Selling</center></middle></b></style>');
+    }
+
+    array_push($titles,'<style height="50"><b><middle><center>Public</center></middle></b></style>');
+
     array_push($data,$titles);
 
     foreach ($summery as $key => $value) {
         $temp = [
-            $value->getId(),
+            sprintf("VEH_%05d", $value->getId()),
             $value->getCurrent_action_text()!==null?$value->getCurrent_action_text():"--",
-            $value->getAdditional()!==null?$value->getAdditional()->getSupplier():"--",
-            $value->getAdditional()!==null?$value->getAdditional()->getPerfecture():"--",
+            $value->getAdditional()!==null?($value->getAdditional()->getSupplier()??""):"--",
+            $value->getAdditional()!==null?($value->getAdditional()->getPerfecture()??""):"--",
             $value->getModel()!==null?$value->getModel():"--",
             $value->getMaker()!==null?$value->getMaker():"--",
-            $value->getModel_year()!==null?$value->getModel_year():"--"
+            $value->getModel_year()!==null?$value->getModel_year():"--",
+            $value->getChassis()!==null?$value->getChassis():"--"
         ];
+
+        if($userType==1){
+            array_push($temp,$value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--");
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--");
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getRtax()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getAtax()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getAu_cha()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getTrasport()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getStorage()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getInsurance()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getRepair()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getOther()??"--":"--");
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getSelling()??"--":"--");
+        }
+
+        if($value->getPriceObject()!==null){
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--");
+        }else{
+            array_push($temp,"--");
+        }
+        
         array_push($data,$temp);
     }
+
+    print_r($data);
     require_once "./sheet/SimpleXLSXGen.php";
 
     $file_url = './sheet/store_report_'.$today.'.xlsx';
 
     SimpleXLSXGen::fromArray($data)->saveAs($file_url);
 
-    header('Content-Type: application/octet-stream');
-    header("Content-Transfer-Encoding: Binary"); 
-    header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\""); 
-    readfile($file_url); 
+    ob_end_clean();
+    header('Content-Description: File Transfer');
+    header('Content-Type: xlsx');
+    header("Content-Transfer-Encoding: Binary");
+    header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    readfile($file_url);
     if (file_exists($file_url)) {
         unlink($file_url);
     }
@@ -461,8 +519,22 @@ if(isset($_POST['download']))
                         <th scope="col">Maker</th>
                         <th scope="col">Model Year</th>
                         <th scope="col">Chassis</th>
+                        <?php if($userType==1){
+                            ?>
+                        <th scope="col">Bank</th>
+                        <th scope="col">Bid</th>
                         <th scope="col">Buying</th>
+                        <th scope="col">R TAX</th>
+                        <th scope="col">Automobile TAX</th>
+                        <th scope="col">AU Chargers</th>
+                        <th scope="col">Trasport</th>
+                        <th scope="col">Storage</th>
+                        <th scope="col">Insurance</th>
+                        <th scope="col">Repair</th>
+                        <th scope="col">Other</th>
                         <th scope="col">Selling</th>
+                            <?php
+                        } ?>
                         <th scope="col">Public</th>
                         <th scope="col"></th>
                     </tr>
@@ -473,19 +545,33 @@ if(isset($_POST['download']))
                         foreach ($summery as $key => $value) {
                     ?>
                         <tr>
-                            <td><?php echo $value->getId(); ?></td>
-                            <td><?php echo $value->getCurrent_action_text(); ?></td>
-                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getSupplier():""; ?></td>
-                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture():""; ?></td>
-                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank():""; ?></td>
-                            <td><?php echo $value->getName(); ?></td>
-                            <td><?php echo $value->getModel(); ?></td>
-                            <td><?php echo $value->getMaker(); ?></td>
-                            <td><?php echo $value->getModel_year(); ?></td>
-                            <td><?php echo $value->getChassis(); ?></td>
-                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getBuying():""; ?></td>
-                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getSelling():""; ?></td>
-                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic():""; ?></td>
+                            <td><?php echo sprintf("(VEH_%05d)", $value->getId()??0); ?></td>
+                            <td><?php echo $value->getCurrent_action_text()??"--"; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getSupplier()??"--":"--"; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture()??"--":"--"; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank()??"--":"--"; ?></td>
+                            <td><?php echo $value->getName()??"--"; ?></td>
+                            <td><?php echo $value->getModel()??"--"; ?></td>
+                            <td><?php echo $value->getMaker()??"--"; ?></td>
+                            <td><?php echo $value->getModel_year()??"--"; ?></td>
+                            <td><?php echo $value->getChassis()??"--"; ?></td>
+                                <?php if($userType==1){
+                                    ?>
+                                        <td><?php echo $value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--"; ?></td>
+                                        <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getRtax()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getAtax()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getAu_cha()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getTrasport()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getStorage()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getInsurance()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getRepair()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getOther()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getSelling()??"--":"--"; ?></td>
+                                    <?php
+                                } ?>
+                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--"; ?></td>
                             <td><form class="form-inline" action="add_vehicle.php" method="post">
                                 <div class="form-group">
                                     <input type="hidden" id="carId" name="carId" value="<?php echo $value->getId();?>">

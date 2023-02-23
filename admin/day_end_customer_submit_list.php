@@ -1,5 +1,6 @@
 <?php 
 
+use Shuchkin\SimpleXLSXGen;
 $today = date("Y-m-d");
 $userId = 1;
 require_once('../php/config.php');
@@ -10,9 +11,49 @@ if(isset($queries) && !empty($queries)){
    if(isset($queries['date']) && !empty($queries['date'])){
       $today = $queries['date'];
    }
+
+   if(isset($queries['download'])){
+        $data = [];
+
+        $titles = [
+            'Time','Sale name','Customer name','Customer Contact','What was done'
+        ];
+        array_push($data,$titles);
+        $summery = getAllUserSubmitsWithDate($link,$today,$userId);
+        foreach ($summery as $key => $value) {
+            $temp = [
+                $value->getTime()!==null?$value->getTime():"--",
+                $value->getSales_name()!==null?$value->getSales_name():"--",
+                $value->getCustomer_name()!==null?$value->getCustomer_name():"--",
+                $value->getCustomer_contact()!==null?$value->getCustomer_contact():"--",
+                $value->getNote()!==null?$value->getNote():"--"
+            ];
+            array_push($data,$temp);
+        }
+        require_once "./sheet/SimpleXLSXGen.php";
+
+        $file_url = './sheet/DayEndCustomerSubmition-'.$today.'.xlsx';
+
+        SimpleXLSXGen::fromArray($data)->saveAs($file_url);
+
+        ob_end_clean();
+        header('Content-Description: File Transfer');
+        header('Content-Type: xlsx');
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        readfile($file_url);
+        if (file_exists($file_url)) {
+            unlink($file_url);
+        }
+    }
 }
 
 $summery = getAllUserSubmitsWithDate($link,$today,$userId);
+// print_r($_POST);
 ?>
 
 
@@ -317,7 +358,10 @@ $summery = getAllUserSubmitsWithDate($link,$today,$userId);
                             <form class="form-inline">
                                 <div class="form-group">
                                     <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
-                                    <button class="bttn Bu_one" class="form-control" >Pick Date</button>
+                                    <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">Pick Date</button>
+                                    <?php if(!empty($summery)){ ?>
+                                        <button class="bttn Bu_two" class="form-control" name="download" value="1" >Download</button>
+                                    <?php } ?>
                                 </div>
                             </form>
                         </div>

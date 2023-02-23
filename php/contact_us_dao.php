@@ -1,13 +1,13 @@
 <?php
 
-function insertUserInquary($link,
+function insertContactUs($link,
     $username,
     $contact1, 
     $contact2, 
     $message
 )
 {
-    $sql = "INSERT INTO contact_us (username, contact1, contact2, message) VALUES ($username,'$contact1','$contact2','$message')";
+    $sql = "INSERT INTO contact_us (username, contact1, contact2, message) VALUES ('$username','$contact1','$contact2','$message')";
     return mysqli_query($link, $sql);
 }
 
@@ -22,10 +22,14 @@ function deleteContactUsInueary($link,$id)
     return mysqli_query($link, $sql);
 }
 
-function getAllContactUs($link){
+function getAllContactUs($link,$seeAll){
     $retuen_val = [];
     require_once "contat_us_module.php";
-    $sql2 = "SELECT * FROM contact_us";
+    if(isset($seeAll) && $seeAll){
+        $sql2 = "SELECT * FROM contact_us";
+    }else{
+        $sql2 = "SELECT * FROM contact_us where status = 0";
+    }
 
     if($result = mysqli_query($link, $sql2)){
         while($row = mysqli_fetch_array($result)){

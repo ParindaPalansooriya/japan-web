@@ -29,6 +29,7 @@ class Cars{
     public $is_used;
     public $is_two_weel;
     public $is_steering_right;
+    public $date;
 
     public function __construct($maker_id, $model_id, $interior_color_id, $exterior_color_id, $current_action_id, $body_style_id,$passengers, 
     $doors, $name, $grade, $power, $model_year, $evaluation, $running, $cooling, $note, $fuel, $chassis, $dimensions_L, $dimensions_W, $dimensions_H, 
@@ -856,6 +857,26 @@ class Cars{
     public function setDeductions($deductions)
     {
         $this->deductions = $deductions;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of date
+     */ 
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set the value of date
+     *
+     * @return  self
+     */ 
+    public function setDate($date)
+    {
+        $this->date = $date;
 
         return $this;
     }

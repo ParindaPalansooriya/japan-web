@@ -1,58 +1,46 @@
-<?php 
 
-use Shuchkin\SimpleXLSXGen;
-$today = date("Y-m-d");
-$userId = 1;
-require_once('../php/config.php');
-require_once('../php/user_submits_dao.php');
+<?php
 
-parse_str($_SERVER['QUERY_STRING'], $queries);
-if(isset($queries) && !empty($queries)){
-   if(isset($queries['date']) && !empty($queries['date'])){
-      $today = $queries['date'];
-   }
+    if(isset($_POST['Submit']))
+    { 
+        require_once('../php/config.php');
+        require_once('../php/control_users_dao.php');
+        require_once('../php/control_users_module.php');
 
-   if(isset($queries['download'])){
-        $data = [];
-
-        $titles = [
-            'Time','Sale name','What was done'
-        ];
-        array_push($data,$titles);
-        $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
-        foreach ($summery as $key => $value) {
-            $temp = [
-                $value->getTime()!==null?$value->getTime():"--",
-                $value->getSales_name()!==null?$value->getSales_name():"--",
-                $value->getNote()!==null?$value->getNote():"--"
-            ];
-            array_push($data,$temp);
+        if(isset($_REQUEST['username']) && !empty($_REQUEST['username']) && isset($_REQUEST['pass']) && !empty($_REQUEST['pass'])){
+            $object = getlogin($link,$_REQUEST['username'],$_REQUEST['pass']);
+            if(isset($object) && $object->getIs_active()==1){
+                echo '<script>alert("Login Success!\nWelcome Back '.$object->getUser_name().' ")</script>';
+                ob_start();
+                session_start();
+                $_SESSION['timeout'] = time();
+                $_SESSION['id'] = $object->getId();
+                $_SESSION['type'] = $object->getUser_type();
+                $_SESSION['username'] = $object->getUser_name();
+                header("Location: index.php"); 
+            }else{
+                echo '<script>alert("User Deactived")</script>';
+            }
+        }else{
+            echo '<script>alert("Fill All")</script>';
         }
-        require_once "./sheet/SimpleXLSXGen.php";
 
-        $file_url = './sheet/DailyAttendance-'.$today.'.xlsx';
+       
 
-        SimpleXLSXGen::fromArray($data)->saveAs($file_url);
+        // print_r($_POST);
 
-        ob_end_clean();
-        header('Content-Description: File Transfer');
-        header('Content-Type: xlsx');
-        header("Content-Transfer-Encoding: Binary");
-        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        readfile($file_url);
-        if (file_exists($file_url)) {
-            unlink($file_url);
-        }
+        // header("Location: index.php"); 
+    
+        // if(insertContactUs($link,$_REQUEST['Name'],$_REQUEST['email'],$_REQUEST['Number'],$_REQUEST['msg'])>0){
+        //     echo "<script>window.close();</script>";
+        // }else{
+        //     echo '<script>alert("Submit Error!")</script>';
+        // }
+    
     }
-}
 
-$summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
+
 ?>
-
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
@@ -161,6 +149,36 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
     /*  button3 section   */
     * {
         box-sizing: border-box;
+    }
+
+    .butt3 {
+        border: 2px solid #04AA6D;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #04AA6D;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+
+    .butt4 {
+        border: 2px solid #f44336;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #f44336;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+
+    .butt5 {
+        border: 2px solid palevioletred;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: palevioletred;
+        padding: 8px 28px;
+        font-size: 16px;
+
     }
 
     .butt2 {
@@ -317,6 +335,37 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
         text-decoration: none;
         cursor: pointer;
     }
+    .btn-color{
+  background-color: #0e1c36;
+  color: #fff;
+  
+}
+
+.profile-image-pic{
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+}
+
+
+
+.cardbody-color{
+  background-color: #ebf2fa;
+}
+		.bttn2 {
+			border: 3px solid orange;
+			border-radius: 10px;
+			background-color: orange;
+			color: white;
+			padding: 8px 28px;
+			font-size: 16px;
+			font-weight: 800;
+
+		}
+
+a{
+  text-decoration: none;
+}
     /*  end popup box css  */
 
     /*    Header left/center/right code*/
@@ -332,103 +381,40 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
+    /*   end  Header left/center/right code*/
 </style>
 
 <body>
 
-<div class="hero_area">
-    <!-- Button section -->
-<header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                            <h3>Daily Attendance</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
-                                    <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;" >Pick Date</button>
-                                    <?php if(!empty($summery)){ ?>
-                                        <button class="bttn Bu_two" class="form-control" name="download" value="1" >Download</button>
-                                    <?php } ?>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card my-5">
+
+          <form class="card-body cardbody-color p-lg-5" action="login.php" enctype="multipart/form-data" method="post">
+
+            <div class="text-center">
+              <img src="../images/logo.png" style="margin-bottom: 20px;"
+                width="200px" alt="profile">
             </div>
-        </div>
-    </div>
-</header>
-    <!-- End color buttons -3  section -->
 
-    <!-- Attendance list section -->
-<section>
-
-    <div class="content">
-
-        <div class="container">
-            <div class="table-responsive">
-
-                <table class="table custom-table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">Sale name</th>
-                        <th scope="col">What was done</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-<!--   1st details row-->
-                    <?php
-                        foreach ($summery as $key => $value) {
-                    ?>
-                        <tr>
-                            <td><?php echo $value->getTime(); ?></td>
-                            <td><?php echo $value->getSales_name(); ?></td>
-                            <td><?php echo $value->getNote(); ?></td>
-                        </tr>
-                    <?php
-                        }
-                    ?>
-<!--  End of 1st details row-->
-<!--  2nd details row    Samples    -->
-
-<!--  End of 2nd details row-->
-<!--  3rd details row Samples -->
-
-<!--  end of 3rd details row-->
-                    </tbody>
-                </table>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="Username" name="username" aria-describedby="emailHelp"
+                placeholder="User Name">
             </div>
+            <div class="mb-3">
+              <input type="password" class="form-control" id="password" name="pass" placeholder="password">
+            </div>
+            <div class="text-center">
+                <button class="bttn2" name="Submit" >Submit</button>
+            </div>
+          </form>
         </div>
+
+      </div>
     </div>
-</section>
-<!-- End Attendance list section -->
-
-</div>
-
-<!-- Trigger/Open The Modal -->
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
-    </div>
-
-</div>
-
-
+  </div>
 
 <!-- Popup box-->
 <script>
@@ -490,7 +476,7 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
 <script src="../vendor/slick/slick.min.js"></script>
 <script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/parallax100/parallax100.js"></script>
+<script src="../vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>

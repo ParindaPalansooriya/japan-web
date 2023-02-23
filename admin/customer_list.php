@@ -1,56 +1,19 @@
 <?php 
 
 use Shuchkin\SimpleXLSXGen;
-$today = date("Y-m-d");
+$today = null;
 $userId = 1;
 require_once('../php/config.php');
-require_once('../php/user_submits_dao.php');
+require_once('../php/customer_dao.php');
 
 parse_str($_SERVER['QUERY_STRING'], $queries);
 if(isset($queries) && !empty($queries)){
    if(isset($queries['date']) && !empty($queries['date'])){
       $today = $queries['date'];
    }
-
-   if(isset($queries['download'])){
-        $data = [];
-
-        $titles = [
-            'Time','Sale name','What was done'
-        ];
-        array_push($data,$titles);
-        $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
-        foreach ($summery as $key => $value) {
-            $temp = [
-                $value->getTime()!==null?$value->getTime():"--",
-                $value->getSales_name()!==null?$value->getSales_name():"--",
-                $value->getNote()!==null?$value->getNote():"--"
-            ];
-            array_push($data,$temp);
-        }
-        require_once "./sheet/SimpleXLSXGen.php";
-
-        $file_url = './sheet/DailyAttendance-'.$today.'.xlsx';
-
-        SimpleXLSXGen::fromArray($data)->saveAs($file_url);
-
-        ob_end_clean();
-        header('Content-Description: File Transfer');
-        header('Content-Type: xlsx');
-        header("Content-Transfer-Encoding: Binary");
-        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        readfile($file_url);
-        if (file_exists($file_url)) {
-            unlink($file_url);
-        }
-    }
 }
 
-$summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
+$summery = getAllCustomers($link,$today);
 ?>
 
 
@@ -345,7 +308,7 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <h3>Daily Attendance</h3>
+                            <h3>Customer List</h3>
                         </div>
                     </div>
                 </div>
@@ -355,10 +318,7 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
                             <form class="form-inline">
                                 <div class="form-group">
                                     <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
-                                    <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;" >Pick Date</button>
-                                    <?php if(!empty($summery)){ ?>
-                                        <button class="bttn Bu_two" class="form-control" name="download" value="1" >Download</button>
-                                    <?php } ?>
+                                    <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">Pick Date</button>
                                 </div>
                             </form>
                         </div>
@@ -381,9 +341,11 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">Sale name</th>
-                        <th scope="col">What was done</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Birth Day</th>
+                        <th scope="col">Contact Number 1</th>
+                        <th scope="col">Contact Number 2</th>
+                        <th scope="col">Address</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -392,9 +354,11 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
                         foreach ($summery as $key => $value) {
                     ?>
                         <tr>
-                            <td><?php echo $value->getTime(); ?></td>
-                            <td><?php echo $value->getSales_name(); ?></td>
-                            <td><?php echo $value->getNote(); ?></td>
+                            <td><?php echo $value->getName(); ?></td>
+                            <td><?php echo $value->getBday(); ?></td>
+                            <td><?php echo $value->getContact_num1(); ?></td>
+                            <td><?php echo $value->getContact_num2(); ?></td>
+                            <td><?php echo $value->getAddress(); ?></td>
                         </tr>
                     <?php
                         }

@@ -1,56 +1,111 @@
-<?php 
+<?php
+
+ob_start();
+session_start();
+$userType = $_SESSION['type'];
 
 use Shuchkin\SimpleXLSXGen;
+
 $today = date("Y-m-d");
-$userId = 1;
 require_once('../php/config.php');
-require_once('../php/user_submits_dao.php');
+require_once('../php/car_dao.php');
 
-parse_str($_SERVER['QUERY_STRING'], $queries);
-if(isset($queries) && !empty($queries)){
-   if(isset($queries['date']) && !empty($queries['date'])){
-      $today = $queries['date'];
-   }
+$summery = getAllSoledCarsForReport($link);
 
-   if(isset($queries['download'])){
-        $data = [];
+if(isset($_POST['download']))
+{
+    $data = [];
 
-        $titles = [
-            'Time','Sale name','What was done'
+    $titles = [
+        '<style height="50"><b><middle><center>Code</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Date</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Store</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Supplier</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Perfecture</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Car Model</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Maker</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Model Year</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Chassis</center></middle></b></style>'
+    ];
+
+    if($userType==1){
+        array_push($titles,'<style height="50"><b><middle><center>Bank</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Bid</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Buying</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>R TAX</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Automobile TAX</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>AU Chargers</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Trasport</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Storage</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Insurance</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Repair</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Other</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Selling</center></middle></b></style>');
+    }
+
+    array_push($titles,'<style height="50"><b><middle><center>Public</center></middle></b></style>');
+
+    array_push($data,$titles);
+
+    foreach ($summery as $key => $value) {
+        $temp = [
+            sprintf("VEH_%05d", $value->getId()),
+            $value->getDate()!==null?$value->getDate():"--",
+            $value->getCurrent_action_text()!==null?$value->getCurrent_action_text():"--",
+            $value->getAdditional()!==null?($value->getAdditional()->getSupplier()??""):"--",
+            $value->getAdditional()!==null?($value->getAdditional()->getPerfecture()??""):"--",
+            $value->getModel()!==null?$value->getModel():"--",
+            $value->getMaker()!==null?$value->getMaker():"--",
+            $value->getModel_year()!==null?$value->getModel_year():"--",
+            $value->getChassis()!==null?$value->getChassis():"--"
         ];
-        array_push($data,$titles);
-        $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
-        foreach ($summery as $key => $value) {
-            $temp = [
-                $value->getTime()!==null?$value->getTime():"--",
-                $value->getSales_name()!==null?$value->getSales_name():"--",
-                $value->getNote()!==null?$value->getNote():"--"
-            ];
-            array_push($data,$temp);
+
+        if($userType==1){
+            array_push($temp,$value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--");
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--");
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getRtax()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getAtax()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getAu_cha()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getTrasport()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getStorage()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getInsurance()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getRepair()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getOther()??"--":"--");
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getSelling()??"--":"--");
         }
-        require_once "./sheet/SimpleXLSXGen.php";
 
-        $file_url = './sheet/DailyAttendance-'.$today.'.xlsx';
-
-        SimpleXLSXGen::fromArray($data)->saveAs($file_url);
-
-        ob_end_clean();
-        header('Content-Description: File Transfer');
-        header('Content-Type: xlsx');
-        header("Content-Transfer-Encoding: Binary");
-        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        readfile($file_url);
-        if (file_exists($file_url)) {
-            unlink($file_url);
+        if($value->getPriceObject()!==null){
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--");
+        }else{
+            array_push($temp,"--");
         }
+        
+        array_push($data,$temp);
+    }
+
+    print_r($data);
+    require_once "./sheet/SimpleXLSXGen.php";
+
+    $file_url = './sheet/sale_report_'.$today.'.xlsx';
+
+    SimpleXLSXGen::fromArray($data)->saveAs($file_url);
+
+    ob_end_clean();
+    header('Content-Description: File Transfer');
+    header('Content-Type: xlsx');
+    header("Content-Transfer-Encoding: Binary");
+    header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    readfile($file_url);
+    if (file_exists($file_url)) {
+        unlink($file_url);
     }
 }
 
-$summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
 ?>
 
 
@@ -108,6 +163,14 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
     <link rel="stylesheet" type="text/css" href="../css/util.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
 </head>
 
 <style>
@@ -332,6 +395,68 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+  	min-width: 1000px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    color: #fff;
+    background: #40b2cd;		
+    padding: 16px 25px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box .input-group-addon {
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+    padding: 6px 0;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+ }
 </style>
 
 <body>
@@ -345,20 +470,16 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <h3>Daily Attendance</h3>
+                            <h3>Current Store</h3>
                         </div>
                     </div>
                 </div>
                 <div class="gjs-cell" id="ijl1">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <form class="form-inline">
+                            <form class="form-inline" method="post">
                                 <div class="form-group">
-                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
-                                    <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;" >Pick Date</button>
-                                    <?php if(!empty($summery)){ ?>
-                                        <button class="bttn Bu_two" class="form-control" name="download" value="1" >Download</button>
-                                    <?php } ?>
+                                    <button class="bttn Bu_one" class="form-control" name="download" >Download</button>
                                 </div>
                             </form>
                         </div>
@@ -375,15 +496,50 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
 
     <div class="content">
 
-        <div class="container">
+        <div class="container">			
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="search-box">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Code">
+                            </div>
+                        </div>
+                    </div>
             <div class="table-responsive">
 
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">Sale name</th>
-                        <th scope="col">What was done</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Store</th>
+                        <th scope="col">Supplier</th>
+                        <th scope="col">Perfecture</th>
+                        <th scope="col">Bank</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Car Model</th>
+                        <th scope="col">Maker</th>
+                        <th scope="col">Model Year</th>
+                        <th scope="col">Chassis</th>
+                        <?php if($userType==1){
+                            ?>
+                        <th scope="col">Bank</th>
+                        <th scope="col">Bid</th>
+                        <th scope="col">Buying</th>
+                        <th scope="col">R TAX</th>
+                        <th scope="col">Automobile TAX</th>
+                        <th scope="col">AU Chargers</th>
+                        <th scope="col">Trasport</th>
+                        <th scope="col">Storage</th>
+                        <th scope="col">Insurance</th>
+                        <th scope="col">Repair</th>
+                        <th scope="col">Other</th>
+                        <th scope="col">Selling</th>
+                            <?php
+                        } ?>
+                        <th scope="col">Public</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -392,9 +548,40 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
                         foreach ($summery as $key => $value) {
                     ?>
                         <tr>
-                            <td><?php echo $value->getTime(); ?></td>
-                            <td><?php echo $value->getSales_name(); ?></td>
-                            <td><?php echo $value->getNote(); ?></td>
+                            <td><?php echo sprintf("(VEH_%05d)", $value->getId()??0); ?></td>
+                            <td><?php echo $value->getDate()!==null?$value->getDate():"--"; ?></td>
+                            <td><?php echo $value->getCurrent_action_text()??"--"; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getSupplier()??"--":"--"; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture()??"--":"--"; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank()??"--":"--"; ?></td>
+                            <td><?php echo $value->getName()??"--"; ?></td>
+                            <td><?php echo $value->getModel()??"--"; ?></td>
+                            <td><?php echo $value->getMaker()??"--"; ?></td>
+                            <td><?php echo $value->getModel_year()??"--"; ?></td>
+                            <td><?php echo $value->getChassis()??"--"; ?></td>
+                                <?php if($userType==1){
+                                    ?>
+                                        <td><?php echo $value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--"; ?></td>
+                                        <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getRtax()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getAtax()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getAu_cha()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getTrasport()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getStorage()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getInsurance()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getRepair()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getOther()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getSelling()??"--":"--"; ?></td>
+                                    <?php
+                                } ?>
+                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--"; ?></td>
+                            <td><form class="form-inline" action="add_vehicle.php" method="post">
+                                <div class="form-group">
+                                    <input type="hidden" id="carId" name="carId" value="<?php echo $value->getId();?>">
+                                    <button class="bttn Bu_one" class="form-control" name="download" >Edit</button>
+                                </div>
+                            </form></td>
                         </tr>
                     <?php
                         }
@@ -416,48 +603,6 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
 
 </div>
 
-<!-- Trigger/Open The Modal -->
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
-    </div>
-
-</div>
-
-
-
-<!-- Popup box-->
-<script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("bttn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
 <!-- jQery -->
 <script src="../js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
@@ -567,5 +712,27 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
 </script>
 <!--===============================================================================================-->
 <script src="../js/main.js"></script>
+
+<script>
+$(document).ready(function(){
+	// Activate tooltips
+	$('[data-toggle="tooltip"]').tooltip();
+    
+	// Filter table rows based on searched term
+    $("#search").on("keyup", function() {
+        var term = $(this).val().toLowerCase();
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(1)").text().toLowerCase();
+            console.log(name);
+            if(name.search(term) < 0){                
+                $row.hide();
+            } else{
+                $row.show();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

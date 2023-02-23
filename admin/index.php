@@ -1,18 +1,23 @@
 
 <?php
-    ob_start();
-    session_start();
-    $_SESSION['valid'] = true;
+ob_start();
+session_start();
+if(!isset($_SESSION['id']) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
     $_SESSION['timeout'] = time();
-    $_SESSION['username'] = 'tutorialspoint';
+}
 
     require_once '../php/config.php';
     require_once "../php/car_module.php";
     require_once "../php/car_dao.php";
+    require_once "../php/contact_us_dao.php";
+    require_once "../php/customer_dao.php";
 
     $sellingCount = sizeof(getAllUserSellingCarsForAdminLists($link));
     $buyingCount = sizeof(getAllUserBuyingCarsForAdminLists($link));
-    $contactCount = 0;
+    $contactCount = sizeof(getAllContactUs($link,false));
+    $bdyCount = sizeof(getAllCustomers($link,date("Y-m-d")));
 
 
 ?>
@@ -79,13 +84,14 @@
         box-sizing: border-box;
     }
 
-    .bttn {
-        border: 2px solid black;
+    .bttn_st {
+        border: 2px solid red;
         border-radius: 5px;
-        background-color: white;
-        color: black;
+        background-color: red;
+        color: white;
         padding: 8px 28px;
         font-size: 16px;
+        font-weight: bold;
 
     }
     .Bu_one {
@@ -374,6 +380,10 @@
                         <th scope="col" style="width:70%">User Orders</th>
                         <th scope="col"><?php echo $buyingCount ?></th>
                     </tr>
+                    <tr>
+                        <th scope="col" style="width:70%">Today Birthday Loyalty Customers</th>
+                        <th scope="col"><?php echo $bdyCount ?></th>
+                    </tr>
                     </thead>
                 </table>
             </div>
@@ -396,7 +406,7 @@
                         <!--   1st details row-->
                         <tr>
                             <td style="padding-top: 100px;">
-                                <a href="buy_new_car.php">
+                                <a href="contact_us_list.php">
                                     <button  id="butt2" Class="butt2" name="Action">Contact Requests</button>
                                 </a>
                             </td>
@@ -417,7 +427,7 @@
                             </td>
                             <td style="padding-top: 100px;">
                                 <a href="add_vehicle.php" target="_blank">
-                                    <button  id="butt5" Class="butt5" name="Action">Add to Store</button>
+                                    <button  id="butt5" Class="bttn_st" name="Action">Add to Store</button>
                                 </a>
                             </td>
                         </tr>
@@ -461,17 +471,17 @@
                         <tbody>
                         <tr>
                             <td style="padding-top: 20px;">
-                                <a href="day_end_submit.php" target="_blank">
-                                    <button  id="butt2" Class="butt2" name="Action">Day Summery Reprots</button>
+                                <a href="insert_customer.php" target="_blank">
+                                    <button  id="butt1" Class="butt2" name="Action">Add Customer</button>
                                 </a>
                             </td>
                             <td style="padding-top: 20px;">
-                                <a href="day_end_customer_submit.php" target="_blank">
-                                    <button  id="butt3" Class="butt3" name="Action">Custom Summery Reprots</button>
+                                <a href="customer_list.php" target="_blank">
+                                    <button  id="butt2" Class="butt3" name="Action">Custom List</button>
                                 </a>
                             </td>
                             <td style="padding-top: 20px;">
-                                <a href="day_end_submit_list.php" target="_blank">
+                                <a href="sales_report.php" target="_blank">
                                     <button  id="butt4" Class="butt4" name="Action">Sales Reprots</button>
                                 </a>
                             </td>

@@ -5,8 +5,6 @@ server with default setting (user 'root' with no password) */
 /* Attempt to connect to MySQL database */
 $link = mysqli_connect('localhost', 'root', '', 'japan_web');
 // $link = mysqli_connect('sql303.epizy.com', 'epiz_33557197', 'zspoqJEknmtJb', 'epiz_33557197_japan_web');
-// $link = mysqli_connect('sql.freedb.tech', 'freedb_paridb', 'ywfY@N6B96hVbGw', 'freedb_japan_web');
-// $link = mysqli_connect('localhost', 'id20189640_parinda', '@1p8rTEMurqLhSiS', 'id20189640_japan_web');
  
 // Check connection
 if($link === false){
@@ -184,6 +182,21 @@ if($link === false){
             message TEXT
             )";
         mysqli_query($link, $contact_us);
+    } catch (Throwable $th) {
+        console_log($th);
+        
+    }
+
+    try {
+        $customers = "CREATE TABLE IF NOT EXISTS customers ( 
+            id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+            name VARCHAR(250) NOT NULL DEFAULT 'No_Name', 
+            address VARCHAR(250) NOT NULL DEFAULT 'No_data', 
+            contact_num1 VARCHAR(20) NOT NULL DEFAULT 'No_data',
+            contact_num2 VARCHAR(20) NOT NULL DEFAULT 'No_data',
+            bday VARCHAR(15) NOT NULL DEFAULT 'No_data'
+            )";
+        mysqli_query($link, $customers);
     } catch (Throwable $th) {
         console_log($th);
         

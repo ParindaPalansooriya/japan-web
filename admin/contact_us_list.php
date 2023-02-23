@@ -1,56 +1,23 @@
 <?php 
 
-use Shuchkin\SimpleXLSXGen;
-$today = date("Y-m-d");
-$userId = 1;
+$seeAll = true;
+
+if(isset($_REQUEST['seeAll'])){
+    $seeAll = $_REQUEST['seeAll'];
+}
+
 require_once('../php/config.php');
-require_once('../php/user_submits_dao.php');
+require_once('../php/contact_us_dao.php');
+require_once('../php/contat_us_module.php');
 
-parse_str($_SERVER['QUERY_STRING'], $queries);
-if(isset($queries) && !empty($queries)){
-   if(isset($queries['date']) && !empty($queries['date'])){
-      $today = $queries['date'];
-   }
-
-   if(isset($queries['download'])){
-        $data = [];
-
-        $titles = [
-            'Time','Sale name','What was done'
-        ];
-        array_push($data,$titles);
-        $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
-        foreach ($summery as $key => $value) {
-            $temp = [
-                $value->getTime()!==null?$value->getTime():"--",
-                $value->getSales_name()!==null?$value->getSales_name():"--",
-                $value->getNote()!==null?$value->getNote():"--"
-            ];
-            array_push($data,$temp);
-        }
-        require_once "./sheet/SimpleXLSXGen.php";
-
-        $file_url = './sheet/DailyAttendance-'.$today.'.xlsx';
-
-        SimpleXLSXGen::fromArray($data)->saveAs($file_url);
-
-        ob_end_clean();
-        header('Content-Description: File Transfer');
-        header('Content-Type: xlsx');
-        header("Content-Transfer-Encoding: Binary");
-        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        readfile($file_url);
-        if (file_exists($file_url)) {
-            unlink($file_url);
-        }
+if(isset($_POST['Action']) && isset($_REQUEST['id']))
+{ 
+    if(updateContactUsStatus($link,$_REQUEST['id'],1)<=0){
+        echo '<script>alert("Submit Error!")</script>';
     }
 }
 
-$summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
+$summery = getAllContactUs($link,$seeAll);
 ?>
 
 
@@ -345,7 +312,7 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <h3>Daily Attendance</h3>
+                            <h3>Contact Us</h3>
                         </div>
                     </div>
                 </div>
@@ -354,11 +321,10 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
                         <div class="col-center">
                             <form class="form-inline">
                                 <div class="form-group">
-                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
-                                    <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;" >Pick Date</button>
-                                    <?php if(!empty($summery)){ ?>
-                                        <button class="bttn Bu_two" class="form-control" name="download" value="1" >Download</button>
-                                    <?php } ?>
+                                    <form action="contact_us_list.php" enctype="multipart/form-data" method="post">
+                                        <input type="hidden" id="seeAll" name="seeAll" value="<?php echo !$seeAll;?>">
+                                        <button Class="bttn Bu_one" name="Action"> <?php echo $seeAll?"Hide Reads":"See All" ?></button>
+                                    </form>
                                 </div>
                             </form>
                         </div>
@@ -381,83 +347,50 @@ $summery = getAllUserDaySubmitsWithDate($link,$today,$userId);
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">Sale name</th>
-                        <th scope="col">What was done</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Content</th>
+                        <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-<!--   1st details row-->
                     <?php
                         foreach ($summery as $key => $value) {
                     ?>
                         <tr>
-                            <td><?php echo $value->getTime(); ?></td>
-                            <td><?php echo $value->getSales_name(); ?></td>
-                            <td><?php echo $value->getNote(); ?></td>
+                            <td><?php echo $value->getUsername(); ?></td>
+                            <td><?php echo $value->getContact1(); ?></td>
+                            <td><?php echo $value->getContact2(); ?></td>
+                            <td><?php echo $value->getMessage(); ?></td>
+                            <td>
+                                <form  action="contact_us_list.php" enctype="multipart/form-data" method="post">
+                                    <input type="hidden" id="id" name="id" value="<?php echo $value->getId();?>">
+                                    <input type="hidden" id="seeAll" name="seeAll" value="<?php echo $seeAll;?>">
+                                    <?php
+                                    if($value->getStatus()==0){
+                                    ?>
+                                        <button Class="swal-button" name="Action">Make As Read</button>
+                                    <?php
+                                    }else{
+                                        echo "Satus : Read";
+                                    }
+                                    ?>
+                                </form>
+                            </td>
                         </tr>
                     <?php
                         }
                     ?>
-<!--  End of 1st details row-->
-<!--  2nd details row    Samples    -->
-
-<!--  End of 2nd details row-->
-<!--  3rd details row Samples -->
-
-<!--  end of 3rd details row-->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </section>
-<!-- End Attendance list section -->
 
 </div>
 
-<!-- Trigger/Open The Modal -->
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
-    </div>
-
-</div>
-
-
-
-<!-- Popup box-->
-<script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("bttn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
 <!-- jQery -->
 <script src="../js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
