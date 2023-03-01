@@ -13,7 +13,6 @@ $style = getAllBodyStyle($link);
 $in_cor = getAllInteriorColor($link);
 $ex_cor = getAllExteriorColor($link);
 $maker = getAllCarMakers($link);
-$model = getAllCarModels($link);
 
 $filepath = array();
 if(isset($_REQUEST['filepath'])){
@@ -79,7 +78,9 @@ if(isset($_POST['Submit']))
     getData('transmission_shift',0),
     getData('is_used',0),
     getData('is_two_weel',0),
-    getData('is_steering_right',0)
+    getData('is_steering_right',0),
+    getData('in_col',"No Data"),
+    getData('ex_col',"No Data")
     );
     if(isset($filepath)){
         foreach ($filepath as $key2 => $value1) {
@@ -88,6 +89,7 @@ if(isset($_POST['Submit']))
     }
     insertCarPrice($link,$maxId,0,0,0,getData('expectation',0),0);
     insertUserSellingInquary($link,$maxId,getData('c_name',"No Data"),getData('email',"No Data"),getData('mobile',"No Data"));
+    echo '<script>alert("Successfully submited")</script>';
     header("Location: index.php"); 
     exit();
 }

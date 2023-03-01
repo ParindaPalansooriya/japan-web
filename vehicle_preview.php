@@ -27,9 +27,12 @@ if (isset($carId) && isset($_POST['submit'])) {
     $mobile = $_REQUEST['mobile'];
     $nearest_port = $_REQUEST['nearest_port'];
     $message = $_REQUEST['message'];
-    if(insertUserInquary($link,$carId,$user_name,$email,$mobile,$nearest_port,$message)==1){
+    if(insertUserInquary($link,$carId,$user_name,$email,$mobile,$nearest_port,$message)>0){
+        echo '<script>alert("Successfully submited")</script>';
         header("Location: index.php"); 
         exit();
+    }else{
+        echo '<script>alert("Submit Error!")</script>';
     }
 }
 
@@ -448,7 +451,6 @@ if(isset($carId)){
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Make : <?php echo $car->getMaker(); ?></p>
-                                    <p style="padding-bottom: 5px;">Model : <?php echo $car->getModel(); ?></p>
                                     <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>
                                     <p style="padding-bottom: 5px;">Interior Color : <?php echo $car->getIn_color(); ?></p>
                                     <p style="padding-bottom: 5px;">Exterior Color : <?php echo $car->getEx_color(); ?></p>
@@ -468,7 +470,7 @@ if(isset($carId)){
                                     <p style="padding-bottom: 5px;">Lenght : <?php echo $car->getDimensions_L(); ?></p>
                                     <p style="padding-bottom: 5px;">Width : <?php echo $car->getDimensions_W(); ?></p>
                                     <p style="padding-bottom: 5px;">Hight : <?php echo $car->getDimensions_H(); ?></p>
-                                    <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==0?"New":"Used"; ?></p>
+                                    <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></p>
                                     <p style="padding-bottom: 5px;">Weel : <?php echo $car->getIs_two_weel()==0?"4 Weel":"2 Weel"; ?></p>
                                     <p style="padding-bottom: 5px;">Steering : <?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></p>
                                     </br>

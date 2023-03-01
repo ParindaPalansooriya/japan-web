@@ -29,13 +29,12 @@ if(isset($_POST['download']))
         '<style height="50"><b><middle><center>Store</center></middle></b></style>',
         '<style height="50"><b><middle><center>Supplier</center></middle></b></style>',
         '<style height="50"><b><middle><center>Perfecture</center></middle></b></style>',
-        '<style height="50"><b><middle><center>Car Model</center></middle></b></style>',
         '<style height="50"><b><middle><center>Maker</center></middle></b></style>',
         '<style height="50"><b><middle><center>Model Year</center></middle></b></style>',
         '<style height="50"><b><middle><center>Chassis</center></middle></b></style>'
     ];
 
-    if($userType==1){
+    if($type==1){
         array_push($titles,'<style height="50"><b><middle><center>Bank</center></middle></b></style>');
         array_push($titles,'<style height="50"><b><middle><center>Bid</center></middle></b></style>');
         array_push($titles,'<style height="50"><b><middle><center>Buying</center></middle></b></style>');
@@ -60,13 +59,12 @@ if(isset($_POST['download']))
             $value->getCurrent_action_text()!==null?$value->getCurrent_action_text():"--",
             $value->getAdditional()!==null?($value->getAdditional()->getSupplier()??""):"--",
             $value->getAdditional()!==null?($value->getAdditional()->getPerfecture()??""):"--",
-            $value->getModel()!==null?$value->getModel():"--",
             $value->getMaker()!==null?$value->getMaker():"--",
             $value->getModel_year()!==null?$value->getModel_year():"--",
             $value->getChassis()!==null?$value->getChassis():"--"
         ];
 
-        if($userType==1){
+        if($type==1){
             array_push($temp,$value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--");
             array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--");
             array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--");
@@ -505,10 +503,91 @@ if(isset($_POST['download']))
         <div class="container">			
                     <div class="row">
                         <div class="col-sm-6">
+                            <div class="form-inline">
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox0" >
+                                        <a style="padding-left: 10px;"> No Block</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox1" >
+                                        <a style="padding-left: 10px;"> 1 Kojo</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox2" >
+                                        <a style="padding-left: 10px;"> Sale 1</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox3" >
+                                        <a style="padding-left: 10px;"> 2 Kojo</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox4" >
+                                        <a style="padding-left: 10px;"> Sale 2</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox5" >
+                                        <a style="padding-left: 10px;"> 3 Kojo</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox6" >
+                                        <a style="padding-left: 10px;"> Sale 3</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox7" >
+                                        <a style="padding-left: 10px;"> Miho Kojo</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox8" >
+                                        <a style="padding-left: 10px;"> Export</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox9" >
+                                        <a style="padding-left: 10px;"> USS</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox10" >
+                                        <a style="padding-left: 10px;"> CAA</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox11" >
+                                        <a style="padding-left: 10px;"> Other Option</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox12" >
+                                        <a style="padding-left: 10px;"> Parts</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                         <div class="col-sm-6">
                             <div class="search-box">
-                                <input type="text" id="search" class="form-control" placeholder="Search by Code">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis Or Code">
                             </div>
                         </div>
                     </div>
@@ -523,11 +602,10 @@ if(isset($_POST['download']))
                         <th scope="col">Perfecture</th>
                         <th scope="col">Bank</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Car Model</th>
                         <th scope="col">Maker</th>
                         <th scope="col">Model Year</th>
                         <th scope="col">Chassis</th>
-                        <?php if($userType==1){
+                        <?php if($type==1){
                             ?>
                         <th scope="col">Bank</th>
                         <th scope="col">Bid</th>
@@ -559,11 +637,10 @@ if(isset($_POST['download']))
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture()??"--":"--"; ?></td>
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank()??"--":"--"; ?></td>
                             <td><?php echo $value->getName()??"--"; ?></td>
-                            <td><?php echo $value->getModel()??"--"; ?></td>
                             <td><?php echo $value->getMaker()??"--"; ?></td>
                             <td><?php echo $value->getModel_year()??"--"; ?></td>
                             <td><?php echo $value->getChassis()??"--"; ?></td>
-                                <?php if($userType==1){
+                                <?php if($type==1){
                                     ?>
                                         <td><?php echo $value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--"; ?></td>
                                         <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--"; ?></td>
@@ -719,23 +796,238 @@ if(isset($_POST['download']))
 
 <script>
 $(document).ready(function(){
+
+    var array = [];
+    var term = null;
+
 	// Activate tooltips
 	$('[data-toggle="tooltip"]').tooltip();
     
 	// Filter table rows based on searched term
     $("#search").on("keyup", function() {
-        var term = $(this).val().toLowerCase();
+        term = $(this).val().toLowerCase();
         $("table tbody tr").each(function(){
             $row = $(this);
-            var name = $row.find("td:nth-child(1)").text().toLowerCase();
-            console.log(name);
+            var name = $row.find("td:nth-child(9)").text().toLowerCase();
+            var block = $row.find("td:nth-child(2)").text().toLowerCase();
+            const index = array.indexOf(block);
             if(name.search(term) < 0){                
                 $row.hide();
             } else{
-                $row.show();
+                if(array.length === 0){
+                    $row.show();
+                }else{
+                    if(index < 0){                
+                        $row.hide();
+                    } else{
+                        $row.show();
+                    }
+                }
+            }
+
+            var code = $row.find("td:nth-child(1)").text().toLowerCase();
+            if(code.search(term) >= 0){                
+                if(array.length === 0){
+                    $row.show();
+                }else{
+                    if(index < 0){                
+                        $row.hide();
+                    } else{
+                        $row.show();
+                    }
+                }
             }
         });
     });
+
+    $("#checkbox0").on("change", function() {
+        if(this.checked){
+            array.push("no block");
+        }else{
+            const index = array.indexOf("no block");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox1").on("change", function() {
+        if(this.checked){
+            array.push("1 kojo");
+        }else{
+            const index = array.indexOf("1 kojo");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox2").on("change", function() {
+        if(this.checked){
+            array.push("1 sale");
+        }else{
+            const index = array.indexOf("1 sale");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox3").on("change", function() {
+        if(this.checked){
+            array.push("2 kojo");
+        }else{
+            const index = array.indexOf("2 kojo");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox4").on("change", function() {
+        if(this.checked){
+            array.push("2 sale");
+        }else{
+            const index = array.indexOf("2 sale");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox5").on("change", function() {
+        if(this.checked){
+            array.push("3 kojo");
+        }else{
+            const index = array.indexOf("3 kojo");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox6").on("change", function() {
+        if(this.checked){
+            array.push("3 sale");
+        }else{
+            const index = array.indexOf("3 sale");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox7").on("change", function() {
+        if(this.checked){
+            array.push("miho kojo");
+        }else{
+            const index = array.indexOf("miho kojo");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox8").on("change", function() {
+        if(this.checked){
+            array.push("export");
+        }else{
+            const index = array.indexOf("export");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox9").on("change", function() {
+        if(this.checked){
+            array.push("uss");
+        }else{
+            const index = array.indexOf("uss");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox10").on("change", function() {
+        if(this.checked){
+            array.push("caa");
+        }else{
+            const index = array.indexOf("caa");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox11").on("change", function() {
+        if(this.checked){
+            array.push("other option");
+        }else{
+            const index = array.indexOf("other option");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox12").on("change", function() {
+        if(this.checked){
+            array.push("parts");
+        }else{
+            const index = array.indexOf("parts");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    function showRows(){
+        document.getElementById('search').value = ''
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(2)").text().toLowerCase();
+            console.log(name);
+            if(array.length === 0){
+                $row.show();
+            }else{
+                const index = array.indexOf(name);
+                if(index < 0){                
+                    $row.hide();
+                } else{
+                    $row.show();
+                }
+            }
+        });
+    }
+
 });
 </script>
 </body>

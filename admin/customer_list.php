@@ -18,12 +18,14 @@ require_once('../php/customer_dao.php');
 
 parse_str($_SERVER['QUERY_STRING'], $queries);
 if(isset($queries) && !empty($queries)){
-   if(isset($queries['date']) && !empty($queries['date'])){
-      $today = $queries['date'];
+   if(isset($queries['today']) && !empty($queries['today'])){
+        $summery = getAllCustomersToSendPostCard($link);
+   }else{
+        $summery = getAllCustomers($link,$today,null,null);
    }
+}else{
+    $summery = getAllCustomers($link,$today,null,null);
 }
-
-$summery = getAllCustomers($link,$today);
 ?>
 
 
@@ -104,13 +106,21 @@ $summery = getAllCustomers($link,$today);
     }
 
     .Bu_two {
-        border-color: #ff9800;
-        color: orange;
+        border-radius: 5px;
+        background-color: steelblue;
+        color: white;
+        padding: 8px 12px;
+        font-size: 16px;
+        font-weight: bold;
     }
 
     .Bu_three {
-        border-color: #f44336;
-        color: red
+        border-radius: 5px;
+        background-color: #04AA6D;
+        color: white;
+        padding: 8px 12px;
+        font-size: 16px;
+        font-weight: bold;
     }
 
     /* end button section   */
@@ -305,6 +315,68 @@ $summery = getAllCustomers($link,$today);
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+  	min-width: 1000px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    color: #fff;
+    background: #40b2cd;		
+    padding: 16px 25px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box .input-group-addon {
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+    padding: 6px 0;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+ }
 </style>
 
 <body>
@@ -325,12 +397,17 @@ $summery = getAllCustomers($link,$today);
                 <div class="gjs-cell" id="ijl1">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <form class="form-inline">
                                 <div class="form-group">
-                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
-                                    <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">Pick Date</button>
+                                    <div class="form-inline">
+                                    <form class="form-inline">
+                                        <input class="bttn Bu_one" name="today" style="margin-right: 10px;" type="hidden" value="true">
+                                        <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">Pick Date</button>
+                                    </form>
+                                    <form >
+                                        <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">See All</button>
+                                    </form>
+                                    </div>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -345,17 +422,30 @@ $summery = getAllCustomers($link,$today);
 
     <div class="content">
 
-        <div class="container">
+        <div class="container">		
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="search-box">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis Or Name">
+                            </div>
+                        </div>
+                    </div>
             <div class="table-responsive">
 
                 <table class="table custom-table">
                     <thead>
                     <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">Birth Day</th>
+                        <th scope="col">Shacane Registered Day</th>
+                        <th scope="col">Valid Months</th>
+                        <th scope="col">Last Post Day</th>
+                        <th scope="col">Chassis</th>
                         <th scope="col">Contact Number 1</th>
                         <th scope="col">Contact Number 2</th>
                         <th scope="col">Address</th>
+                        <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -366,19 +456,26 @@ $summery = getAllCustomers($link,$today);
                         <tr>
                             <td><?php echo $value->getName(); ?></td>
                             <td><?php echo $value->getBday(); ?></td>
+                            <td><?php echo $value->getValid(); ?></td>
+                            <td><?php echo $value->getLastSendDate()=="0"?"New Customer":$value->getLastSendDate(); ?></td>
+                            <td><?php echo $value->getChassis(); ?></td>
                             <td><?php echo $value->getContact_num1(); ?></td>
                             <td><?php echo $value->getContact_num2(); ?></td>
                             <td><?php echo $value->getAddress(); ?></td>
+                            <td>
+                                <form id="formAwesome" action="customer_list.php" enctype="multipart/form-data" method="post">
+                                    <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
+                                    <button style="font-size: small;" Class="Bu_three" name="Action">Print Card</button>
+                                </form>
+                                <form style="margin-top: 10px;" id="formAwesome" action="customer_list.php" enctype="multipart/form-data" method="post">
+                                    <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
+                                    <button style="font-size: small;" Class="Bu_two" name="Action">Set Last Sakan</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php
                         }
                     ?>
-<!--  End of 1st details row-->
-<!--  2nd details row    Samples    -->
-
-<!--  End of 2nd details row-->
-<!--  3rd details row Samples -->
-
 <!--  end of 3rd details row-->
                     </tbody>
                 </table>
@@ -541,5 +638,31 @@ $summery = getAllCustomers($link,$today);
 </script>
 <!--===============================================================================================-->
 <script src="../js/main.js"></script>
+<script>
+$(document).ready(function(){
+	// Activate tooltips
+	$('[data-toggle="tooltip"]').tooltip();
+    
+	// Filter table rows based on searched term
+    $("#search").on("keyup", function() {
+        var term = $(this).val().toLowerCase();
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(5)").text().toLowerCase();
+            console.log(name);
+            if(name.search(term) < 0){                
+                $row.hide();
+            } else{
+                $row.show();
+            }
+
+            var code = $row.find("td:nth-child(1)").text().toLowerCase();
+            if(code.search(term) >= 0){                
+                $row.show();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

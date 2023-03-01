@@ -7,6 +7,7 @@ if(isset($_POST['Submit']))
     require_once('./php/contat_us_module.php');
 
     if(insertContactUs($link,$_REQUEST['Name'],$_REQUEST['email'],$_REQUEST['Number'],$_REQUEST['msg'])>0){
+        echo '<script>alert("Thank You for conatct us.Yor request submited")</script>';
         echo "<script>window.close();</script>";
     }else{
         echo '<script>alert("Submit Error!")</script>';

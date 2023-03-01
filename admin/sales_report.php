@@ -14,11 +14,21 @@ if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($
 
 use Shuchkin\SimpleXLSXGen;
 
-$today = date("Y-m-d");
+$today = null;
 require_once('../php/config.php');
 require_once('../php/car_dao.php');
 
-$summery = getAllSoledCarsForReport($link);
+$summery = [];
+if(isset($_POST['all'])){
+    $summery = getAllSoledCarsForReport($link,null);
+}else{
+    if(isset($_POST['date']) && !empty($_POST['date'])){
+        $today = $_POST['date'];
+        $summery = getAllSoledCarsForReport($link,$_POST['date']);
+    }else{
+        $summery = getAllSoledCarsForReport($link,null);
+    }
+}
 
 if(isset($_POST['download']))
 {
@@ -30,13 +40,12 @@ if(isset($_POST['download']))
         '<style height="50"><b><middle><center>Store</center></middle></b></style>',
         '<style height="50"><b><middle><center>Supplier</center></middle></b></style>',
         '<style height="50"><b><middle><center>Perfecture</center></middle></b></style>',
-        '<style height="50"><b><middle><center>Car Model</center></middle></b></style>',
         '<style height="50"><b><middle><center>Maker</center></middle></b></style>',
         '<style height="50"><b><middle><center>Model Year</center></middle></b></style>',
         '<style height="50"><b><middle><center>Chassis</center></middle></b></style>'
     ];
 
-    if($userType==1){
+    if($type==1){
         array_push($titles,'<style height="50"><b><middle><center>Bank</center></middle></b></style>');
         array_push($titles,'<style height="50"><b><middle><center>Bid</center></middle></b></style>');
         array_push($titles,'<style height="50"><b><middle><center>Buying</center></middle></b></style>');
@@ -62,13 +71,12 @@ if(isset($_POST['download']))
             $value->getCurrent_action_text()!==null?$value->getCurrent_action_text():"--",
             $value->getAdditional()!==null?($value->getAdditional()->getSupplier()??""):"--",
             $value->getAdditional()!==null?($value->getAdditional()->getPerfecture()??""):"--",
-            $value->getModel()!==null?$value->getModel():"--",
             $value->getMaker()!==null?$value->getMaker():"--",
             $value->getModel_year()!==null?$value->getModel_year():"--",
             $value->getChassis()!==null?$value->getChassis():"--"
         ];
 
-        if($userType==1){
+        if($type==1){
             array_push($temp,$value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--");
             array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--");
             array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--");
@@ -95,7 +103,7 @@ if(isset($_POST['download']))
     // print_r($data);
     require_once "./sheet/SimpleXLSXGen.php";
 
-    $file_url = './sheet/sale_report_'.$today.'.xlsx';
+    $file_url = './sheet/sale_report_'.($today!==null?$today:date("Y-m-d")).'.xlsx';
 
     SimpleXLSXGen::fromArray($data)->saveAs($file_url);
 
@@ -478,7 +486,7 @@ if(isset($_POST['download']))
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <h3>Current Store</h3>
+                            <h3>Sales Report</h3>
                         </div>
                     </div>
                 </div>
@@ -487,6 +495,9 @@ if(isset($_POST['download']))
                         <div class="col-center">
                             <form class="form-inline" method="post">
                                 <div class="form-group">
+                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
+                                    <button class="bttn Bu_one" class="form-control" name="pick" style="margin-right: 10px;" >Pick Date</button>
+                                    <button class="bttn Bu_one" class="form-control" name="all" >See All</button>
                                     <button class="bttn Bu_one" class="form-control" name="download" >Download</button>
                                 </div>
                             </form>
@@ -510,7 +521,7 @@ if(isset($_POST['download']))
                         </div>
                         <div class="col-sm-6">
                             <div class="search-box">
-                                <input type="text" id="search" class="form-control" placeholder="Search by Code">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis Or Code">
                             </div>
                         </div>
                     </div>
@@ -526,11 +537,10 @@ if(isset($_POST['download']))
                         <th scope="col">Perfecture</th>
                         <th scope="col">Bank</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Car Model</th>
                         <th scope="col">Maker</th>
                         <th scope="col">Model Year</th>
                         <th scope="col">Chassis</th>
-                        <?php if($userType==1){
+                        <?php if($type==1){
                             ?>
                         <th scope="col">Bank</th>
                         <th scope="col">Bid</th>
@@ -547,7 +557,7 @@ if(isset($_POST['download']))
                             <?php
                         } ?>
                         <th scope="col">Public</th>
-                        <th scope="col"></th>
+                        <!-- <th scope="col"></th> -->
                     </tr>
                     </thead>
                     <tbody>
@@ -563,11 +573,10 @@ if(isset($_POST['download']))
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture()??"--":"--"; ?></td>
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank()??"--":"--"; ?></td>
                             <td><?php echo $value->getName()??"--"; ?></td>
-                            <td><?php echo $value->getModel()??"--"; ?></td>
                             <td><?php echo $value->getMaker()??"--"; ?></td>
                             <td><?php echo $value->getModel_year()??"--"; ?></td>
                             <td><?php echo $value->getChassis()??"--"; ?></td>
-                                <?php if($userType==1){
+                                <?php if($type==1){
                                     ?>
                                         <td><?php echo $value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--"; ?></td>
                                         <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--"; ?></td>
@@ -584,12 +593,12 @@ if(isset($_POST['download']))
                                     <?php
                                 } ?>
                             <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--"; ?></td>
-                            <td><form class="form-inline" action="add_vehicle.php" method="post">
+                            <!-- <td><form class="form-inline" action="add_vehicle.php" method="post">
                                 <div class="form-group">
                                     <input type="hidden" id="carId" name="carId" value="<?php echo $value->getId();?>">
                                     <button class="bttn Bu_one" class="form-control" name="download" >Edit</button>
                                 </div>
-                            </form></td>
+                            </form></td> -->
                         </tr>
                     <?php
                         }
@@ -731,11 +740,16 @@ $(document).ready(function(){
         var term = $(this).val().toLowerCase();
         $("table tbody tr").each(function(){
             $row = $(this);
-            var name = $row.find("td:nth-child(1)").text().toLowerCase();
+            var name = $row.find("td:nth-child(10)").text().toLowerCase();
             console.log(name);
             if(name.search(term) < 0){                
                 $row.hide();
             } else{
+                $row.show();
+            }
+
+            var code = $row.find("td:nth-child(1)").text().toLowerCase();
+            if(code.search(term) >= 0){                
                 $row.show();
             }
         });

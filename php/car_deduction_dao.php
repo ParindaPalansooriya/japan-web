@@ -9,7 +9,9 @@ function insertCarDeduction($link,
     $storage,
     $insurance,
     $repair,
-    $other
+    $other,
+    $with_tax,
+    $recycle
 )
 {
     $sql2 = "SELECT * FROM car_deductions where car_id = $car_id";
@@ -23,7 +25,9 @@ function insertCarDeduction($link,
             storage, 
             insurance, 
             repair, 
-            other
+            other,
+            with_tax,
+            recycle
             ) VALUES (
                 $car_id,
                 '$rtax',
@@ -33,7 +37,9 @@ function insertCarDeduction($link,
                 '$storage',
                 '$insurance',
                 '$repair',
-                '$other'
+                '$other',
+                '$with_tax',
+                '$recycle'
                 )";
         return mysqli_query($link, $sql);
     }else{
@@ -45,7 +51,9 @@ function insertCarDeduction($link,
         storage = '$storage' , 
         insurance = '$insurance' , 
         repair = '$repair' , 
-        other = '$other' 
+        other = '$other' ,
+        with_tax = '$with_tax' , 
+        recycle = '$recycle' 
         WHERE car_id = $car_id ;";
         return mysqli_query($link, $sql3);
     }
@@ -67,7 +75,9 @@ function getCarDeduction($link,$carId){
                 $row['storage'],
                 $row['insurance'],
                 $row['repair'],
-                $row['other']
+                $row['other'],
+                $row['with_tax'],
+                $row['recycle']
             );
         }
         mysqli_free_result($result);

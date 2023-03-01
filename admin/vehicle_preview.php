@@ -360,6 +360,68 @@ if(isset($carId)){
         object-fit: contain;
     }
     /* End Two Equal Columns */
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+  	min-width: 1000px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    color: #fff;
+    background: #40b2cd;		
+    padding: 16px 25px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box .input-group-addon {
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+    padding: 6px 0;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+ }
 
 </style>
 
@@ -456,7 +518,6 @@ if(isset($carId)){
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Make : <?php echo $car->getMaker(); ?></p>
-                                    <p style="padding-bottom: 5px;">Model : <?php echo $car->getModel(); ?></p>
                                     <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>
                                     <p style="padding-bottom: 5px;">Interior Color : <?php echo $car->getIn_color(); ?></p>
                                     <p style="padding-bottom: 5px;">Exterior Color : <?php echo $car->getEx_color(); ?></p>
@@ -476,7 +537,7 @@ if(isset($carId)){
                                     <p style="padding-bottom: 5px;">Lenght : <?php echo $car->getDimensions_L(); ?></p>
                                     <p style="padding-bottom: 5px;">Width : <?php echo $car->getDimensions_W(); ?></p>
                                     <p style="padding-bottom: 5px;">Hight : <?php echo $car->getDimensions_H(); ?></p>
-                                    <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==0?"New":"Used"; ?></p>
+                                    <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></p>
                                     <p style="padding-bottom: 5px;">Weel : <?php echo $car->getIs_two_weel()==0?"4 Weel":"2 Weel"; ?></p>
                                     <p style="padding-bottom: 5px;">Steering : <?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></p>
                                     </br>
@@ -508,9 +569,6 @@ if(isset($carId)){
                         <thead>
                             <tr>
                                 <th scope="col">
-                                        <button id="Bttn1" Class="swal-button" name="Action" value="0">Remove</button>
-                                </th>
-                                <th scope="col">
                                         <button id="Bttn2" Class="bttn2" name="Action" value="1">1 Kojo</button>
                                 </th>
                                 <th scope="col">
@@ -541,6 +599,26 @@ if(isset($carId)){
                                 </th>
                             </tr>
                         </thead>
+                        <thead>
+                            <tr>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn10" Class="bttn2" name="Action" value="8">USS</button>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn11" Class="bttn2" name="Action" value="9">CAA</button>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn12" Class="bttn2" name="Action" value="10">Other Option</button>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn13" Class="bttn2" name="Action" value="11">Parts</button>
+                                </th>
+                                <th scope="col">
+                                        <button id="Bttn1" Class="swal-button" name="Action" value="0">Remove</button>
+                                </th>
+                            </tr>
+                        </thead>
                     </table>
             </div>
         </div>
@@ -567,6 +645,10 @@ if(isset($carId)){
                 <button id="Bttn27" Class="bttn2" name="Action" value="6">3Sale</button>
                 <button id="Bttn28" Class="bttn2" name="Action" value="7">Miho Kojo</button>
                 <button id="Bttn29" Class="bttn2" name="Action" value="-1">Export</button>
+                <button id="Bttn210" Class="bttn2" name="Action" value="8">USS</button>
+                <button id="Bttn211" Class="bttn2" name="Action" value="9">CAA</button>
+                <button id="Bttn212" Class="bttn2" name="Action" value="10">Other Option</button>
+                <button id="Bttn213" Class="bttn2" name="Action" value="11">Parts</button>
             </div>
             </form>
         </div>
@@ -592,6 +674,10 @@ if(isset($carId)){
     var btn7 = document.getElementById("Bttn7");
     var btn8 = document.getElementById("Bttn8");
     var btn9 = document.getElementById("Bttn9");
+    var btn10 = document.getElementById("Bttn10");
+    var btn11 = document.getElementById("Bttn11");
+    var btn12 = document.getElementById("Bttn12");
+    var btn13 = document.getElementById("Bttn13");
 
     
     var btn21 = document.getElementById("Bttn21");
@@ -603,6 +689,10 @@ if(isset($carId)){
     var btn27 = document.getElementById("Bttn27");
     var btn28 = document.getElementById("Bttn28");
     var btn29 = document.getElementById("Bttn29");
+    var btn210 = document.getElementById("Bttn210");
+    var btn211 = document.getElementById("Bttn211");
+    var btn212 = document.getElementById("Bttn212");
+    var btn213 = document.getElementById("Bttn213");
 
     var title = document.getElementById("title");
 
@@ -616,6 +706,10 @@ if(isset($carId)){
         btn27.style.display = "none";
         btn28.style.display = "none";
         btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
         btn21.style.display = "block";
         title.innerHTML = "Please conform to remove this Item";
     }
@@ -631,6 +725,10 @@ if(isset($carId)){
         btn27.style.display = "none";
         btn28.style.display = "none";
         btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 1 Kojo";
     }
 
@@ -645,6 +743,10 @@ if(isset($carId)){
         btn27.style.display = "none";
         btn28.style.display = "none";
         btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 1 Sale";
     }
 
@@ -659,6 +761,10 @@ if(isset($carId)){
         btn27.style.display = "none";
         btn28.style.display = "none";
         btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 2 Kojo";
     }
 
@@ -673,6 +779,10 @@ if(isset($carId)){
         btn27.style.display = "none";
         btn28.style.display = "none";
         btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 2 Sale";
     }
 
@@ -687,6 +797,10 @@ if(isset($carId)){
         btn27.style.display = "none";
         btn28.style.display = "none";
         btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 3 Kojo";
     }
 
@@ -701,6 +815,10 @@ if(isset($carId)){
         btn27.style.display = "block";
         btn28.style.display = "none";
         btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 3 Sale";
     }
 
@@ -715,6 +833,10 @@ if(isset($carId)){
         btn27.style.display = "none";
         btn28.style.display = "block";
         btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to Miho Kojo";
     }
 
@@ -729,8 +851,85 @@ if(isset($carId)){
         btn27.style.display = "none";
         btn28.style.display = "none";
         btn29.style.display = "block";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to Export";
     }
+
+    btn10.onclick = function() {
+        modal.style.display = "block";
+        btn21.style.display = "none";
+        btn23.style.display = "none";
+        btn24.style.display = "none";
+        btn25.style.display = "none";
+        btn22.style.display = "none";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        btn210.style.display = "block";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to USS";
+    }
+
+    btn11.onclick = function() {
+        modal.style.display = "block";
+        btn21.style.display = "none";
+        btn23.style.display = "none";
+        btn24.style.display = "none";
+        btn25.style.display = "none";
+        btn22.style.display = "none";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "block";
+        btn212.style.display = "none";
+        btn213.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to CAA";
+    }
+
+    btn12.onclick = function() {
+        modal.style.display = "block";
+        btn21.style.display = "none";
+        btn23.style.display = "none";
+        btn24.style.display = "none";
+        btn25.style.display = "none";
+        btn22.style.display = "none";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "block";
+        btn213.style.display = "none";
+        title.innerHTML = "Please conform to Add this Item to Other Option";
+    }
+
+    btn13.onclick = function() {
+        modal.style.display = "block";
+        btn21.style.display = "none";
+        btn23.style.display = "none";
+        btn24.style.display = "none";
+        btn25.style.display = "none";
+        btn22.style.display = "none";
+        btn26.style.display = "none";
+        btn27.style.display = "none";
+        btn28.style.display = "none";
+        btn29.style.display = "none";
+        btn210.style.display = "none";
+        btn211.style.display = "none";
+        btn212.style.display = "none";
+        btn213.style.display = "block";
+        title.innerHTML = "Please conform to Add this Item to Parts";
+    }
+
 
     window.onclick = function(event) {
         if (event.target == modal) {

@@ -585,7 +585,7 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
                            <div class="row mt-4  px-0">
                               
                               <div class="col-12  px-0">
-                                 <img src="<?php echo "images/cars/".$value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
+                                 <img src="<?php echo file_exists("images/cars/".$value1->getImage())?"images/cars/".$value1->getImage():"images/cars/noimage.jpg"; ?>" class="w-100 img-fluid  px-0" style="max-height: 300px; object-fit: cover;" alt="Full width image">
                               </div>
                            </div>
                            <!-- <div class="row mt-4 ">
@@ -707,7 +707,7 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
                            </div>
                            <div class="row mt-4  px-0">
                               <div class="col-12  px-0">
-                                 <img src="<?php echo "images/cars/".$value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
+                                 <img src="<?php echo file_exists("images/cars/".$value1->getImage())?"images/cars/".$value1->getImage():"images/cars/noimage.jpg"; ?>" class="w-100 img-fluid  px-0" style="max-height: 300px; object-fit: cover;"  alt="Full width image">
                               </div>
                            </div>
                            <!-- <div class="row mt-4 ">

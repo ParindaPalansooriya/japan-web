@@ -274,6 +274,68 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+  	min-width: 1000px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    color: #fff;
+    background: #40b2cd;		
+    padding: 16px 25px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box .input-group-addon {
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+    padding: 6px 0;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+ }
     /*   end  Header left/center/right code*/
 </style>
 
@@ -310,7 +372,16 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
     <!-- List section -->
     <div class="content">
 
-        <div class="container">
+        <div class="container">		
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="search-box">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis">
+                            </div>
+                        </div>
+                    </div>
             <div class="table-responsive">
 
                 <table class="table custom-table">
@@ -318,7 +389,7 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
                     <tr>
                         <th scope="col">Image</th>
                         <th scope="col">Car Name / Maker<br>Body Style / Condition</th>
-                        <th scope="col">Model<br>Power</th>
+                        <th scope="col">Power / Chassis</th>
                         <th scope="col">Model Year<br>Running</th>
                         <th scope="col">Color / Color Code<br>Shift / Cooling</th>
                         <th scope="col">User Name<br>Contact Number<br>Selling Price</th>
@@ -335,8 +406,8 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
                         <tr>
                             <td> <img src="<?php echo "../images/cars/".$value->getImage();?>" alt="" width="120" height="65"></td>
                             <td><?php echo $value->getName();?> / <?php echo $value->getMaker();?>
-                            <br><?php echo $value->getStyle();?> / <?php echo $value->getIs_used()==0?"New":"Used";?></td>
-                            <td><?php echo $value->getModel();?><br><?php echo $value->getPower();?></td>
+                            <br><?php echo $value->getStyle();?> / <?php echo $value->getIs_used()==2?"Accident Repair":($value->getIs_used()==0?"New":"Used");?></td>
+                            <td><?php echo $value->getPower();?> / <?php echo $value->getChassis();?></td>
                             <td><?php echo $value->getModel_year();?><br><?php echo $value->getRunning();?></td>
                             <td><?php echo $value->getIn_color();?> / <?php echo $value->getEx_color();?><br>
                             <?php echo $value->getTransmission_shift();?> / <?php echo $value->getCooling();?></td>
@@ -546,5 +617,27 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
 </script>
 <!--===============================================================================================-->
 <script src="../js/main.js"></script>
+
+<script>
+$(document).ready(function(){
+	// Activate tooltips
+	$('[data-toggle="tooltip"]').tooltip();
+    
+	// Filter table rows based on searched term
+    $("#search").on("keyup", function() {
+        var term = $(this).val().toLowerCase();
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(3)").text().toLowerCase();
+            console.log(name);
+            if(name.search(term) < 0){                
+                $row.hide();
+            } else{
+                $row.show();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

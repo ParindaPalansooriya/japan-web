@@ -30,10 +30,14 @@ class Cars{
     public $is_two_weel;
     public $is_steering_right;
     public $date;
+    public $ex_color;
+    public $in_color;
 
     public function __construct($maker_id, $model_id, $interior_color_id, $exterior_color_id, $current_action_id, $body_style_id,$passengers, 
     $doors, $name, $grade, $power, $model_year, $evaluation, $running, $cooling, $note, $fuel, $chassis, $dimensions_L, $dimensions_W, $dimensions_H, 
-    $transmission_shift, $id, $is_public, $is_used, $is_two_weel, $is_steering_right)
+    $transmission_shift, $id, $is_public, $is_used, $is_two_weel, $is_steering_right,
+    $interior_color,
+    $exterior_color)
     {
         $this->maker_id = $maker_id;
         $this->model_id = $model_id;
@@ -62,6 +66,8 @@ class Cars{
         $this->is_used = $is_used;
         $this->is_two_weel = $is_two_weel;
         $this->is_steering_right = $is_steering_right;
+        $this->in_color = $interior_color;
+        $this->ex_color = $exterior_color;
     }
 
     
@@ -69,8 +75,6 @@ class Cars{
     public $style;
     public $maker;
     public $model;
-    public $ex_color;
-    public $in_color;
     
     public $price;
 
@@ -184,7 +188,7 @@ class Cars{
     public function getImage()
     {
         if(!isset($this->image) || empty($this->image)){
-            return "images/unnamed.png";
+            return "noimage.png";
         }
         return $this->image;
     }
@@ -317,6 +321,18 @@ class Cars{
         }
         if($this->current_action_id==-1){
             return "Export";
+        }
+        if($this->current_action_id==8){
+            return "USS";
+        }
+        if($this->current_action_id==9){
+            return "CAA";
+        }
+        if($this->current_action_id==10){
+            return "Other Option";
+        }
+        if($this->current_action_id==11){
+            return "Parts";
         }
         return $this->current_action_id;
     }

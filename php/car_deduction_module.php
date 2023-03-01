@@ -11,8 +11,10 @@ class CarDeduction{
     public $insurance;
     public $repair;
     public $other;
+    public $with_tax;
+    public $recycle;
 
-    public function __construct($car_id, $rtax, $atax, $au_cha,$trasport,$storage,$insurance,$repair,$other)
+    public function __construct($car_id, $rtax, $atax, $au_cha,$trasport,$storage,$insurance,$repair,$other,$with_tax,$recycle)
     {
         $this->car_id = $car_id;
         $this->rtax = $rtax;
@@ -23,6 +25,8 @@ class CarDeduction{
         $this->insurance = $insurance;
         $this->repair = $repair;
         $this->other = $other;
+        $this->with_tax = $with_tax;
+        $this->recycle = $recycle;
 
     }
 
@@ -203,6 +207,46 @@ class CarDeduction{
     public function setCar_id($car_id)
     {
         $this->car_id = $car_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of with_tax
+     */ 
+    public function getWith_tax()
+    {
+        return $this->with_tax;
+    }
+
+    /**
+     * Set the value of with_tax
+     *
+     * @return  self
+     */ 
+    public function setWith_tax($with_tax)
+    {
+        $this->with_tax = $with_tax;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of recycle
+     */ 
+    public function getRecycle()
+    {
+        return $this->recycle;
+    }
+
+    /**
+     * Set the value of recycle
+     *
+     * @return  self
+     */ 
+    public function setRecycle($recycle)
+    {
+        $this->recycle = $recycle;
 
         return $this;
     }

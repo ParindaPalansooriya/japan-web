@@ -30,7 +30,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
     $sellingCount = sizeof(getAllUserSellingCarsForAdminLists($link));
     $buyingCount = sizeof(getAllUserBuyingCarsForAdminLists($link));
     $contactCount = sizeof(getAllContactUs($link,false));
-    $bdyCount = sizeof(getAllCustomers($link,date("Y-m-d")));
+    $bdyCount = sizeof(getAllCustomersToSendPostCard($link));
 
 
 ?>

@@ -1,25 +1,26 @@
 <?php
 
 function insertCustomer($link,
+        $chassis,
         $name,
         $contact_num1,
         $contact_num2,
         $address,
-        $bday
+        $bday,
+        $valid
 )
 {
-    $sql = "INSERT INTO customers (name, contact_num1, contact_num2, bday ,address) VALUES ('$name','$contact_num1','$contact_num2','$bday','$address')";
-
+    $sql = "INSERT INTO customers (chassis,name, contact_num1, contact_num2, bday ,address,valid) VALUES ('$chassis','$name','$contact_num1','$contact_num2','$bday','$address','$valid')";
     return mysqli_query($link, $sql);
 }
 
-function getAllCustomers($link, $date){
+function getAllCustomers($link, $date, $name, $removeUniqe){
     $retuen_val = [];
     require_once "customer_module.php";
     if(isset($date) && !empty($date)){
-        $sql2 = "SELECT * FROM customers where bday like '%$date%'";
+        $sql2 = "SELECT * FROM customers where bday like '%$date%'".($name!==null?" and name like '%$name%'":"");
     }else{
-        $sql2 = "SELECT * FROM customers";
+        $sql2 = "SELECT * FROM customers".($name!==null?" where name like '%$name%'":"").($removeUniqe!==null && $removeUniqe?" group by name,address":"");
     }
 
     if($result = mysqli_query($link, $sql2)){
@@ -30,7 +31,10 @@ function getAllCustomers($link, $date){
                 $row['contact_num1'],
                 $row['contact_num2'],
                 $row['bday'],
-                $row['address']
+                $row['address'],
+                $row['valid'],
+                $row['last_send_date'],
+                $row['chassis']
             );
             array_push($retuen_val,$car);
         }
@@ -39,24 +43,61 @@ function getAllCustomers($link, $date){
     return $retuen_val;
 }
 
-// function getlogin($link,$userName, $password){
-//     $retuen_val = null;
-//     require_once "control_users_module.php";
-//     $sql2 = "SELECT * FROM control_users where username = '$userName' and password1 = '$password'";
+function getAllCustomersToSendPostCard($link){
+    $retuen_val = [];
+    require_once "customer_module.php";
+    $sql2 = "SELECT * , DATE_ADD(last_send_date, INTERVAL valid MONTH) as next 
+    FROM customers where DATEDIFF(DATE_ADD(last_send_date, INTERVAL valid MONTH),CURRENT_DATE())<=14";
 
-//     if($result = mysqli_query($link, $sql2)){
-//         while($row = mysqli_fetch_array($result)){
-//             $retuen_val = new ControlUsers(
-//                 $row['id'],
-//                 $row['username'],
-//                 $row['password1'],
-//                 $row['user_type'],
-//                 $row['is_active']
-//             );
-//         }
-//         mysqli_free_result($result);
-//     }
-//     return $retuen_val;
-// }
+    if($result = mysqli_query($link, $sql2)){
+        while($row = mysqli_fetch_array($result)){
+            $car = new Customer(
+                $row['id'],
+                $row['name'],
+                $row['contact_num1'],
+                $row['contact_num2'],
+                $row['bday'],
+                $row['address'],
+                $row['valid'],
+                $row['last_send_date'],
+                $row['chassis']
+            );
+            array_push($retuen_val,$car);
+        }
+        mysqli_free_result($result);
+    }
+    return $retuen_val;
+}
+
+
+
+
+function getCustomersById($link, $id){
+    $retuen_val = null;
+    require_once "customer_module.php";
+    $sql2 = "SELECT * FROM customers where id = $id";
+    if($result = mysqli_query($link, $sql2)){
+        while($row = mysqli_fetch_array($result)){
+            $retuen_val = new Customer(
+                $row['id'],
+                $row['name'],
+                $row['contact_num1'],
+                $row['contact_num2'],
+                $row['bday'],
+                $row['address'],
+                $row['valid'],
+                $row['last_send_date'],
+                $row['chassis']
+            );
+        }
+        mysqli_free_result($result);
+    }
+    return $retuen_val;
+}
+
+function updateLastSendDate($link,$id){
+    $sql = "UPDATE customers SET last_send_date = CURDATE() WHERE id = $id ;";
+    return mysqli_query($link, $sql);
+}
 
 ?>

@@ -18,9 +18,10 @@ if(isset($_POST['Submit']))
 { 
     require_once('../php/user_submits_dao.php');
     if(insertUserDaySubmits($link,$userId,$_REQUEST['date'],$_REQUEST['time'],$_REQUEST['sale'],$_REQUEST['done'])>0){
+        echo '<script>alert("Successfully submited")</script>';
         echo "<script>window.close();</script>";
     }else{
-        echo "Submit Error";
+        echo '<script>alert("Submit Error")</script>';
     }
 }
 // print_r($_POST);

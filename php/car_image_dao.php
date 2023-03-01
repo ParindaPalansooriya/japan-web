@@ -14,12 +14,6 @@ function insertCarImagers($link,
         console_log($th);
     }
 
-    if(session_status()!=2){
-        ob_start();
-        session_start();
-    }
-
-    $type = $_SESSION['type'];
     if(isset($type) && $type==1){
         $is_main=3;
     }

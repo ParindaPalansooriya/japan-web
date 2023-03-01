@@ -14,11 +14,25 @@ if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($
 }
 
 require_once('../php/config.php');
+require_once('../php/customer_dao.php');
+
+$customer = null;
+$selectedCustomer = null;
+$status=0;
+
+if(isset($_POST['Search'])){
+    $customer = getAllCustomers($link,null,$_REQUEST['c_name'],true);
+    $status=1;
+}
+
+if(isset($_POST['Select'])){
+    $selectedCustomer = getCustomersById($link,$_REQUEST['c_id']);
+    $status=2;
+}
 
 if(isset($_POST['Submit']))
 { 
-    require_once('../php/customer_dao.php');
-    if(insertCustomer($link,$_REQUEST['c_name'],$_REQUEST['c_1'],$_REQUEST['c_2'],$_REQUEST['address'],$_REQUEST['date'])>0){
+    if(insertCustomer($link,$_REQUEST['chassis'],$_REQUEST['c_name'],$_REQUEST['c_1'],$_REQUEST['c_2'],$_REQUEST['address'],$_REQUEST['date'],$_REQUEST['valid'])>0){
         echo '<script>alert("Successfuly Submited")</script>';
     }else{
         echo '<script>alert("Submition Error")</script>';
@@ -259,20 +273,79 @@ if(isset($_POST['Submit']))
                     <div class="box" >
                     <form action="insert_customer.php" enctype="multipart/form-data" method="post">
                             <div class="modal-body">
-                                <div class="form-group row">
-                                    <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Birth Date
-                                    </label>
-                                    <div class="col-sm-6">
-                                    <input type="date" name="date" style="font-size:0.8em" class="form-control" id="date" value="<?php echo date("Y-m-d");?> " >
+                                <?php 
+                                if($status==0){
+                                ?> 
+                                    <div class="form-group row">
+                                        <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                        Customer Name
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" name="c_name" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" <?php echo $customer==null?'required':'' ?>>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Search" name="Search" >Search</button>
+                                    </div>
+                                <?php
+                                }else if($status==1 && isset($customer) && !empty($customer)){
+                                    ?>
+                                    <div class="table-responsive">
+                                        <table class="table custom-table">
+                                            <tbody>
+                                            <?php
+                                                foreach ($customer as $key => $value) {
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $value->getChassis(); ?></td>
+                                                    <td><?php echo $value->getName(); ?></td>
+                                                    <td><?php echo $value->getAddress(); ?></td>
+                                                    <td>
+                                                        <form id="formAwesome" action="customer_list.php" enctype="multipart/form-data" method="post">
+                                                            <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
+                                                            <button Class="bttn2" name="Select">Select</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                                }
+                                            ?>
+                                            </tbody>
+                                        </table>
+                                        </div>
+                                    
+                                    <?php
+                                }else{
+                                ?>
                                 <div class="form-group row">
                                     <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
                                     Customer Name
                                     </label>
                                     <div class="col-sm-6">
-                                    <input type="text" name="c_name" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
+                                    <input type="text" value='<?php echo $selectedCustomer!==null?($selectedCustomer->getName()):""; ?>' name="c_name" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                    Last Shakan Date
+                                    </label>
+                                    <div class="col-sm-6">
+                                    <input type="date" name="date" style="font-size:0.8em" class="form-control" id="date" value="<?php echo date("Y-m-d");?> " required>
+                                    </div>
+                                </div><div class="form-group row">
+                                    <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                    Shakan Valid Period
+                                    </label>
+                                    <div class="col-sm-6">
+                                    <input type="number" name="valid" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                    Chassis Number
+                                    </label>
+                                    <div class="col-sm-6">
+                                    <input type="text" name="chassis" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -280,7 +353,7 @@ if(isset($_POST['Submit']))
                                     Contact Number 1
                                     </label>
                                     <div class="col-sm-6">
-                                    <input type="text" name="c_1" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
+                                    <input type="text" value='<?php echo $selectedCustomer!==null?($selectedCustomer->getContact_num1()):""; ?>' name="c_1" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -288,7 +361,7 @@ if(isset($_POST['Submit']))
                                     Contact Number 2
                                     </label>
                                     <div class="col-sm-6">
-                                    <input type="text" name="c_2" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
+                                    <input type="text" value='<?php echo $selectedCustomer!==null?($selectedCustomer->getContact_num2()):""; ?>' name="c_2" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -296,12 +369,13 @@ if(isset($_POST['Submit']))
                                     Address
                                     </label>
                                     <div class="col-sm-6">
-                                    <textarea name="address" style="font-size:0.8em" class="form-control" id="done" placeholder="john.doe@email.com" required></textarea>
+                                    <textarea name="address" style="font-size:0.8em" class="form-control" id="done" placeholder="john.doe@email.com" required><?php echo $selectedCustomer!==null?($selectedCustomer->getAddress()):""; ?></textarea>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Submit" name="Submit" > Submit </button>
                                 </div>
+                                <?php } ?>
                             </div>
                         </form>
                     </div>

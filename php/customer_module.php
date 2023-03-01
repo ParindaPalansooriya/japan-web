@@ -7,9 +7,12 @@ class Customer{
     public $contact_num2;
     public $bday;
     public $address;
+    public $valid;
+    public $lastSendDate;
+    public $chassis;
 
 
-    public function __construct($id, $name, $contact_num1, $contact_num2, $bday,$address)
+    public function __construct($id, $name, $contact_num1, $contact_num2, $bday,$address,$valid,$lastSendDate,$chassis)
     {
         
         $this->id = $id;
@@ -18,6 +21,9 @@ class Customer{
         $this->contact_num2 = $contact_num2;
         $this->bday = $bday;
         $this->address = $address;
+        $this->valid = $valid;
+        $this->lastSendDate = $lastSendDate;
+        $this->chassis = $chassis;
 
     }
 
@@ -139,6 +145,66 @@ class Customer{
     public function setAddress($address)
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of valid
+     */ 
+    public function getValid()
+    {
+        return $this->valid;
+    }
+
+    /**
+     * Set the value of valid
+     *
+     * @return  self
+     */ 
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of lastSendDate
+     */ 
+    public function getLastSendDate()
+    {
+        return $this->lastSendDate;
+    }
+
+    /**
+     * Set the value of lastSendDate
+     *
+     * @return  self
+     */ 
+    public function setLastSendDate($lastSendDate)
+    {
+        $this->lastSendDate = $lastSendDate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of chassis
+     */ 
+    public function getChassis()
+    {
+        return $this->chassis;
+    }
+
+    /**
+     * Set the value of chassis
+     *
+     * @return  self
+     */ 
+    public function setChassis($chassis)
+    {
+        $this->chassis = $chassis;
 
         return $this;
     }
