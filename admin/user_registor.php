@@ -18,7 +18,7 @@ require_once('../php/config.php');
 if(isset($_POST['Submit']))
 { 
     require_once('../php/control_users_dao.php');
-    if(insertControlUsers($link,$_REQUEST['name'],$_REQUEST['pass'],$_REQUEST['type'],0)>0){
+    if(insertControlUsers($link,$_REQUEST['name'],$_REQUEST['pass'],$_REQUEST['type'],1,$_REQUEST['type']==1?0:$_REQUEST['store'])>0){
         echo '<script>alert("User Successfully Registered!")</script>';
     }else{
         echo '<script>alert("Something Wrong! Please Try Again")</script>';
@@ -230,22 +230,6 @@ if(isset($_POST['Submit']))
 
 <body class="sub_page">
 
-<!-- Button section -->
-<header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- End color buttons -3  section -->
 
 <!-- box with filter section -->
@@ -276,13 +260,25 @@ if(isset($_POST['Submit']))
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="type" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Steering</label>
+                                    <label for="type" style="font-size:0.8em" class="col-sm-6 col-form-label">User Type</label>
                                     <div class="col-sm-6">
                                     <select class="form-control" name="type" id="type" style="font-size:0.8em">
-                                        <option value="3" <?php //echo $car !== null && $car->getIs_steering_right()=="3"? "selected":"" ;?>>Store Employee</option>
-                                        <option value="2" <?php //echo $car !== null && $car->getIs_steering_right()=="2"? "selected":"" ;?>>Store Admin</option>
-                                        <option value="1" <?php //echo $car !== null && $car->getIs_steering_right()=="1"? "selected":"" ;?>>Supper Admin</option>
+                                        <option value="2" >Store Admin</option>
+                                        <option value="1" >Supper Admin</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="type" style="font-size:0.8em" class="col-sm-6 col-form-label">User Store</label>
+                                    <div class="col-sm-6">
+                                    <select class="form-control" name="store" id="store" style="font-size:0.8em">
+                                        <option value="1" >1 Kojo</option>
+                                        <option value="2" >1Sale</option>
+                                        <option value="3" >2 Kojo</option>
+                                        <option value="4" >2Sale</option>
+                                        <option value="5" >3 Kojo</option>
+                                        <option value="6" >3Sale</option>
+                                        <option value="7" >Miho Kojo</option>
                                     </select>
                                     </div>
                                 </div>

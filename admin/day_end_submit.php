@@ -229,23 +229,6 @@ if(isset($_POST['Submit']))
 </style>
 
 <body class="sub_page">
-
-<!-- Button section -->
-<header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- End color buttons -3  section -->
 
 <!-- box with filter section -->

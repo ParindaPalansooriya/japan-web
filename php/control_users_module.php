@@ -7,9 +7,10 @@ class ControlUsers{
     public $password;
     public $user_type;
     public $is_active;
+    public $store;
 
 
-    public function __construct($id, $user_name, $password, $user_type, $is_active)
+    public function __construct($id, $user_name, $password, $user_type, $is_active, $store)
     {
         
         $this->id = $id;
@@ -17,6 +18,7 @@ class ControlUsers{
         $this->password = $password;
         $this->user_type = $user_type;
         $this->is_active = $is_active;
+        $this->store = $store;
 
     }
 
@@ -96,6 +98,26 @@ class ControlUsers{
     public function setUser_name($user_name)
     {
         $this->user_name = $user_name;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of store
+     */ 
+    public function getStore()
+    {
+        return $this->store;
+    }
+
+    /**
+     * Set the value of store
+     *
+     * @return  self
+     */ 
+    public function setStore($store)
+    {
+        $this->store = $store;
 
         return $this;
     }

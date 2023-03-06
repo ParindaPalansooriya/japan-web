@@ -353,15 +353,6 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                         </div>
                     </div>
                 </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                                    <button class="bttn Bu_one"> Button </button>
-                                    <button class="bttn Bu_two"> Button </button>
-                                    <button class="bttn Bu_three"> Button </button>
-                                </div>
-                        </div>
-                </div>
             </div>
         </div>
     </div>

@@ -29,10 +29,18 @@ if(isset($queries) && !empty($queries)){
 }
 
 if(isset($useId) && !empty($useId) && isset($action)){
-    if(updateUserStatus($link,$useId,$action)>0){
-        echo '<script>alert("User Successfully '.($action==1?"Actived":"Deactived").'")</script>';
+    if($action=="delete"){
+        if(deleteUser($link,$useId)>0){
+            echo '<script>alert("User Successfully Deleted")</script>';
+        }else{
+            echo '<script>alert("Something Wrong! Please Try Again")</script>';
+        }
     }else{
-        echo '<script>alert("Something Wrong! Please Try Again")</script>';
+        if(updateUserStatus($link,$useId,$action)>0){
+            echo '<script>alert("User Successfully '.($action==1?"Actived":"Deactived").'")</script>';
+        }else{
+            echo '<script>alert("Something Wrong! Please Try Again")</script>';
+        }
     }
 }
 
@@ -109,7 +117,6 @@ $summery = getAllControlUsers($link);
         color: black;
         padding: 8px 28px;
         font-size: 16px;
-
     }
     .Bu_one {
         border-color: #04AA6D;
@@ -117,8 +124,13 @@ $summery = getAllControlUsers($link);
     }
 
     .Bu_two {
-        border-color: #ff9800;
-        color: orange;
+        /* border: 2px solid black; */
+        border-radius: 5px;
+        background-color: red;
+        color: white;
+        padding: 8px 28px;
+        margin-left: 10px;
+        font-size: 16px;
     }
 
     .Bu_three {
@@ -442,18 +454,14 @@ $summery = getAllControlUsers($link);
                                 <a href="users_list.php?id=<?php echo $value->getId();?>&action=<?php echo $value->getIs_active()==1?0:1;?>">
                                     <button Class="swal-button" name="Action"><?php echo $value->getIs_active()==1?"Deactive":"Active";?></button>
                                 </a>
+                                <a href="users_list.php?id=<?php echo $value->getId();?>&action=delete">
+                                    <button Class="Bu_two" name="Action">Delete</button>
+                                </a>
                             </td>
                         </tr>
                     <?php
                         }
                     ?>
-<!--  End of 1st details row-->
-<!--  2nd details row    Samples    -->
-
-<!--  End of 2nd details row-->
-<!--  3rd details row Samples -->
-
-<!--  end of 3rd details row-->
                     </tbody>
                 </table>
             </div>

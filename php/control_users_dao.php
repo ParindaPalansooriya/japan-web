@@ -4,7 +4,8 @@ function insertControlUsers($link,
         $user_name,
         $password,
         $user_type,
-        $is_active
+        $is_active,
+        $store
 )
 {
 
@@ -12,7 +13,7 @@ function insertControlUsers($link,
         return -2;
     }
 
-    $sql = "INSERT INTO control_users (username, password1, user_type, is_active) VALUES ('$user_name','$password','$user_type','$is_active')";
+    $sql = "INSERT INTO control_users (username, password1, user_type, is_active, store) VALUES ('$user_name','$password','$user_type','$is_active',$store)";
 
     return mysqli_query($link, $sql);
 }
@@ -29,7 +30,8 @@ function getAllControlUsers($link){
                 $row['username'],
                 $row['password1'],
                 $row['user_type'],
-                $row['is_active']
+                $row['is_active'],
+                $row['store']
             );
             array_push($retuen_val,$car);
         }
@@ -50,7 +52,8 @@ function getAllControlUsersByUserName($link,$userName){
                 $row['username'],
                 $row['password1'],
                 $row['user_type'],
-                $row['is_active']
+                $row['is_active'],
+                $row['store']
             );
             array_push($retuen_val,$car);
         }
@@ -62,6 +65,11 @@ function getAllControlUsersByUserName($link,$userName){
 function updateUserStatus($link,$id,$action){
     $sql2 = "UPDATE control_users SET is_active = $action WHERE id = $id ;";
     return mysqli_query($link, $sql2);
+}
+
+function deleteUser($link,$id){
+    $sql = "DELETE FROM control_users WHERE id = $id";
+    return mysqli_query($link, $sql);
 }
 
 function getlogin($link,$userName, $password){
@@ -76,7 +84,8 @@ function getlogin($link,$userName, $password){
                 $row['username'],
                 $row['password1'],
                 $row['user_type'],
-                $row['is_active']
+                $row['is_active'],
+                $row['store']
             );
         }
         mysqli_free_result($result);

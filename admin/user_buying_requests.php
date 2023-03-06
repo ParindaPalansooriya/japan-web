@@ -4,6 +4,7 @@ ob_start();
 session_start();
 
 $id = $_SESSION['id'];
+$type = $_SESSION['type'];
 
 if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
     header("Location: login.php"); 
@@ -354,15 +355,6 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
                         </div>
                     </div>
                 </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                                    <button class="bttn Bu_one"> Button </button>
-                                    <button class="bttn Bu_two"> Button </button>
-                                    <button class="bttn Bu_three"> Button </button>
-                                </div>
-                        </div>
-                </div>
             </div>
         </div>
     </div>
@@ -393,7 +385,7 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
                         <th scope="col">Model Year<br>Running</th>
                         <th scope="col">Color / Color Code<br>Shift / Cooling</th>
                         <th scope="col">User Name<br>Contact Number<br>Selling Price</th>
-                        <th scope="col">Action</th>
+                        <th style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -414,7 +406,7 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
                             <td><?php echo $value->getUserInwuary()->getUser_name();?><br>
                             <?php echo $value->getUserInwuary()->getMobile();?><br>
                             <?php echo $value->getPrice();?></td>
-                            <td>
+                            <td style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                 <a href="vehicle_preview_buying.php?id=<?php echo $value->getId();?>&inqid=<?php echo $value->getUserInwuary()->getId();?>" 
                                 target="_blank">
                                     <button Class="swal-button" name="Action">Action</button>

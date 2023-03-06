@@ -16,6 +16,17 @@ $today = null;
 require_once('../php/config.php');
 require_once('../php/customer_dao.php');
 
+
+if(isset($_POST['SetDate'])){
+    print_r($_REQUEST);
+    if(updateLastSendDate($link,$_REQUEST['c_id'])>0){
+        echo '<script>alert("Successfully Updated!")</script>';
+    }else{
+        echo '<script>alert("Something Wrong! Please Try Again")</script>';
+    }
+}
+
+
 parse_str($_SERVER['QUERY_STRING'], $queries);
 if(isset($queries) && !empty($queries)){
    if(isset($queries['today']) && !empty($queries['today'])){
@@ -401,7 +412,7 @@ if(isset($queries) && !empty($queries)){
                                     <div class="form-inline">
                                     <form class="form-inline">
                                         <input class="bttn Bu_one" name="today" style="margin-right: 10px;" type="hidden" value="true">
-                                        <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">Pick Date</button>
+                                        <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">Near To Exp: Only</button>
                                     </form>
                                     <form >
                                         <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">See All</button>
@@ -463,13 +474,17 @@ if(isset($queries) && !empty($queries)){
                             <td><?php echo $value->getContact_num2(); ?></td>
                             <td><?php echo $value->getAddress(); ?></td>
                             <td>
-                                <form id="formAwesome" action="customer_list.php" enctype="multipart/form-data" method="post">
+                                <form id="formAwesome" 
+                                    action="customer_list.php<?php echo (isset($queries['today']) && !empty($queries['today']))?"?today=true":"" ?>" 
+                                    enctype="multipart/form-data" method="post">
                                     <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
                                     <button style="font-size: small;" Class="Bu_three" name="Action">Print Card</button>
                                 </form>
-                                <form style="margin-top: 10px;" id="formAwesome" action="customer_list.php" enctype="multipart/form-data" method="post">
+                                <form style="margin-top: 10px;" id="formAwesome" 
+                                    action="customer_list.php<?php echo (isset($queries['today']) && !empty($queries['today']))?"?today=true":"" ?>" 
+                                    enctype="multipart/form-data" method="post">
                                     <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
-                                    <button style="font-size: small;" Class="Bu_two" name="Action">Set Last Sakan</button>
+                                    <button style="font-size: small;" Class="Bu_two" name="SetDate">Set Last Sakan</button>
                                 </form>
                             </td>
                         </tr>

@@ -669,7 +669,7 @@ if(isset($_POST['Submit']))
                                         echo "";
                                     }
                                 ?>"
-                                 style="font-size:0.8em" class="form-control" id="supplier" placeholder="john." required >
+                                 style="font-size:0.8em" class="form-control" id="supplier" placeholder="john.">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -723,7 +723,7 @@ if(isset($_POST['Submit']))
                                 Recycle
                                 </label>
                                 <div class="col-sm-6">
-                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getRecycle():"" ;?>"  name="recycle" style="font-size:0.8em" class="form-control" id="recycle" placeholder="john" required>
+                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getRecycle():"" ;?>"  name="recycle" style="font-size:0.8em" class="form-control" id="recycle" placeholder="john" >
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -731,7 +731,7 @@ if(isset($_POST['Submit']))
                                 R TAX
                                 </label>
                                 <div class="col-sm-6">
-                                <input  onchange="myFunction()" type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getRtax():"" ;?>" name="rtax" style="font-size:0.8em" class="form-control" id="rtax" placeholder="john." required>
+                                <input  onchange="myFunction()" type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getRtax():"" ;?>" name="rtax" style="font-size:0.8em" class="form-control" id="rtax" placeholder="john." >
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -739,7 +739,7 @@ if(isset($_POST['Submit']))
                                 Automobile TAX
                                 </label>
                                 <div class="col-sm-6">
-                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getAtax():"" ;?>"  name="auto_t" style="font-size:0.8em" class="form-control" id="auto_t" placeholder="john" required>
+                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getAtax():"" ;?>"  name="auto_t" style="font-size:0.8em" class="form-control" id="auto_t" placeholder="john" >
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -747,7 +747,7 @@ if(isset($_POST['Submit']))
                                 AU Chargers
                                 </label>
                                 <div class="col-sm-6">
-                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getAu_cha():"" ;?>"  name="au" style="font-size:0.8em" class="form-control" id="au" placeholder="john.dom" required>
+                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getAu_cha():"" ;?>"  name="au" style="font-size:0.8em" class="form-control" id="au" placeholder="john.dom" >
                                 </div>
                             </div>
                             <hr>
@@ -756,7 +756,7 @@ if(isset($_POST['Submit']))
                                 Trasport
                                 </label>
                                 <div class="col-sm-6">
-                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getTrasport():"" ;?>"  name="trans" style="font-size:0.8em" class="form-control" id="trans" placeholder="john." required>
+                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getTrasport():"" ;?>"  name="trans" style="font-size:0.8em" class="form-control" id="trans" placeholder="john." >
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -764,7 +764,7 @@ if(isset($_POST['Submit']))
                                 Storage
                                 </label>
                                 <div class="col-sm-6">
-                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getStorage():"" ;?>"  name="storage" style="font-size:0.8em" class="form-control" id="storage" placeholder="john" required>
+                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getStorage():"" ;?>"  name="storage" style="font-size:0.8em" class="form-control" id="storage" placeholder="john" >
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -772,7 +772,7 @@ if(isset($_POST['Submit']))
                                 Insurance
                                 </label>
                                 <div class="col-sm-6">
-                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getInsurance():"" ;?>"  name="insu" style="font-size:0.8em" class="form-control" id="insu" placeholder="john.dom" required>
+                                <input  onchange="myFunction()"  type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getInsurance():"" ;?>"  name="insu" style="font-size:0.8em" class="form-control" id="insu" placeholder="john.dom" >
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -780,7 +780,7 @@ if(isset($_POST['Submit']))
                                 Repair
                                 </label>
                                 <div class="col-sm-6">
-                                <input  onchange="myFunction()"  type="number" name="repair" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getRepair():"" ;?>"  style="font-size:0.8em" class="form-control" id="repair" placeholder="john.dom" required>
+                                <input  onchange="myFunction()"  type="number" name="repair" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getRepair():"" ;?>"  style="font-size:0.8em" class="form-control" id="repair" placeholder="john.dom" >
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -788,7 +788,7 @@ if(isset($_POST['Submit']))
                                 Other
                                 </label>
                                 <div class="col-sm-6">
-                                <input  onchange="myFunction()"  type="number" name="other" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getOther():"" ;?>"  style="font-size:0.8em" class="form-control" id="other" placeholder="john.dom" required>
+                                <input  onchange="myFunction()"  type="number" name="other" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getOther():"" ;?>"  style="font-size:0.8em" class="form-control" id="other" placeholder="john.dom" >
                                 </div>
                             </div>
                             <hr>
@@ -804,7 +804,7 @@ if(isset($_POST['Submit']))
                                 <?php } ?>
                             <div class="form-group row">
                                 <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Selling
+                                Total Cost
                                 </label>
                                 <div class="col-sm-6">
                                 <input type="number" name="sell" value= "<?php echo $car !== null && $car->getPriceObject() !== null ? $car->getPriceObject()->getSelling():"" ;?>" style="font-size:0.8em" class="form-control" id="sell" placeholder="john" required <?php if($type!=1){echo 'readonly';}?>>
@@ -812,7 +812,7 @@ if(isset($_POST['Submit']))
                             </div>
                             <div class="form-group row">
                                 <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Public
+                                Public Price
                                 </label>
                                 <div class="col-sm-6">
                                 <input type="number" name="public" value= "<?php echo $car !== null && $car->getPriceObject() !== null ? $car->getPriceObject()->getPublic():"" ;?>" style="font-size:0.8em" class="form-control" id="public" placeholder="john.dom">

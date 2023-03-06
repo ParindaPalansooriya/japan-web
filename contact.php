@@ -300,7 +300,7 @@ if(isset($_POST['Submit']))
 
 					</div>
 
-               <div class="flex-w w-full p-b-42">
+               <!-- <div class="flex-w w-full p-b-42">
 						<span class="fs-18 cl5 txt-center size-211">
 							<span class="lnr lnr-phone-handset"></span>
 						</span>
@@ -320,7 +320,7 @@ if(isset($_POST['Submit']))
 						</div>
 
 
-					</div>
+					</div> -->
                
 
 				</div>

@@ -243,23 +243,6 @@ if(isset($_POST['Submit']))
 </style>
 
 <body class="sub_page">
-
-<!-- Button section -->
-<header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- End color buttons -3  section -->
 
 <!-- box with filter section -->
@@ -292,6 +275,14 @@ if(isset($_POST['Submit']))
                                     ?>
                                     <div class="table-responsive">
                                         <table class="table custom-table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Chassis</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Address</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
                                             <tbody>
                                             <?php
                                                 foreach ($customer as $key => $value) {
@@ -327,14 +318,14 @@ if(isset($_POST['Submit']))
                                 </div>
                                 <div class="form-group row">
                                     <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Last Shakan Date
+                                    Registered Date
                                     </label>
                                     <div class="col-sm-6">
                                     <input type="date" name="date" style="font-size:0.8em" class="form-control" id="date" value="<?php echo date("Y-m-d");?> " required>
                                     </div>
                                 </div><div class="form-group row">
                                     <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Shakan Valid Period
+                                    Shakan Valid Period (Months)
                                     </label>
                                     <div class="col-sm-6">
                                     <input type="number" name="valid" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
@@ -358,7 +349,7 @@ if(isset($_POST['Submit']))
                                 </div>
                                 <div class="form-group row">
                                     <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Contact Number 2
+                                    Contact Email Address
                                     </label>
                                     <div class="col-sm-6">
                                     <input type="text" value='<?php echo $selectedCustomer!==null?($selectedCustomer->getContact_num2()):""; ?>' name="c_2" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>

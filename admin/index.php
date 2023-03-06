@@ -152,6 +152,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         color: #04AA6D;
         padding: 8px 28px;
         font-size: 16px;
+        width: 200px;
 
     }
 
@@ -162,6 +163,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         color: #f44336;
         padding: 8px 28px;
         font-size: 16px;
+        width: 200px;
 
     }
 
@@ -172,6 +174,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         color: palevioletred;
         padding: 8px 28px;
         font-size: 16px;
+        width: 200px;
 
     }
 
@@ -183,6 +186,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         padding: 5px 30px;
         font-size: 14px;
         margin-top: 15px;
+        width: 200px;
     }
 
     .butt2 {
@@ -192,6 +196,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         color: #ffad06;
         padding: 8px 28px;
         font-size: 16px;
+        width: 200px;
 
     }
     /* End button3 section   */
@@ -409,7 +414,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
                         <th scope="col"><?php echo $buyingCount ?></th>
                     </tr>
                     <tr>
-                        <th scope="col" style="width:70%">Today Birthday Loyalty Customers</th>
+                        <th scope="col" style="width:70%">Near To Expire Shaken</th>
                         <th scope="col"><?php echo $bdyCount ?></th>
                     </tr>
                     </thead>
@@ -453,7 +458,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
                                     <button  id="butt5" Class="butt5" name="Action">Store Manage</button>
                                 </a>
                             </td>
-                            <td style="padding-top: 100px;">
+                            <td style="padding-top: 100px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                 <a href="add_vehicle.php" target="_blank">
                                     <button  id="butt5" Class="bttn_st" name="Action">Add to Store</button>
                                 </a>
@@ -473,17 +478,17 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
                             </td>
                             <td style="padding-top: 20px;">
                                 <a href="day_end_customer_submit.php" target="_blank">
-                                    <button  id="butt3" Class="butt3" name="Action">Custom Summery</button>
+                                    <button  id="butt3" Class="butt3" name="Action">Customer Summery</button>
                                 </a>
                             </td>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>2){echo 'display: none';} ?>">
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                 <a href="day_end_submit_list.php" target="_blank">
                                     <button  id="butt4" Class="butt4" name="Action">Day Summery List</button>
                                 </a>
                             </td>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>2){echo 'display: none';} ?>">
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                 <a href="day_end_customer_submit_list.php" target="_blank">
-                                    <button  id="butt5" Class="butt5" name="Action">Custom Summery List</button>
+                                    <button  id="butt5" Class="butt5" name="Action">Customer Summery List</button>
                                 </a>
                             </td>
                         </tr>

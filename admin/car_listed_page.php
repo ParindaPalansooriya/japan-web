@@ -5,6 +5,7 @@ ob_start();
 session_start();
 
 $id = $_SESSION['id'];
+$type = $_SESSION['type'];
 
 if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
     header("Location: login.php"); 
@@ -103,8 +104,12 @@ $sellingRequest = getAllCarsForAdminLists($link);
     }
 
     .Bu_two {
-        border-color: #ff9800;
-        color: orange;
+        /* border: 2px solid white; */
+        border-radius: 5px;
+        background-color: red;
+        color: white;
+        padding: 8px 28px;
+        font-size: 16px;
     }
 
     .Bu_three {
@@ -410,7 +415,10 @@ $sellingRequest = getAllCarsForAdminLists($link);
                             <td>
                                 <div Class="bttn Bu_one"><?php echo $value->getCurrent_action_text();?></div><br>
                                 <a href="vehicle_preview_full.php?id=<?php echo $value->getId();?>" target="_blank">
-                                    <button Class="swal-button" name="Action">Update</button>
+                                    <button Class="swal-button" name="Action">Change Store</button>
+                                </a>
+                                <a href="add_vehicle.php?carId=<?php echo $value->getId();?>" target="_blank">
+                                    <button Class="Bu_two" name="Action">Edit</button>
                                 </a>
                             </td>
                         </tr>

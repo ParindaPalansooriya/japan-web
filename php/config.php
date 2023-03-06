@@ -390,6 +390,20 @@ if($link === false){
         console_log($th);
     }
 
+    try {
+        $customers_update_contact_num2 = "ALTER TABLE `customers` MODIFY `contact_num2` VARCHAR(150) NOT NULL default '0'";
+        mysqli_query($link, $customers_update_contact_num2);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
+        $control_users_add_store = "ALTER TABLE `control_users` ADD `store` int(2) NOT NULL default 0";
+        mysqli_query($link, $control_users_add_store);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
 }
 
 function console_log($val){

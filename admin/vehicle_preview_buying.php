@@ -435,31 +435,6 @@ if(isset($carId) && isset($inqId)){
 </style>
 
 <body>
-<!-- Button section -->
-<header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                            <button class="bttn Bu_one"> Button </button>
-                            <button class="bttn Bu_two"> Button </button>
-                            <button class="bttn Bu_three"> Button </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- End color buttons -3  section -->
 <body class="">
     <?php 

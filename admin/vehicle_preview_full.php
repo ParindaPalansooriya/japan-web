@@ -433,22 +433,6 @@ if(isset($carId)){
 </style>
 
 <body>
-<!-- Button section -->
-<header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- End color buttons -3  section -->
 <body class="">
     <?php 
@@ -577,9 +561,9 @@ if(isset($carId)){
                                         <table class="table custom-table">
                                             <tbody>
                                                 <tr>
-                                                    <th scope="col">Selling</th>
-                                                    <th scope="col">Public</th>
-                                                    <th scope="col">Buying</th>
+                                                    <th scope="col">Total Cost</th>
+                                                    <th scope="col">Public Price</th>
+                                                    <th scope="col">Buying Price</th>
                                                     <th scope="col">User Bid</th>
                                                 </tr>
                                             </thead>
@@ -589,13 +573,13 @@ if(isset($carId)){
                                                         <input type="text" name="sell" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getSelling(); ?>" required>
                                                     </th>
                                                     <th scope="col">
-                                                        <input type="text" name="pub" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getPublic(); ?>" required>
+                                                        <input type="text" name="pub" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getPublic(); ?>" >
                                                     </th>
                                                     <th scope="col">
                                                         <input type="text" name="buy" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getBuying(); ?>" required>
                                                     </th>
                                                     <th scope="col">
-                                                        <input type="text" name="ub" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getPrice1(); ?>" required>
+                                                        <input type="text" name="ub" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getPrice1(); ?>" readonly>
                                                     </th>
                                                 </tr>
                                             </tbody>
@@ -613,7 +597,7 @@ if(isset($carId)){
                     </div>
                 </div>
                     <table class="table custom-table">
-                        <thead>
+                        <thead style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                             <tr>
                                 <th scope="col">
                                         <button id="Bttn2" Class="bttn2" name="Action" value="1">1 Kojo</button>
@@ -629,9 +613,8 @@ if(isset($carId)){
                                 </th>
                             </tr>
                         </thead>
-                        <thead>
+                        <thead style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                             <tr>
-                                </th>
                                 <th scope="col">
                                         <button id="Bttn6" Class="bttn2" name="Action" value="5">3 Kojo</button>
                                 </th>
@@ -642,27 +625,26 @@ if(isset($carId)){
                                         <button id="Bttn8" Class="bttn2" name="Action" value="7">Miho Kojo</button>
                                 </th>
                                 <th scope="col">
-                                        <button id="Bttn9" Class="bttn2" name="Action" value="-1">Export</button>
+                                        <button id="Bttn13" Class="bttn2" name="Action" value="11">Parts</button>
                                 </th>
                             </tr>
                         </thead>
                         <thead>
                             <tr>
-                                </th>
                                 <th scope="col">
                                         <button id="Bttn10" Class="bttn2" name="Action" value="8">USS</button>
                                 </th>
                                 <th scope="col">
                                         <button id="Bttn11" Class="bttn2" name="Action" value="9">CAA</button>
                                 </th>
-                                <th scope="col">
+                                <th style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" scope="col">
                                         <button id="Bttn12" Class="bttn2" name="Action" value="10">Other Option</button>
                                 </th>
                                 <th scope="col">
-                                        <button id="Bttn13" Class="bttn2" name="Action" value="11">Parts</button>
+                                        <button id="Bttn9" Class="bttn2" name="Action" value="-1">Export</button>
                                 </th>
                                 <th scope="col">
-                                        <button id="Bttn1" Class="swal-button" name="Action" value="0">Remove</button>
+                                        <button id="Bttn1" Class="swal-button" name="Action" value="0">Soled</button>
                                 </th>
                             </tr>
                         </thead>
@@ -683,7 +665,7 @@ if(isset($carId)){
             <form action="vehicle_preview_full.php?id=<?php echo $carId;?>" method="post">
             <div class="heading_container heading_center" >
                 <h4 id="title" style="padding-bottom: 15px; margin-top: 10px;">Please Conform</h4>
-                <button id="Bttn21" Class="swal-button" name="Action" value="0">Remove</button>
+                <button id="Bttn21" Class="swal-button" name="Action" value="0">Soled</button>
                 <button id="Bttn22" Class="bttn2" name="Action" value="1">1 Kojo</button>
                 <button id="Bttn23" Class="bttn2" name="Action" value="2">1Sale</button>
                 <button id="Bttn24" Class="bttn2" name="Action" value="3">2 Kojo</button>
@@ -758,7 +740,7 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         btn21.style.display = "block";
-        title.innerHTML = "Please conform to remove this Item";
+        title.innerHTML = "Please conform to add to Soled this Item";
     }
 
     btn2.onclick = function() {

@@ -118,6 +118,50 @@ if(isset($carId)){
     * {
         box-sizing: border-box;
     }
+      .button {
+         display: inline-block;
+         border-radius: 4px;
+         background-color: #f4511e;
+         border: none;
+         border-color: teal;
+         color: #FFFFFF;
+         text-align: center;
+         font-size: 20px;
+         padding: 10px;
+         width: 200px;
+         transition: all 0.5s;
+         cursor: pointer;
+         margin: 5px;
+         }
+
+         .button span {
+         cursor: pointer;
+         display: inline-block;
+         position: relative;
+         transition: 0.5s;
+         }
+
+         .button span:after {
+         content: '\00bb';
+         position: absolute;
+         opacity: 0;
+         top: 0;
+         right: -20px;
+         transition: 0.5s;
+         }
+
+         .button:hover span {
+         padding-right: 25px;
+         border-color: teal;
+         }
+         .button:hover {
+            color: black;
+         }
+
+         .button:hover span:after {
+         opacity: 1;
+         right: 0;
+         }
     .button_search {
         border: 3px solid orange;
         border-radius: 5px;
@@ -375,9 +419,15 @@ if(isset($carId)){
                 <div class="gjs-cell" id="ijl1">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <button class="bttn Bu_one"> Button </button>
-                            <button class="bttn Bu_two"> Button </button>
-                            <button class="bttn Bu_three"> Button </button>
+                            <a href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                                <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: green"><span>Sale 1</span></button>
+                            </a>
+                            <a href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
+                                <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: orange"><span>Sale 2</span></button>
+                            </a>
+                            <a href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
+                                <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: red"><span>Sale 3</span></button>
+                            </a>
                         </div>
                     </div>
                 </div>

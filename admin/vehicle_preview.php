@@ -45,7 +45,7 @@ if(isset($carId)){
                 echo "<script>window.close();</script>";
             }
         }else if($_POST['Action']==0){
-            moveCarToSoledList($link,$carId,-2);
+            moveCarToSoledList($link,$carId,-3);
             echo "<script>window.close();</script>";
         }
     }
@@ -426,31 +426,6 @@ if(isset($carId)){
 </style>
 
 <body>
-<!-- Button section -->
-<header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                            <button class="bttn Bu_one"> Button </button>
-                            <button class="bttn Bu_two"> Button </button>
-                            <button class="bttn Bu_three"> Button </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- End color buttons -3  section -->
 <body class="">
     <?php 
@@ -566,7 +541,7 @@ if(isset($carId)){
                 </div>
                  <!-- 1 Kojo, 1Sale, 2Kojo, 2Sale, 3Kojo, 3Sale, Miho Kojo, Export -->
                     <table class="table custom-table">
-                        <thead>
+                        <thead style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" >
                             <tr>
                                 <th scope="col">
                                         <button id="Bttn2" Class="bttn2" name="Action" value="1">1 Kojo</button>
@@ -582,7 +557,7 @@ if(isset($carId)){
                                 </th>
                             </tr>
                         </thead>
-                        <thead>
+                        <thead style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" >
                             <tr>
                                 </th>
                                 <th scope="col">
@@ -594,9 +569,9 @@ if(isset($carId)){
                                 <th scope="col">
                                         <button id="Bttn8" Class="bttn2" name="Action" value="7">Miho Kojo</button>
                                 </th>
-                                <th scope="col">
+                                <!-- <th scope="col">
                                         <button id="Bttn9" Class="bttn2" name="Action" value="-1">Export</button>
-                                </th>
+                                </th> -->
                             </tr>
                         </thead>
                         <thead>
@@ -608,10 +583,10 @@ if(isset($carId)){
                                 <th scope="col">
                                         <button id="Bttn11" Class="bttn2" name="Action" value="9">CAA</button>
                                 </th>
-                                <th scope="col">
+                                <th style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" scope="col">
                                         <button id="Bttn12" Class="bttn2" name="Action" value="10">Other Option</button>
                                 </th>
-                                <th scope="col">
+                                <th style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" scope="col">
                                         <button id="Bttn13" Class="bttn2" name="Action" value="11">Parts</button>
                                 </th>
                                 <th scope="col">
