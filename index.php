@@ -4,6 +4,10 @@ require_once "./php/car_module.php";
 require_once "./php/car_dao.php";
 $new_cars = getAllFirld10Cars($link);
 $recoment_foryou_cars = getAllFirld10Cars($link);
+
+require_once "./php/backup_service.php";
+// backup($link);
+
 ?>
 
 
@@ -391,19 +395,89 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
       <!-- color buttons -3  section -->
          <div class="heading_container heading_center"  style="margin-top: 100px;">
             <div class="col-center">
-               <a href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
-                  <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: green"><span>Sale 1</span></button>
+               <a style="text-decoration: none"  href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                  <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: #4caeca"><span>Sale 1</span></button>
                </a>
-               <a href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
-                  <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: orange"><span>Sale 2</span></button>
+               <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
+                  <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: #4caeca"><span>Sale 2</span></button>
                </a>
-               <a href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
-                  <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: red"><span>Sale 3</span></button>
+               <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
+                  <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: #4caeca"><span>Sale 3</span></button>
                </a>
             </div>
             <!-- End color buttons -3  section -->
          </div>
+
+         <div class="heading_container heading_center"  style="margin-top: 100px; padding-left: 100px; padding-right: 100px;">
+                  <div class="col-center">
+                     <div class="row">
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                     </div>
+               </div>
+            <!-- End color buttons -3  section -->
+         </div>
       </div>
+
+
       <!-- shadow box section -->
       <section class="why_section layout_padding">
          <div class="container">
@@ -619,7 +693,7 @@ $recoment_foryou_cars = getAllFirld10Cars($link);
 
 
                               <div class="col-6 text-left">
-                                 <p class="card-text pricetext font-weigh-bold"><?php echo $value1->getPrice(); ?></p>
+                                 <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?></p>
                               </div>
                               <div class="col-6 text-right">
                                  <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>

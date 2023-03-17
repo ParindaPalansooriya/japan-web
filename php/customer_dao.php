@@ -46,8 +46,8 @@ function getAllCustomers($link, $date, $name, $removeUniqe){
 function getAllCustomersToSendPostCard($link){
     $retuen_val = [];
     require_once "customer_module.php";
-    $sql2 = "SELECT * , DATE_ADD(last_send_date, INTERVAL valid MONTH) as next 
-    FROM customers where DATEDIFF(DATE_ADD(last_send_date, INTERVAL valid MONTH),CURRENT_DATE())<=14";
+    $sql2 = "SELECT * , DATE_ADD(bday, INTERVAL valid MONTH) as next 
+    FROM customers where DATEDIFF(DATE_ADD(bday, INTERVAL valid MONTH),CURRENT_DATE())<=14";
 
     if($result = mysqli_query($link, $sql2)){
         while($row = mysqli_fetch_array($result)){
@@ -97,6 +97,20 @@ function getCustomersById($link, $id){
 
 function updateLastSendDate($link,$id){
     $sql = "UPDATE customers SET last_send_date = CURDATE() WHERE id = $id ;";
+    return mysqli_query($link, $sql);
+}
+
+function updateLastSackanDate($link,$id,$date){
+    if($date!==null){
+        $sql = "UPDATE customers SET bday = $date WHERE id = $id ;";
+    }else{
+        $sql = "UPDATE customers SET bday = CURDATE() WHERE id = $id ;";
+    }
+    return mysqli_query($link, $sql);
+}
+
+function updateValide($link,$id,$valid){
+    $sql = "UPDATE customers SET valid = $valid WHERE id = $id ;";
     return mysqli_query($link, $sql);
 }
 

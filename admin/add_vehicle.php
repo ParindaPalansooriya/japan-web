@@ -87,7 +87,7 @@ if(isset($_POST['Delete']))
         array_splice($filepath,$pos,1);
     }
 }
-
+print_r($_POST);
 if(isset($_POST['Submit']))
 { 
     require_once('../php/car_dao.php');
@@ -164,7 +164,7 @@ if(isset($_POST['Submit']))
                 insertCarImagers($link,$value1,$key2!=0?0:1,$maxId);
             }
         }
-        insertCarPrice($link,$maxId,$_REQUEST['buy'],$_REQUEST['sell'],$_REQUEST['public'],0,0);
+        insertCarPrice($link,$maxId,$_REQUEST['buy']??0,$_REQUEST['sell']??0,$_REQUEST['public']??0,0,0);
         if($type==1){
             insertCarAdditinal($link,$maxId,$_REQUEST['supplier'],$_REQUEST['per'],$_REQUEST['bank']);
             insertCarDeduction($link,$maxId,$_REQUEST['rtax'],$_REQUEST['auto_t'],$_REQUEST['au']
@@ -634,19 +634,11 @@ if(isset($_POST['Submit']))
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Note
-                                </label>
-                                <div class="col-sm-6">
-                                <input type="text" name="note" value= "<?php echo $car !== null ? $car->getNote():"" ;?>" style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" <?php if($type!=1){echo 'required';}?>>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                <label for="text" name="name" style="font-size:0.9em; font-weight: bold;" class="col-sm-6 col-form-label">
                                 Chassis
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="chassis" value= "<?php echo $car !== null ? $car->getChassis():"" ;?>"  style="font-size:0.8em" class="form-control" id="email" placeholder="john.doe@email.com" required <?php if($type!=1){echo 'readonly';}?>>
+                                <input type="text" name="chassis" value= "<?php echo $car !== null ? $car->getChassis():"" ;?>"  style="font-size:0.9em; font-weight: bold;" class="form-control" id="email" placeholder="john.doe@email.com" required <?php if($type!=1){echo 'readonly';}?>>
                                 </div>
                             </div>
                             <hr>
@@ -818,6 +810,13 @@ if(isset($_POST['Submit']))
                                 <input type="number" name="public" value= "<?php echo $car !== null && $car->getPriceObject() !== null ? $car->getPriceObject()->getPublic():"" ;?>" style="font-size:0.8em" class="form-control" id="public" placeholder="john.dom">
                                 </div>
                             </div>
+                            <hr>
+                            <div class="form-group row">
+                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                Note
+                                </label>
+                                <textarea name="note"><?php echo $car !== null ? $car->getNote():"" ;?></textarea>
+                            </div>
                                 <div class="modal-footer">
                                 <?php
                                 if(isset($filepath)){
@@ -904,7 +903,7 @@ function myFunction() {
   var public = document.getElementById("public");
   var with_tax = document.getElementById("with_tax");
   var recycle = document.getElementById("recycle");
-  with_tax.value = Math.floor(Math.floor(buy.value)*1.1);
+  with_tax.value = Math.floor(Math.floor(buy.value)*0.1);
   sell.value = Math.floor(buy.value)+Math.floor(rtax.value)+Math.floor(auto_t.value)+
   Math.floor(au.value)+Math.floor(trans.value)+Math.floor(storage.value)+Math.floor(insu.value)+
   Math.floor(repair.value)+Math.floor(other.value)+Math.floor(with_tax.value)+Math.floor(recycle.value);

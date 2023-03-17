@@ -41,7 +41,7 @@ require_once "./php/car_makers_module.php";
 
 $makersList = getAllCarMakers($link);
 
-$new_cars = searchStringArray($link,$searchString,$selectedMakers,null);
+$new_cars = searchStringArray($link,$searchString,null,$selectedMakers);
 ?>
 
 

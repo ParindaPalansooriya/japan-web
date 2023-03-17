@@ -478,7 +478,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
                             </td>
                             <td style="padding-top: 20px;">
                                 <a href="day_end_customer_submit.php" target="_blank">
-                                    <button  id="butt3" Class="butt3" name="Action">Customer Summery</button>
+                                    <button  id="butt3" Class="butt3" name="Action">Customer Call Log</button>
                                 </a>
                             </td>
                             <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
@@ -488,7 +488,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
                             </td>
                             <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                 <a href="day_end_customer_submit_list.php" target="_blank">
-                                    <button  id="butt5" Class="butt5" name="Action">Customer Summery List</button>
+                                    <button  id="butt5" Class="butt5" name="Action">Customer Call Log List</button>
                                 </a>
                             </td>
                         </tr>

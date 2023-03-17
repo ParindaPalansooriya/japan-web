@@ -7,14 +7,24 @@ function insertCarAdditinal($link,
         $bank
 )
 {
-    $sql2 = "SELECT * FROM car_additinal where car_id = $car_id";
-    if(mysqli_query($link, $sql2)){
-        $sql = "INSERT INTO car_additinal (car_id, supplier, perfecture, bank) VALUES ($car_id,'$supplier','$perfecture','$bank')";
-        return mysqli_query($link, $sql);
-    }else{
-        $sql3 = "UPDATE car_additinal SET supplier = $supplier , perfecture = $perfecture, bank = $bank WHERE car_id = $car_id ;";
-        return mysqli_query($link, $sql3);
+    try{
+        $sql0 = "DELETE FROM car_additinal WHERE car_id = $car_id";
+        mysqli_query($link, $sql0);
+    }catch (Throwable $th) {
+        console_log($th);
     }
+
+    $sql = "INSERT INTO car_additinal (car_id, supplier, perfecture, bank) VALUES ($car_id,'$supplier','$perfecture','$bank')";
+    
+    return mysqli_query($link, $sql);
+
+    // $sql2 = "SELECT * FROM car_additinal where car_id = $car_id";
+    // if(mysqli_query($link, $sql2)){
+        
+    // }else{
+    //     $sql3 = "UPDATE car_additinal SET supplier = $supplier , perfecture = $perfecture, bank = $bank WHERE car_id = $car_id ;";
+    //     return mysqli_query($link, $sql3);
+    // }
 }
 
 function updateCarAdditinal($link,$car_id,$supplier,$perfecture,$bank){

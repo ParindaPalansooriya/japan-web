@@ -17,7 +17,7 @@ require_once('../php/config.php');
 if(isset($_POST['Submit']))
 { 
     require_once('../php/user_submits_dao.php');
-    if(insertUserSubmits($link,$userId,$_REQUEST['date'],$_REQUEST['time'],$_REQUEST['sale'],$_REQUEST['done'],$_REQUEST['c_name'],$_REQUEST['c_contact'])>0){
+    if(insertUserSubmits($link,$id,$_REQUEST['date'],$_REQUEST['time'],$_REQUEST['sale'],$_REQUEST['done'],$_REQUEST['c_name'],$_REQUEST['c_contact'])>0){
         echo '<script>alert("Successfully submited")</script>';
         echo "<script>window.close();</script>";
     }else{

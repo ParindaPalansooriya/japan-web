@@ -35,9 +35,9 @@ $imagers = array();
 if(isset($carId)){
     $car = getCarsByIdWithbidPrice($link,$carId);
     $imagers = getAllCarImagers($link,$carId);
-    if(!isset($imagers) || empty($imagers)){
-        array_push($imagers,"images/noimage.jpg");
-    }
+    // if(!isset($imagers) || empty($imagers)){
+    //     array_push($imagers,"images/noimage.jpg");
+    // }
     $user_inquary = getUserInquary($link,$carId);
     if(isset($_POST['Action'])){
         if($_POST['Action']!=0){
@@ -50,7 +50,7 @@ if(isset($carId)){
         }
     }
 }
-// print_r($_POST);
+print_r($_POST);
 ?>
 
 
@@ -443,12 +443,18 @@ if(isset($carId)){
 
                             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" style="max-width: 800px; object-fit: contain;">
-                                    <?php if(isset($imagers)){
+                                    <?php if(isset($imagers) && !empty($imagers)){
                                         foreach ($imagers as $key => $value) { ?>
                                             <div class="carousel-item <?php if($key==0){echo "active";} ?>"  style="max-width: 800px; object-fit: contain;" data-slide-number=<?php echo $key; ?>>
                                                 <img src="<?php echo "../images/cars/".$value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
                                             </div>
                                        <?php }
+                                    }else{
+                                        ?>
+                                            <div class="carousel-item active"  style="max-width: 800px; object-fit: contain;" data-slide-number=<?php echo 0; ?>>
+                                                <img src="../images/cars/noimage.jpg"  style="max-width: 800px; object-fit: contain;" alt="...">
+                                            </div>
+                                       <?php
                                     }?>
                                 </div>
                             </div>
@@ -460,13 +466,19 @@ if(isset($carId)){
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
                                     <div class="row mx-0">
-                                        <?php if(isset($imagers)){
+                                        <?php if(isset($imagers) && !empty($imagers)){
                                             foreach ($imagers as $key => $value) { ?>
                                             <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 <?php if($key==0){echo 'selected';}?>" data-target="#myCarousel" data-slide-to=<?php echo $key; ?>>
                                                 <img src="<?php echo "../images/cars/".$value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
                                             </div>
                                         <?php }
-                                        }?>
+                                        }else{
+                                            ?>
+                                            <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 selected" data-target="#myCarousel" data-slide-to=<?php echo 0; ?>>
+                                                <img src="../images/cars/noimage.jpg" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
+                                            </div>
+                                        <?php
+                                    }?>
                                     </div>
                                 </div>
                             </div>

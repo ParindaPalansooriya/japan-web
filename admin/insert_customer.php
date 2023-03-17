@@ -318,7 +318,7 @@ if(isset($_POST['Submit']))
                                 </div>
                                 <div class="form-group row">
                                     <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                    Registered Date
+                                    Vehicle Registered Date
                                     </label>
                                     <div class="col-sm-6">
                                     <input type="date" name="date" style="font-size:0.8em" class="form-control" id="date" value="<?php echo date("Y-m-d");?> " required>
@@ -328,7 +328,7 @@ if(isset($_POST['Submit']))
                                     Shakan Valid Period (Months)
                                     </label>
                                     <div class="col-sm-6">
-                                    <input type="number" name="valid" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
+                                    <input type="number" name="valid" style="font-size:0.8em"  class="form-control" id="sale" placeholder="john.doe@email.com" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">

@@ -19,7 +19,7 @@ require_once('../php/customer_dao.php');
 
 if(isset($_POST['SetDate'])){
     print_r($_REQUEST);
-    if(updateLastSendDate($link,$_REQUEST['c_id'])>0){
+    if(updateLastSackanDate($link,$_REQUEST['c_id'],null)>0){
         echo '<script>alert("Successfully Updated!")</script>';
     }else{
         echo '<script>alert("Something Wrong! Please Try Again")</script>';
@@ -484,7 +484,7 @@ if(isset($queries) && !empty($queries)){
                                     action="customer_list.php<?php echo (isset($queries['today']) && !empty($queries['today']))?"?today=true":"" ?>" 
                                     enctype="multipart/form-data" method="post">
                                     <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
-                                    <button style="font-size: small;" Class="Bu_two" name="SetDate">Set Last Sakan</button>
+                                    <button style="font-size: small;" Class="Bu_two" name="SetDate">Set New Sakan</button>
                                 </form>
                             </td>
                         </tr>
