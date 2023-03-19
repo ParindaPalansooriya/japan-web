@@ -378,11 +378,11 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                     <thead>
                     <tr>
                         <th scope="col">Image</th>
-                        <th scope="col">Car Name / Maker<br>Body Style / Condition</th>
-                        <th scope="col">Power / Chassis</th>
-                        <th scope="col">Model Year<br>Running</th>
-                        <th scope="col">Color / Color Code<br>Shift / Cooling</th>
-                        <th scope="col">User Name<br>Contact Number<br>Expect Value</th>
+                        <th scope="col">Car Name<br>Car Model</th>
+                        <th scope="col">Chassis</th>
+                        <th scope="col">Running</th>
+                        <th scope="col">Grade</th>
+                        <th scope="col">User Name<br>Contact Number<br>Contact Email</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
@@ -395,15 +395,11 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                         ?>
                         <tr>
                             <td> <img src="<?php echo "../images/cars/".$value->getImage();?>" alt="" width="120" height="65"></td>
-                            <td><?php echo $value->getName();?> / <?php echo $value->getMaker();?>
-                            <br><?php echo $value->getStyle();?> / <?php echo $value->getIs_used()==2?"Accident Repair":($value->getIs_used()==0?"New":"Used");?></td>
-                            <td><?php echo $value->getPower();?> / <?php echo $value->getChassis();?></td>
-                            <td><?php echo $value->getModel_year();?><br><?php echo $value->getRunning();?></td>
-                            <td><?php echo $value->getIn_color();?> / <?php echo $value->getEx_color();?><br>
-                            <?php echo $value->getTransmission_shift();?> / <?php echo $value->getCooling();?></td>
-                            <td><?php echo $value->getUserInwuary()->getUser_name();?><br>
-                            <?php echo $value->getUserInwuary()->getMobile();?><br>
-                            <?php echo $value->getPrice();?></td>
+                            <td><?php echo $value->getName();?><br><?php echo $value->getNote();?></td>
+                            <td><?php echo $value->getChassis();?></td>
+                            <td><?php echo $value->getRunning();?></td>
+                            <td><?php echo $value->getGrade()?></td>
+                            <td><?php echo $value->getUserInwuary()->getUser_name();?><br><?php echo $value->getUserInwuary()->getMobile();?><br><?php echo  $value->getUserInwuary()->getEmail();?></td>
                             <td>
                                 <a href="vehicle_preview.php?id=<?php echo $value->getId();?>" target="_blank">
                                     <button Class="swal-button" name="Action">Action</button>

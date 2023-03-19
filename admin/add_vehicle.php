@@ -32,7 +32,7 @@ if(isset($_REQUEST['carId']) && !empty($_REQUEST['carId'])){
     $carId = $_REQUEST['carId'];
     $car = getCarsForReport($link,$carId);
     if(isset($car)){
-        $carImagersList = getAllCarImagers($link,$carId);
+        $carImagersList = getAllCarImagers($link,$carId,$type);
         if(isset($carImagersList) && !empty($carImagersList)){
             foreach ($carImagersList as $key => $value) {
                 if(!in_array("../images/cars/".$value->getImage(),$filepath)){
@@ -54,14 +54,24 @@ if(isset($_REQUEST['filepath'])){
 }
 if(isset($_POST['Submit1']))
 { 
-    foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
-        $file_name=$_FILES["files"]["name"][$key];
-        $file_tmp=$_FILES["files"]["tmp_name"][$key];
-        $filepathTemp = "../images/cars/".microtime_float().$file_name;
-        if(move_uploaded_file($_FILES["files"]["tmp_name"][$key], $filepathTemp)) 
-        {
-            array_push($filepath,$filepathTemp);
-        } 
+    if(isset($_POST['m_image']) && !empty($_POST['m_image'])){
+        $folderPath = '../images/cars/';
+        $image_parts = explode(";base64,", $_POST['m_image']);
+
+        $image_base64 = base64_decode($image_parts[1]);
+        $file = $folderPath .microtime_float() . 'mobile-image.png';
+        file_put_contents($file, $image_base64);
+        array_push($filepath,$file);
+    }else{
+        foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
+            $file_name=$_FILES["files"]["name"][$key];
+            $file_tmp=$_FILES["files"]["tmp_name"][$key];
+            $filepathTemp = "../images/cars/".microtime_float().$file_name;
+            if(move_uploaded_file($_FILES["files"]["tmp_name"][$key], $filepathTemp)) 
+            {
+                array_push($filepath,$filepathTemp);
+            } 
+        }
     }
 } 
 
@@ -87,7 +97,7 @@ if(isset($_POST['Delete']))
         array_splice($filepath,$pos,1);
     }
 }
-print_r($_POST);
+// print_r($_POST);
 if(isset($_POST['Submit']))
 { 
     require_once('../php/car_dao.php');
@@ -200,6 +210,13 @@ if(isset($_POST['Submit']))
     <link href="../css/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="../css/responsive.css" rel="stylesheet" />
+
+    <!-- Required library -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.24/webcam.js"></script>
+	<!-- Bootstrap theme -->
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
 </head>
 
 <style>
@@ -852,7 +869,13 @@ if(isset($_POST['Submit']))
                                 Pick Your Vehicle Imagers</label>
                                 
                             <input type="hidden" id="carId" name="carId" value="<?php echo $carId;?>">
-                            <input type="file" style="margin-left: 20px; font-size:0.8em" name="files[]" multiple><br/><br/>
+                            <input type="hidden" id="m_image" name="m_image">
+                            <input type="file" style="margin-left: 20px; font-size:0.8em" name="files[]" multiple>
+                            <hr/>
+                            <h6 > Capcher Your Vehicle Image from Camera</h6>
+                            <div Class="bttn2" style="max-width: 130px;" onClick="openCanera()" value="10">Capcher</div><br/><br/>
+                            <div id="results"></div>
+                            <hr/>
                             <input type="submit" class="bttn2" style="font-size:0.8em;" value="Upload" name="Submit1"> <br/>
                             </form>
                         <div class="box">
@@ -885,8 +908,77 @@ if(isset($_POST['Submit']))
         </form>
     </div>
 </section>
+
+
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="container">
+        <div class="box">
+            <div class="heading_container heading_center" >
+                <h4 id="title" style="padding-bottom: 15px; margin-top: 10px;">Please Conform</h4>
+                <div id="my_camera" style="aspect-ratio: 16/9;" class="pre_capture_frame" ></div>
+                <row>
+                <button id="Bttn212" Class="bttn2" onClick="take_snapshot()" name="Action" value="10">Capcher</button>
+                <button id="Bttn213" Class="swal-button" onClick="close_cam()" name="Action" value="11">Close</button>
+            </row>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+
 </body>
 <!-- end box with filter section -->
+
+<script language="JavaScript">
+    var modal = document.getElementById("myModal");
+        Webcam.reset();
+	
+    function openCanera(){
+        Webcam.reset();
+        modal.style.display = "block";
+        Webcam.set({
+            width: 320,
+     height: 240,
+     dest_width: 320,
+     dest_height: 240,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+        });
+        Webcam.attach( '#my_camera' );
+    }
+	
+	function take_snapshot() {
+        Webcam.snap( function(data_uri) {
+            document.getElementById('results').innerHTML = 
+            '<img name="mobile_image" class="after_capture_frame" style="max-width: 320px;" src="'+data_uri+'"/>';
+            $("#m_image").val(data_uri);
+            Webcam.reset();
+            modal.style.display = "none";
+        });	 
+	}
+
+    function close_cam(){
+        Webcam.reset();
+        modal.style.display = "none";
+    }
+
+	function saveSnap(){
+	var base64data = $("#captured_image_data").val();
+	 $.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "capture_image_upload.php",
+			data: {image: base64data},
+			success: function(data) { 
+				alert(data);
+			}
+		});
+	}
+</script>
 
 <script>
 function myFunction() {

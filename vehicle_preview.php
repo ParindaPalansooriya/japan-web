@@ -41,7 +41,10 @@ if(isset($carId)){
     // if(isset($car)){
     //     echo $car->id;
     // }
-    $imagers = getAllCarImagers($link,$carId);
+    ob_start();
+    session_start();
+    $type = $_SESSION['type']??0;
+    $imagers = getAllCarImagers($link,$carId,$type);
     if(!isset($imagers) || empty($imagers)){
         array_push($imagers,"images/noimage.jpg");
     }

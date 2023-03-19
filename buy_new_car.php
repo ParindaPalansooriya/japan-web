@@ -302,40 +302,6 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers);
    </style>
 
    <body class="sub_page">
-
-       <!-- Button section -->
-       <header class="header_section">
-            <div class="gjso-row" id="i7xa">
-               <div class="gjs-cell">
-                  <div class="gjs-row" id="ivs4">
-                     <div class="gjs-cell" id="injr">
-                        <div class="heading_container heading_center">
-                           <div class="col-center">
-
-                           </div>
-                        </div>
-                     </div>
-                     <div class="gjs-cell" id="ijl1">
-                        <div class="heading_container heading_center">
-                           <div class="col-center">
-                                 <a href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
-                                    <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: green"><span>Sale 1</span></button>
-                                 </a>
-                                 <a href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
-                                    <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: orange"><span>Sale 2</span></button>
-                                 </a>
-                                 <a href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
-                                    <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: red"><span>Sale 3</span></button>
-                                 </a>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </header>
-       <!-- End color buttons -3  section -->
-
       <!-- Text field section -->
       <section class="arrival_section">
          <div class="container">
@@ -419,146 +385,6 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers);
                               } ?>
                            </ul>
                         </div>
-
-                        <!-- <div class="filter-col2 p-r-15 p-b-27">
-                           <div class="mtext-102 cl2 p-b-15">
-                              Price
-                           </div>
-
-                           <ul>
-                              <li class="p-b-6">
-                                 <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    All
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    $0.00 - $50.00
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    $50.00 - $100.00
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    $100.00 - $150.00
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    $150.00 - $200.00
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    $200.00+
-                                 </a>
-                              </li>
-                           </ul>
-                        </div> -->
-
-                        <!-- <div class="filter-col3 p-r-15 p-b-27">
-                           <div class="mtext-102 cl2 p-b-15">
-                              Color
-                           </div>
-
-                           <ul>
-                              <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #222;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    Black
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #4272d7;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                 <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    Blue
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #b3b3b3;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    Grey
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #00ad5f;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    Green
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #fa4251;">
-										<i class="zmdi zmdi-circle"></i>
-									</span>
-
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    Red
-                                 </a>
-                              </li>
-
-                              <li class="p-b-6">
-									<span class="fs-15 lh-12 m-r-6" style="color: #aaa;">
-										<i class="zmdi zmdi-circle-o"></i>
-									</span>
-
-                                 <a href="#" class="filter-link stext-106 trans-04">
-                                    White
-                                 </a>
-                              </li>
-                           </ul>
-                        </div> -->
-
-                        <!-- <div class="filter-col4 p-b-27">
-                           <div class="mtext-102 cl2 p-b-15">
-                              Tags
-                           </div>
-
-                           <div class="flex-w p-t-4 m-r--5">
-                              <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                 Fashion
-                              </a>
-
-                              <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                 Lifestyle
-                              </a>
-
-                              <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                 Denim
-                              </a>
-
-                              <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                 Streetstyle
-                              </a>
-
-                              <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                 Crafts
-                              </a>
-                           </div>
-                        </div> -->
                      </div>
                   </div>
                </div>
@@ -570,51 +396,40 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers);
                            <?php
                               if(isset($new_cars)){
                                  foreach ($new_cars as $key2 => $value1) {
-                                    if (!file_exists("images/cars/".$value1->getImage())) {
-                                       $value1->setImage("noimage.jpg");
-                                    }
                                     ?> 
-                                    <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div class="col-sm-12 col-md-6 col-lg-4"  style="min-width: 500px;">
                                        <div class="card border rounded m-3">
                                           <div class="shadow">
-                                             <div class="card-body">
+                                             <div class="card-body" style="min-width: 400px;">
                                                 <div class="row d-flex  justify-content-between align-items-center px-0">
                                                    <div class="col-7 text-left">
                                                       <h5 class="card-title itemtitle"><?php echo $value1->name; ?></h5>
                                                    </div>
                                                    <div class="col-5 text-right">
                                                       <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                                                      <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
-                                                         <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
-                                                         <!-- <button type="button" class="btn btn-sm  addtocart_icon" disabled>>></button> -->
-                                                      </a>
+                                                         <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
+                                                            <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
+                                                         </a>
                                                       </div>
                                                    </div>
                                                 </div>
                                                 <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
+                     
+                     
                                                    <div class="col-6 text-left">
-                                                      <p class="card-text pricetext font-weigh-bold"><?php echo $value1->getPrice(); ?></p>
+                                                      <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?></p>
                                                    </div>
                                                    <div class="col-6 text-right">
-                                                      <p class="card-text car_manufacturer float-end"><?php echo $value1->getMaker(); ?></p>
+                                                      <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>
                                                    </div>
                                                    <p class="card-text car_manufacturer float-end" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
-
                                                 </div>
                                                 <div class="row mt-4  px-0">
+                                                   
                                                    <div class="col-12  px-0">
-                                                      <img src="<?php echo "images/cars/".$value1->getImage(); ?>" class="w-100 img-fluid  px-0" alt="Full width image">
+                                                      <img src="<?php echo file_exists("images/cars/".$value1->getImage())?"images/cars/".$value1->getImage():"images/cars/noimage.jpg"; ?>" class="w-100 img-fluid  px-0" style="max-height: 300px; object-fit: cover;" alt="Full width image">
                                                    </div>
                                                 </div>
-                                                <!-- <div class="row mt-4 ">
-                                                   <div class=" d-flex row mt-4">
-                                                      <div class="col-md-12">
-                                                         <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                                                         <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                                                         <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                                                      </div>
-                                                   </div>
-                                                </div> -->
                                                 <div class=" d-flex row mt-4">
                                                    <div class="col-md-12">
                                                       <div class=" p-2 featuremain">
@@ -630,7 +445,7 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers);
                                                          <small class="featuremain_tag">Kilometers Span</small>
                                                       </div>
                                                    </div>
-
+                     
                                                 </div>
                                              </div>
                                           </div>

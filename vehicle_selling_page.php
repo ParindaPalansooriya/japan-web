@@ -54,10 +54,10 @@ if(isset($_POST['Submit']))
     require_once('./php/car_price_dao.php');
     require_once('./php/user_inquary_dao.php');
     $maxId = insertCarFull($link,
-    getData('maker_id',0),
-    getData('model_id',0),
-    getData('interior_color_id',0),
-    getData('exterior_color_id',0),
+    getData('maker_id',1),
+    getData('model_id',1),
+    getData('interior_color_id',1),
+    getData('exterior_color_id',1),
     0,
     getData('body_style_id',0),
     getData('passengers',0),
@@ -69,7 +69,7 @@ if(isset($_POST['Submit']))
     getData('evaluation',"No Data"),
     getData('running',"No Data"),
     getData('cooling',"No Data"),
-    getData('note',"No Data"),
+    getData('model',"No Data"),
     getData('fuel',"No Data"),
     getData('chassis',"No Data"),
     getData('dimensions_L',0),
@@ -353,7 +353,7 @@ function getData($key,$defualt){
 <body class="sub_page">
 
 <!-- Button section -->
-<header class="header_section">
+<!-- <header class="header_section">
     <div class="gjso-row" id="i7xa">
         <div class="gjs-cell">
             <div class="gjs-row" id="ivs4">
@@ -382,12 +382,12 @@ function getData($key,$defualt){
             </div>
         </div>
     </div>
-</header>
+</header> -->
 <!-- End color buttons -3  section -->
 
 
 <!-- Text field section -->
-<section class="arrival_section">
+<section class="arrival_section" style="margin-top: 100px;">
     <div class="container">
         <div class="heading_container heading_center">
             <div class="heading_container">
@@ -411,31 +411,55 @@ function getData($key,$defualt){
 
         <div id="i14q" class="gjs-row">
             <div id="i91j" class="gjs-cell">
-                <h5>Vehicle Details</h5>
+                <h5>車両詳細</h5>
                 <div >
                     <div class="box" >
                     <form id="formAwesome" action="vehicle_selling_page.php" enctype="multipart/form-data" method="post">
                             <div class="modal-body">
                             <div class="form-group row">
                                 <label for="firstName" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Vehicle Name
+                                車名
                                 </label>
                                 <div class="col-sm-6">
                                 <input type="text" name="name" style="font-size:0.8em" class="form-control" id="firstName" placeholder="Nissan">
                                 </div>
                             </div>
-                            <hr>
-                            <!-- <div class="form-group row">
-                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Expectation
+                            <div class="form-group row">
+                                <label for="firstName" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                車両型式
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="number" name="expectation" style="font-size:0.8em" class="form-control" id="email" placeholder="10,000" required>
+                                <input type="text" name="model" style="font-size:0.8em" class="form-control" id="firstName" placeholder="Nissan">
                                 </div>
-                            </div> -->
+                            </div>
+                            <div class="form-group row">
+                                <label for="firstName" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                車台番号
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="chassis" style="font-size:0.8em" class="form-control" id="firstName" placeholder="Nissan">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="firstName" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                グレード
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="grade" style="font-size:0.8em" class="form-control" id="firstName" placeholder="Nissan">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="firstName" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                走行距離
+                                </label>
+                                <div class="col-sm-6">
+                                <input type="text" name="running" style="font-size:0.8em" class="form-control" id="firstName" placeholder="Nissan">
+                                </div>
+                            </div>
+                            <hr>
                             <div class="form-group row">
                                 <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Contact Name
+                                連絡先
                                 </label>
                                 <div class="col-sm-6">
                                 <input type="text" name="c_name" style="font-size:0.8em" class="form-control" id="email" placeholder="Jone" required>
@@ -443,7 +467,7 @@ function getData($key,$defualt){
                             </div>
                             <div class="form-group row">
                                 <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Contact Number
+                                連絡先番号
                                 </label>
                                 <div class="col-sm-6">
                                 <input type="text" name="mobile" style="font-size:0.8em" class="form-control" id="email" placeholder="0X-XXXX-XXXX" required>
@@ -451,7 +475,7 @@ function getData($key,$defualt){
                             </div>
                             <div class="form-group row">
                                 <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Contact Emal
+                                連絡先メールアドレス
                                 </label>
                                 <div class="col-sm-6">
                                 <input type="email" name="email" style="font-size:0.8em" class="form-control" id="email" placeholder="john@email.com">
@@ -465,7 +489,7 @@ function getData($key,$defualt){
                                     }
                                 }
                                 ?>
-                                <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Submit" name="Submit">Submit</button>
+                                <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Submit" name="Submit">送信</button>
                             </div>
                             </div>
                         </form>
@@ -475,7 +499,7 @@ function getData($key,$defualt){
 
 
             <div id="i88c" class="gjs-cell">
-                <h5>Pick Your Imagers</h5>
+                <h5>イメージャーを選ぶ</h5>
                 <div class="heading_center">
                 <form action="vehicle_selling_page.php" enctype="multipart/form-data" method="post">
                                 <?php
@@ -486,9 +510,9 @@ function getData($key,$defualt){
                                 }
                                 ?>
                             <label for="awesomeness" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Pick Your Vehicle Imagers</label>
+                               車両イメージャを選択</label>
                             <input type="file" style="margin-left: 20px; font-size:0.8em" name="file"><br/><br/>
-                            <input type="submit" class="bttn2" style="font-size:0.8em;" value="Upload" name="Submit1"> <br/>
+                            <input type="submit" class="bttn2" style="font-size:0.8em;" value="アップロード" name="Submit1"> <br/>
                             </form>
                         <div class="box">
                             <div class="grid-container">
@@ -506,7 +530,7 @@ function getData($key,$defualt){
                                             }
                                             ?>
                                         <input type="text" style="display:none" name="file_name" value=<?php echo $value2 ?>>
-                                        <input type="submit" class="delete" style="background-color:#fff; color:#f44336; font-size: xx-small; padding: 0;" value="Delete" name="Delete">
+                                        <input type="submit" class="delete" style="background-color:#fff; color:#f44336; font-size: xx-small; padding: 0;" value="消去" name="Delete">
                                         </form>
                                     </div>
                                     <?php } 

@@ -30,7 +30,7 @@ function deleteImage($link,$car_id,$image)
     return mysqli_query($link, $sql);
 }
 
-function getAllCarImagers($link,$car_id){
+function getAllCarImagers($link,$car_id,$type){
     $retuen_val = [];
     require_once "car_image_module.php";
 
@@ -38,7 +38,6 @@ function getAllCarImagers($link,$car_id){
         ob_start();
         session_start();
     }
-    $type = $_SESSION['type'];
 
     if(isset($type) && $type==1){
         $sql2 = "SELECT * FROM car_imagers where car_id = ".$car_id;

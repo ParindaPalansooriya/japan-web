@@ -34,7 +34,7 @@ $imagers = array();
 
 if(isset($carId)){
     $car = getCarsByIdWithbidPrice($link,$carId);
-    $imagers = getAllCarImagers($link,$carId);
+    $imagers = getAllCarImagers($link,$carId,$type);
     // if(!isset($imagers) || empty($imagers)){
     //     array_push($imagers,"images/noimage.jpg");
     // }

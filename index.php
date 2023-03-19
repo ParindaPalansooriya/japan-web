@@ -335,7 +335,7 @@ require_once "./php/backup_service.php";
                                     <div class="detail-box">
                                           <img src="images/logo.png" style="margin-bottom: 50px; object-fit: contain;" width="200px" height="200px">
                                           <h2 style="margin-bottom: 30px;">
-                                             GET THE LATEST NEW OR USED CAR AT A FAIR PRICE
+                                          SURCH FOR EXPORT MARKET VEHICLES (輸出)
                                           </h2>
                                           <p style="margin-bottom: 50px;">
                                              Passenger cars, vans, light trucks and even margin cars or damaged vehicles,
@@ -393,7 +393,7 @@ require_once "./php/backup_service.php";
          </section> -->
 
       <!-- color buttons -3  section -->
-         <div class="heading_container heading_center"  style="margin-top: 100px;">
+         <!-- <div class="heading_container heading_center"  style="margin-top: 100px;">
             <div class="col-center">
                <a style="text-decoration: none"  href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
                   <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: #4caeca"><span>Sale 1</span></button>
@@ -404,11 +404,30 @@ require_once "./php/backup_service.php";
                <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
                   <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: #4caeca"><span>Sale 3</span></button>
                </a>
-            </div>
+            </div> -->
             <!-- End color buttons -3  section -->
          </div>
+      
+         <!-- text section -->
+         <section class="arrival_section" style="margin-top: 100px;">
+            <div class="container">
+               <div class="heading_container heading_center">
+                  <div class="heading_container">
+                     <h3>
+                        ORIENT JAPAN DOMESTIC OUTLETS
+                     </h3>
+                  </div>
+                  <div class="heading_container">
+                     <h3>
+                        オリエントジャパン国内販売店
+                     </h3>
+                  </div>
+               </div>
+            </div>
+         </section>
+         <!-- text section section -->
 
-         <div class="heading_container heading_center"  style="margin-top: 100px; padding-left: 100px; padding-right: 100px;">
+         <div class="heading_container heading_center"  style="margin-top: 50px; margin-bottom: 80px; padding-left: 100px; padding-right: 100px;">
                   <div class="col-center">
                      <div class="row">
                         <div class="col">
@@ -417,7 +436,47 @@ require_once "./php/backup_service.php";
                               <div class="card"  style="max-width: 300px; min-width: 200px;">
                                  <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
                                  <div class="card-body">
-                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">号川原城町店</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（柳澤店長）</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">号中根台店</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（菊池店長）</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">号長沖店</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（藤本店長）</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235004/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">号店</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（豊島店長）</p>
                                  </div>
                                  </div>
                               </div>
@@ -429,43 +488,8 @@ require_once "./php/backup_service.php";
                               <div class="card"  style="max-width: 300px; min-width: 200px;">
                                  <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
                                  <div class="card-body">
-                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                 </div>
-                                 </div>
-                              </div>
-                           </a>
-                        </div>
-                        <div class="col">
-                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
-                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
-                              <div class="card"  style="max-width: 300px; min-width: 200px;">
-                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
-                                 <div class="card-body">
-                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                 </div>
-                                 </div>
-                              </div>
-                           </a>
-                        </div>
-                        <div class="col">
-                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
-                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
-                              <div class="card"  style="max-width: 300px; min-width: 200px;">
-                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
-                                 <div class="card-body">
-                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                 </div>
-                                 </div>
-                              </div>
-                           </a>
-                        </div>
-                        <div class="col">
-                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
-                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
-                              <div class="card"  style="max-width: 300px; min-width: 200px;">
-                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
-                                 <div class="card-body">
-                                    <p class="card-text" style="color: #888; font-weight: bold;">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">PARTS FOR EXPORT</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（自動車部品）</p>
                                  </div>
                                  </div>
                               </div>
@@ -557,17 +581,17 @@ require_once "./php/backup_service.php";
                      </div>
                      <div class="detail-box">
                         <h5>
-                           車を売る
+                        車を売る
                         </h5>
                         <h6>
-                           2,120台以上の中古車がリストされています
+                        （高額買取）無料査定
                         </h6>
                         <div class="form_sub1">
                            <svg class="img-res" xmlns="http://www.w3.org/2000/svg" width="261" height="41" viewBox="0 0 261 41">
                               <g id="Group_82" data-name="Group 82" transform="translate(0 0.161)">
                                  <rect id="Rectangle_7" data-name="Rectangle 7" width="261" height="41" transform="translate(0 -0.161)" fill="#fec200"/>
                                  <rect id="Rectangle_8" data-name="Rectangle 8" width="41" height="41" transform="translate(220 -0.161)" fill="#ffe266"/>
-                                 <text id="FIND_YOUR_NEW_CAR" data-name="FIND YOUR NEW CAR" transform="translate(106 25.839)" fill="#fff" font-size="13" font-family="Montserrat-Light, Montserrat" font-weight="300" letter-spacing="0.07em"><tspan x="-78.624" y="0">あなたの車を売る</tspan></text>
+                                 <text id="FIND_YOUR_NEW_CAR" data-name="FIND YOUR NEW CAR" transform="translate(106 25.839)" fill="#fff" font-size="13" font-family="Montserrat-Light, Montserrat" font-weight="300" letter-spacing="0.07em"><tspan x="-78.624" y="0">詳細を送信</tspan></text>
                                  <g id="right-arrow" transform="translate(236.99 17.125)">
                                     <g id="Group_73" data-name="Group 73" transform="translate(0 0.003)">
                                        <path id="Path_56" data-name="Path 56" d="M213.751.2a.242.242,0,0,0-.342.342l5.144,5.145-5.145,5.144a.242.242,0,1,0,.336.348l.006-.006,5.315-5.315a.242.242,0,0,0,0-.342Z" transform="translate(-208.987 -0.134)" fill="#fff" stroke="#fff" stroke-width="1"/>
@@ -651,10 +675,6 @@ require_once "./php/backup_service.php";
                            NEWLY LISTED VEHICLES
                         </h3>
                      </div>
-                     <p style="margin-top: 20px;margin-bottom: 30px;">
-                        Vitae fugiat laboriosam officia perferendis provident aliquid voluptatibus dolorem, fugit ullam sit earum id eaque nisi hic? Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex unde!
-                     </p>
-
                   </div>
          </div>
       </section>
@@ -679,13 +699,7 @@ require_once "./php/backup_service.php";
                                  <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
                                     <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
                                        <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
-                                       <!-- <button type="button" class="btn btn-sm  addtocart_icon" disabled>>></button> -->
                                     </a>
-                                       <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                       <!-- remove below after adding the fontawesome icons -->
-                                       <!-- >>
-                                    </button> -->
                                  </div>
                               </div>
                            </div>
@@ -706,15 +720,6 @@ require_once "./php/backup_service.php";
                                  <img src="<?php echo file_exists("images/cars/".$value1->getImage())?"images/cars/".$value1->getImage():"images/cars/noimage.jpg"; ?>" class="w-100 img-fluid  px-0" style="max-height: 300px; object-fit: cover;" alt="Full width image">
                               </div>
                            </div>
-                           <!-- <div class="row mt-4 ">
-                              <div class=" d-flex row mt-4">
-                                 <div class="col-md-12">
-                                    <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                                    <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                                    <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                                 </div>
-                              </div>
-                           </div> -->
                            <div class=" d-flex row mt-4">
                               <div class="col-md-12">
                                  <div class=" p-2 featuremain">
@@ -776,9 +781,9 @@ require_once "./php/backup_service.php";
                      RECOMMENDED VEHICLES LIST
                   </h3>
                </div>
-               <p style="margin-top: 20px;margin-bottom: 30px;">
+               <!-- <p style="margin-top: 20px;margin-bottom: 30px;">
                   Vitae fugiat laboriosam officia perferendis provident aliquid voluptatibus dolorem, fugit ullam sit earum id eaque nisi hic? Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex unde!
-               </p>
+               </p> -->
             </div>
          </div>
       </section>
@@ -790,7 +795,7 @@ require_once "./php/backup_service.php";
          if(isset($recoment_foryou_cars)){
             foreach ($recoment_foryou_cars as $key2 => $value1) {
                ?> 
-               <div class="col-sm-12 col-md-6 col-lg-4" style="min-width: 500px;">
+               <div class="col-sm-12 col-md-6 col-lg-4"  style="min-width: 500px;">
                   <div class="card border rounded m-3">
                      <div class="shadow">
                         <div class="card-body" style="min-width: 400px;">
@@ -800,15 +805,9 @@ require_once "./php/backup_service.php";
                               </div>
                               <div class="col-5 text-right">
                                  <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                                 <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
+                                    <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
                                        <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
-                                       <!-- <button type="button" class="btn btn-sm  addtocart_icon" disabled>>></button> -->
                                     </a>
-                                       <!-- <i class="fas fa-arrow-right"></i> -->
-
-                                       <!-- remove below after adding the fontawesome icons -->
-                                       <!-- >>
-                                    </button> -->
                                  </div>
                               </div>
                            </div>
@@ -816,27 +815,19 @@ require_once "./php/backup_service.php";
 
 
                               <div class="col-6 text-left">
-                                 <p class="card-text pricetext font-weigh-bold"><?php echo $value1->getPrice(); ?></p>
+                                 <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?></p>
                               </div>
                               <div class="col-6 text-right">
                                  <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>
                               </div>
-
+                              <p class="card-text car_manufacturer float-end" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
                            </div>
                            <div class="row mt-4  px-0">
+                              
                               <div class="col-12  px-0">
-                                 <img src="<?php echo file_exists("images/cars/".$value1->getImage())?"images/cars/".$value1->getImage():"images/cars/noimage.jpg"; ?>" class="w-100 img-fluid  px-0" style="max-height: 300px; object-fit: cover;"  alt="Full width image">
+                                 <img src="<?php echo file_exists("images/cars/".$value1->getImage())?"images/cars/".$value1->getImage():"images/cars/noimage.jpg"; ?>" class="w-100 img-fluid  px-0" style="max-height: 300px; object-fit: cover;" alt="Full width image">
                               </div>
                            </div>
-                           <!-- <div class="row mt-4 ">
-                              <div class=" d-flex row mt-4">
-                                 <div class="col-md-12">
-                                    <span class="badge badge-warning mx-2 featurebadge">ABS</span>
-                                    <span class="badge badge-warning mx-2 featurebadge">FULL A/C</span>
-                                    <span class="badge badge-warning mx-2 featurebadge">POWER STEERING</span>
-                                 </div>
-                              </div>
-                           </div> -->
                            <div class=" d-flex row mt-4">
                               <div class="col-md-12">
                                  <div class=" p-2 featuremain">
