@@ -1,18 +1,36 @@
 
 <?php
-    ob_start();
-    session_start();
-    $_SESSION['valid'] = true;
+ob_start();
+session_start();
+
+parse_str($_SERVER['QUERY_STRING'], $queries);
+if(isset($queries) && !empty($queries)){
+   if(isset($queries['logout']) && !empty($queries['logout'])){
+    session_destroy();
+    header("Location: login.php");
+   }
+}
+
+$id = $_SESSION['id'];
+$username = $_SESSION['username'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
     $_SESSION['timeout'] = time();
-    $_SESSION['username'] = 'tutorialspoint';
+}
 
     require_once '../php/config.php';
     require_once "../php/car_module.php";
     require_once "../php/car_dao.php";
+    require_once "../php/contact_us_dao.php";
+    require_once "../php/customer_dao.php";
 
     $sellingCount = sizeof(getAllUserSellingCarsForAdminLists($link));
     $buyingCount = sizeof(getAllUserBuyingCarsForAdminLists($link));
-    $contactCount = 0;
+    $contactCount = sizeof(getAllContactUs($link,false));
+    $bdyCount = sizeof(getAllCustomersToSendPostCard($link));
 
 
 ?>
@@ -29,7 +47,7 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="../images/Car_logo_sample.jpg" type="">
+    <link rel="shortcut icon" href="../images/logo.png" type="">
     <title>Attendance_form</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
@@ -79,13 +97,14 @@
         box-sizing: border-box;
     }
 
-    .bttn {
-        border: 2px solid black;
+    .bttn_st {
+        border: 2px solid red;
         border-radius: 5px;
-        background-color: white;
-        color: black;
+        background-color: red;
+        color: white;
         padding: 8px 28px;
         font-size: 16px;
+        font-weight: bold;
 
     }
     .Bu_one {
@@ -133,6 +152,7 @@
         color: #04AA6D;
         padding: 8px 28px;
         font-size: 16px;
+        width: 200px;
 
     }
 
@@ -143,6 +163,7 @@
         color: #f44336;
         padding: 8px 28px;
         font-size: 16px;
+        width: 200px;
 
     }
 
@@ -153,7 +174,19 @@
         color: palevioletred;
         padding: 8px 28px;
         font-size: 16px;
+        width: 200px;
 
+    }
+
+    .butt6 {
+        border: 1px solid teal;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: teal;
+        padding: 5px 30px;
+        font-size: 14px;
+        margin-top: 15px;
+        width: 200px;
     }
 
     .butt2 {
@@ -163,6 +196,7 @@
         color: #ffad06;
         padding: 8px 28px;
         font-size: 16px;
+        width: 200px;
 
     }
     /* End button3 section   */
@@ -340,6 +374,11 @@
                     <div class="heading_container heading_center">
                         <div class="col-center">
                         <h3>Admin Panel</h3>
+                        <h4>Welcome Back, <?php echo $username ?>!</h4>
+                        <h5><?php echo $type==1?"Supper Admin":($type==2?"Store Admin":"Store Employee"); ?></h5>
+                        <a href="index.php?logout=1">
+                            <button  id="butt5" Class="butt6" name="Action">Logout</button>
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -371,8 +410,12 @@
                         <th scope="col"><?php echo $sellingCount ?></th>
                     </tr>
                     <tr>
-                        <th scope="col" style="width:70%">User Buying Request</th>
+                        <th scope="col" style="width:70%">User Orders</th>
                         <th scope="col"><?php echo $buyingCount ?></th>
+                    </tr>
+                    <tr>
+                        <th scope="col" style="width:70%">Near To Expire Shaken</th>
+                        <th scope="col"><?php echo $bdyCount ?></th>
                     </tr>
                     </thead>
                 </table>
@@ -396,7 +439,7 @@
                         <!--   1st details row-->
                         <tr>
                             <td style="padding-top: 100px;">
-                                <a href="buy_new_car.php">
+                                <a href="contact_us_list.php">
                                     <button  id="butt2" Class="butt2" name="Action">Contact Requests</button>
                                 </a>
                             </td>
@@ -407,17 +450,87 @@
                             </td>
                             <td style="padding-top: 100px;">
                                 <a href="user_buying_requests.php">
-                                    <button  id="butt4" Class="butt4" name="Action">Buying Request</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 100px;">
-                                <a href="attendance_form.php">
-                                    <button  id="butt2" Class="butt5" name="Action">Attendence</button>
+                                    <button  id="butt4" Class="butt4" name="Action">Orders</button>
                                 </a>
                             </td>
                             <td style="padding-top: 100px;">
                                 <a href="car_listed_page.php">
-                                    <button  id="butt2" Class="butt2" name="Action">Store Manage</button>
+                                    <button  id="butt5" Class="butt5" name="Action">Store Manage</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 100px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="add_vehicle.php" target="_blank">
+                                    <button  id="butt5" Class="bttn_st" name="Action">Add to Store</button>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <div>
+                        <h3>Admin Panel</h3>
+                        </div>
+                        <tbody>
+                        <!--  1st details row-->
+                        <tr>
+                            <td style="padding-top: 20px;">
+                                <a href="day_end_submit.php" target="_blank">
+                                    <button  id="butt2" Class="butt2" name="Action">Day Summery</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;">
+                                <a href="day_end_customer_submit.php" target="_blank">
+                                    <button  id="butt3" Class="butt3" name="Action">Customer Call Log</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="day_end_submit_list.php" target="_blank">
+                                    <button  id="butt4" Class="butt4" name="Action">Day Summery List</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="day_end_customer_submit_list.php" target="_blank">
+                                    <button  id="butt5" Class="butt5" name="Action">Customer Call Log List</button>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <td style="padding-top: 100px;">
+                                <!-- <a>Pick Youe Report Date</a>
+                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>"> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                        <tr>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="insert_customer.php" target="_blank">
+                                    <button  id="butt1" Class="butt2" name="Action">Add Customer</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="customer_list.php" target="_blank">
+                                    <button  id="butt2" Class="butt3" name="Action">Custom List</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="sales_report.php" target="_blank">
+                                    <button  id="butt4" Class="butt4" name="Action">Sales Reprots</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="store_reports.php" target="_blank">
+                                    <button  id="butt5" Class="butt5" name="Action">Store Reprots</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="user_registor.php" target="_blank">
+                                    <button  id="butt5" Class="butt2" name="Action">Add Controll User</button>
+                                </a>
+                            </td>
+                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                <a href="users_list.php" target="_blank">
+                                    <button  id="butt5" Class="butt3" name="Action">User List</button>
                                 </a>
                             </td>
                         </tr>

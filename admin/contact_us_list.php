@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 ob_start();
 session_start();
 
@@ -9,16 +10,30 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
 }else{
     $_SESSION['timeout'] = time();
 }
-require_once '../php/config.php';
-require_once "../php/car_module.php";
-require_once "../php/car_dao.php";
 
-$sellingRequest = getAllUserSellingCarsForAdminLists($link);
+$seeAll = true;
 
+if(isset($_REQUEST['seeAll'])){
+    $seeAll = $_REQUEST['seeAll'];
+}
+
+require_once('../php/config.php');
+require_once('../php/contact_us_dao.php');
+require_once('../php/contat_us_module.php');
+
+if(isset($_POST['Action']) && isset($_REQUEST['id']))
+{ 
+    if(updateContactUsStatus($link,$_REQUEST['id'],1)<=0){
+        echo '<script>alert("Submit Error!")</script>';
+    }
+}
+
+$summery = getAllContactUs($link,$seeAll);
 ?>
 
+
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -30,7 +45,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>User_Selling_Requests</title>
+    <title>Attendance_form</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
@@ -78,13 +93,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     * {
         box-sizing: border-box;
     }
-    .button_search {
-        border: 3px solid orange;
-        border-radius: 5px;
-        background-color: orange;
-        color: white;
 
-    }
     .bttn {
         border: 2px solid black;
         border-radius: 5px;
@@ -108,12 +117,40 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
         border-color: #f44336;
         color: red
     }
-    .Bu_border {
-        border-color: #ffad06;
-        color: #ffc000
-    }
 
     /* end button section   */
+
+    /*  button2 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: white;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* end button2 section   */
+
+    /*  button3 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt2 {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* End button3 section   */
 
     /*  Class for button and header  */
     * {
@@ -335,7 +372,6 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     position: relative;
     top: 2px;
  }
-    /*   end  Header left/center/right code*/
 </style>
 
 <body>
@@ -349,7 +385,21 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                        <h3>User Selling Requests</h3>
+                            <h3>Contact Us</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gjs-cell" id="ijl1">
+                    <div class="heading_container heading_center">
+                        <div class="col-center">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <form action="contact_us_list.php" enctype="multipart/form-data" method="post">
+                                        <input type="hidden" id="seeAll" name="seeAll" value="<?php echo !$seeAll;?>">
+                                        <button Class="bttn Bu_one" name="Action"> <?php echo $seeAll?"Hide Reads":"See All" ?></button>
+                                    </form>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -359,7 +409,9 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
 </header>
     <!-- End color buttons -3  section -->
 
-    <!-- List section -->
+    <!-- Attendance list section -->
+<section>
+
     <div class="content">
 
         <div class="container">		
@@ -368,7 +420,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                         </div>
                         <div class="col-sm-6">
                             <div class="search-box">
-                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis Or Name">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Email Or Name">
                             </div>
                         </div>
                     </div>
@@ -377,122 +429,50 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Image</th>
-                        <th scope="col">Car Name<br>Car Model</th>
-                        <th scope="col">Chassis</th>
-                        <th scope="col">Running</th>
-                        <th scope="col">Grade</th>
-                        <th scope="col">User Name<br>Contact Number<br>Contact Email</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Content</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-
-                    <?php 
-                    
-                    if(isset($sellingRequest) && !empty($sellingRequest)){
-                        foreach ($sellingRequest as $key => $value) {
-                        ?>
+                    <?php
+                        foreach ($summery as $key => $value) {
+                    ?>
                         <tr>
-                            <td> <img src="<?php echo "../images/cars/".$value->getImage();?>" alt="" width="120" height="65"></td>
-                            <td><?php echo $value->getName();?><br><?php echo $value->getNote();?></td>
-                            <td><?php echo $value->getChassis();?></td>
-                            <td><?php echo $value->getRunning();?></td>
-                            <td><?php echo $value->getGrade()?></td>
-                            <td><?php echo $value->getUserInwuary()->getUser_name();?><br><?php echo $value->getUserInwuary()->getMobile();?><br><?php echo  $value->getUserInwuary()->getEmail();?></td>
+                            <td><?php echo $value->getUsername(); ?></td>
+                            <td><?php echo $value->getContact1(); ?></td>
+                            <td><?php echo $value->getContact2(); ?></td>
+                            <td><?php echo $value->getMessage(); ?></td>
                             <td>
-                                <a href="vehicle_preview.php?id=<?php echo $value->getId();?>" target="_blank">
-                                    <button Class="swal-button" name="Action">Action</button>
-                                </a>
+                                <form  action="contact_us_list.php" enctype="multipart/form-data" method="post">
+                                    <input type="hidden" id="id" name="id" value="<?php echo $value->getId();?>">
+                                    <input type="hidden" id="seeAll" name="seeAll" value="<?php echo $seeAll;?>">
+                                    <?php
+                                    if($value->getStatus()==0){
+                                    ?>
+                                        <button Class="swal-button" name="Action">Make As Read</button>
+                                    <?php
+                                    }else{
+                                        echo "Satus : Read";
+                                    }
+                                    ?>
+                                </form>
                             </td>
                         </tr>
-                        <?php
+                    <?php
                         }
-                    }
-                    
                     ?>
-
                     </tbody>
                 </table>
             </div>
-
-
-        </div>
-
-    </div>
-    <!-- end List section -->
-</div>
-
-<!-- Trigger/Open The Modal -->
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-            <div class="gjso-row" id="i7xr">
-                <div class="heading_container heading_center">
-                    <h3>Add car to your store</h3>
-                </div>
-                <div class="gjs-cell">
-                    <div class="shadow">
-                        Action Dropdown
-
-                    </div>
-
-                    <div class="gjs-row" id="ivse">
-                        <div class="gjs-cell" id="injq">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="bttn Bu_border"  name="Action">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gjs-cell" id="ijlw">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="swal-button" name="Action">Remove From Store</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+</section>
 
 </div>
 
-
-
-<!-- Popup box-->
-<script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("bttn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
 <!-- jQery -->
 <script src="../js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
@@ -525,7 +505,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
 <script src="../vendor/slick/slick.min.js"></script>
 <script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="../vendor/parallax100/parallax100.js"></script>
+<script src="vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
@@ -618,6 +598,11 @@ $(document).ready(function(){
             if(name.search(term) < 0){                
                 $row.hide();
             } else{
+                $row.show();
+            }
+
+            var code = $row.find("td:nth-child(1)").text().toLowerCase();
+            if(code.search(term) >= 0){                
                 $row.show();
             }
         });

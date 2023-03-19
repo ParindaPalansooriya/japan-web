@@ -1,24 +1,53 @@
+
 <?php
-ob_start();
-session_start();
 
-$id = $_SESSION['id'];
+    if(isset($_POST['Submit']))
+    { 
+        require_once('../php/config.php');
+        require_once('../php/control_users_dao.php');
+        require_once('../php/control_users_module.php');
 
-if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
-    header("Location: login.php"); 
-}else{
-    $_SESSION['timeout'] = time();
-}
-require_once '../php/config.php';
-require_once "../php/car_module.php";
-require_once "../php/car_dao.php";
+        if(isset($_REQUEST['username']) && !empty($_REQUEST['username']) && isset($_REQUEST['pass']) && !empty($_REQUEST['pass'])){
+            $object = getlogin($link,$_REQUEST['username'],$_REQUEST['pass']);
+            if(isset($object)){
+                if($object->getIs_active()==1){
+                    echo '<script>alert("Login Success!\nWelcome Back '.$object->getUser_name().' ")</script>';
+                    ob_start();
+                    session_start();
+                    $_SESSION['timeout'] = time();
+                    $_SESSION['id'] = $object->getId();
+                    $_SESSION['type'] = $object->getUser_type(); // 1=supper admin, 2=store admin, 3=store worker
+                    $_SESSION['username'] = $object->getUser_name();
+                    header("Location: index.php"); 
+                }else{
+                    echo '<script>alert("User Deactived")</script>';
+                }
+            }else{
+                echo '<script>alert("Please Check User Name and Password.\nTry Again")</script>';
+            }
+        }else{
+            echo '<script>alert("Fill All")</script>';
+        }
 
-$sellingRequest = getAllUserSellingCarsForAdminLists($link);
+       
+
+        // print_r($_POST);
+
+        // header("Location: index.php"); 
+    
+        // if(insertContactUs($link,$_REQUEST['Name'],$_REQUEST['email'],$_REQUEST['Number'],$_REQUEST['msg'])>0){
+        //     echo "<script>window.close();</script>";
+        // }else{
+        //     echo '<script>alert("Submit Error!")</script>';
+        // }
+    
+    }
+
 
 ?>
 
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -30,7 +59,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>User_Selling_Requests</title>
+    <title>Attendance_form</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
@@ -78,13 +107,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     * {
         box-sizing: border-box;
     }
-    .button_search {
-        border: 3px solid orange;
-        border-radius: 5px;
-        background-color: orange;
-        color: white;
 
-    }
     .bttn {
         border: 2px solid black;
         border-radius: 5px;
@@ -108,12 +131,70 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
         border-color: #f44336;
         color: red
     }
-    .Bu_border {
-        border-color: #ffad06;
-        color: #ffc000
-    }
 
     /* end button section   */
+
+    /*  button2 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: white;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* end button2 section   */
+
+    /*  button3 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt3 {
+        border: 2px solid #04AA6D;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #04AA6D;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+
+    .butt4 {
+        border: 2px solid #f44336;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #f44336;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+
+    .butt5 {
+        border: 2px solid palevioletred;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: palevioletred;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+
+    .butt2 {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* End button3 section   */
 
     /*  Class for button and header  */
     * {
@@ -258,6 +339,37 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
         text-decoration: none;
         cursor: pointer;
     }
+    .btn-color{
+  background-color: #0e1c36;
+  color: #fff;
+  
+}
+
+.profile-image-pic{
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+}
+
+
+
+.cardbody-color{
+  background-color: #ebf2fa;
+}
+		.bttn2 {
+			border: 3px solid orange;
+			border-radius: 10px;
+			background-color: orange;
+			color: white;
+			padding: 8px 28px;
+			font-size: 16px;
+			font-weight: 800;
+
+		}
+
+a{
+  text-decoration: none;
+}
     /*  end popup box css  */
 
     /*    Header left/center/right code*/
@@ -273,197 +385,40 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
-.table-responsive {
-    margin: 30px 0;
-}
-.table-wrapper {
-  	min-width: 1000px;
-    background: #fff;
-    padding: 20px 25px;
-    border-radius: 3px;
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
-}
-.table-title {
-    color: #fff;
-    background: #40b2cd;		
-    padding: 16px 25px;
-    margin: -20px -25px 10px;
-    border-radius: 3px 3px 0 0;
-}
-.table-title h2 {
-    margin: 5px 0 0;
-    font-size: 24px;
-}
-.search-box {
-    position: relative;
-    float: right;
-}
-.search-box .input-group {
-    min-width: 300px;
-    position: absolute;
-    right: 0;
-}
-.search-box .input-group-addon, .search-box input {
-    border-color: #ddd;
-    border-radius: 0;
-}	
-.search-box input {
-    height: 34px;
-    padding-right: 35px;
-    background: #f4fcfd;
-    border: none;
-    border-radius: 2px !important;
-}
-.search-box input:focus {
-    background: #fff;
-}
-.search-box input::placeholder {
-    font-style: italic;
-}
-.search-box .input-group-addon {
-    min-width: 35px;
-    border: none;
-    background: transparent;
-    position: absolute;
-    right: 0;
-    z-index: 9;
-    padding: 6px 0;
-}
-.search-box i {
-    color: #a0a5b1;
-    font-size: 19px;
-    position: relative;
-    top: 2px;
- }
     /*   end  Header left/center/right code*/
 </style>
 
 <body>
 
-<div class="hero_area">
-    <!-- Button section -->
-<header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                        <h3>User Selling Requests</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-    <!-- End color buttons -3  section -->
 
-    <!-- List section -->
-    <div class="content">
+<div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card my-5">
 
-        <div class="container">		
-                    <div class="row">
-                        <div class="col-sm-6">
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="search-box">
-                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis Or Name">
-                            </div>
-                        </div>
-                    </div>
-            <div class="table-responsive">
+          <form class="card-body cardbody-color p-lg-5" action="login.php" enctype="multipart/form-data" method="post">
 
-                <table class="table custom-table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Image</th>
-                        <th scope="col">Car Name<br>Car Model</th>
-                        <th scope="col">Chassis</th>
-                        <th scope="col">Running</th>
-                        <th scope="col">Grade</th>
-                        <th scope="col">User Name<br>Contact Number<br>Contact Email</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    <?php 
-                    
-                    if(isset($sellingRequest) && !empty($sellingRequest)){
-                        foreach ($sellingRequest as $key => $value) {
-                        ?>
-                        <tr>
-                            <td> <img src="<?php echo "../images/cars/".$value->getImage();?>" alt="" width="120" height="65"></td>
-                            <td><?php echo $value->getName();?><br><?php echo $value->getNote();?></td>
-                            <td><?php echo $value->getChassis();?></td>
-                            <td><?php echo $value->getRunning();?></td>
-                            <td><?php echo $value->getGrade()?></td>
-                            <td><?php echo $value->getUserInwuary()->getUser_name();?><br><?php echo $value->getUserInwuary()->getMobile();?><br><?php echo  $value->getUserInwuary()->getEmail();?></td>
-                            <td>
-                                <a href="vehicle_preview.php?id=<?php echo $value->getId();?>" target="_blank">
-                                    <button Class="swal-button" name="Action">Action</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <?php
-                        }
-                    }
-                    
-                    ?>
-
-                    </tbody>
-                </table>
+            <div class="text-center">
+              <img src="../images/logo.png" style="margin-bottom: 20px;"
+                width="200px" alt="profile">
             </div>
 
-
-        </div>
-
-    </div>
-    <!-- end List section -->
-</div>
-
-<!-- Trigger/Open The Modal -->
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-            <div class="gjso-row" id="i7xr">
-                <div class="heading_container heading_center">
-                    <h3>Add car to your store</h3>
-                </div>
-                <div class="gjs-cell">
-                    <div class="shadow">
-                        Action Dropdown
-
-                    </div>
-
-                    <div class="gjs-row" id="ivse">
-                        <div class="gjs-cell" id="injq">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="bttn Bu_border"  name="Action">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gjs-cell" id="ijlw">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="swal-button" name="Action">Remove From Store</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="Username" name="username" aria-describedby="emailHelp"
+                placeholder="User Name">
             </div>
+            <div class="mb-3">
+              <input type="password" class="form-control" id="password" name="pass" placeholder="password">
+            </div>
+            <div class="text-center">
+                <button class="bttn2" name="Submit" >Submit</button>
+            </div>
+          </form>
         </div>
+
+      </div>
     </div>
-
-</div>
-
-
+  </div>
 
 <!-- Popup box-->
 <script>
@@ -602,27 +557,5 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
 </script>
 <!--===============================================================================================-->
 <script src="../js/main.js"></script>
-
-<script>
-$(document).ready(function(){
-	// Activate tooltips
-	$('[data-toggle="tooltip"]').tooltip();
-    
-	// Filter table rows based on searched term
-    $("#search").on("keyup", function() {
-        var term = $(this).val().toLowerCase();
-        $("table tbody tr").each(function(){
-            $row = $(this);
-            var name = $row.find("td:nth-child(3)").text().toLowerCase();
-            console.log(name);
-            if(name.search(term) < 0){                
-                $row.hide();
-            } else{
-                $row.show();
-            }
-        });
-    });
-});
-</script>
 </body>
 </html>

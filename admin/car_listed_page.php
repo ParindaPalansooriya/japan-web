@@ -1,3 +1,26 @@
+
+<?php
+
+ob_start();
+session_start();
+
+$id = $_SESSION['id'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
+require_once '../php/config.php';
+require_once "../php/car_module.php";
+require_once "../php/car_dao.php";
+
+$sellingRequest = getAllCarsForAdminLists($link);
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +33,7 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
+    <link rel="shortcut icon" href="../images/logo.png" type="">
     <title>Car_Listed_Page</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
@@ -81,8 +104,12 @@
     }
 
     .Bu_two {
-        border-color: #ff9800;
-        color: orange;
+        /* border: 2px solid white; */
+        border-radius: 5px;
+        background-color: red;
+        color: white;
+        padding: 8px 28px;
+        font-size: 16px;
     }
 
     .Bu_three {
@@ -254,6 +281,68 @@
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+  	min-width: 1000px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    color: #fff;
+    background: #40b2cd;		
+    padding: 16px 25px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box .input-group-addon {
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+    padding: 6px 0;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+ }
     /*   end  Header left/center/right code*/
 </style>
 
@@ -272,15 +361,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                                    <button class="bttn Bu_one"> Button </button>
-                                    <button class="bttn Bu_two"> Button </button>
-                                    <button class="bttn Bu_three"> Button </button>
-                                </div>
-                        </div>
-                </div>
             </div>
         </div>
     </div>
@@ -290,57 +370,63 @@
     <!-- List section -->
     <div class="content">
 
-        <div class="container">
+        <div class="container">		
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="search-box">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis">
+                            </div>
+                        </div>
+                    </div>
             <div class="table-responsive">
 
                 <table class="table custom-table">
                     <thead>
                     <tr>
                         <th scope="col">Image</th>
-                        <th scope="col">Car Name/Grade<br>Venue/Exhibiton Num</th>
-                        <th scope="col">Model<br>Power</th>
+                        <th scope="col">Car Name / Maker<br>Body Style / Condition</th>
+                        <th scope="col">Power / Chassis</th>
                         <th scope="col">Model Year<br>Running</th>
-                        <th scope="col">Color/Color Code<br>Shift/Cooling</th>
+                        <th scope="col">Color / Color Code<br>Shift / Cooling</th>
+                        <th scope="col">Public<br>User Bid<br>Bougth</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-<!--   1st details row-->
-                    <tr>
-                        <td> <img src="images/images002.png" width="120" height="65"></td>
-                        <td>Car Name/Grade<br>Venue/Exhibiton Num</td>
-                        <td>SModel<br>Power</td>
-                        <td>Model Year<br>Running</td>
-                        <td>Color/Color Code<br>Shift/Cooling</td>
-                        <td>
-                            <button  id="bttn" Class="swal-button" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  End of 1st details row-->
-<!--  2nd details row    Samples    -->
-                    <tr>
-                        <td> <img src="images/images002.png" width="120" height="65"></td>
-                        <td>Car Name/Grade<br>Venue/Exhibiton Num</td>
-                        <td>SModel<br>Power</td>
-                        <td>Model Year<br>Running</td>
-                        <td>Color/Color Code<br>Shift/Cooling</td>
-                        <td>
-                            <button Class="swal-button" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  End of 2nd details row-->
-<!--  3rd details row Samples -->
-                    <tr>
-                        <td> <img src="images/images002.png" width="120" height="65"></td>
-                        <td>Car Name/Grade<br>Venue/Exhibiton Num</td>
-                        <td>SModel<br>Power</td>
-                        <td>Model Year<br>Running</td>
-                        <td>Color/Color Code<br>Shift/Cooling</td>
-                        <td>
-                            <button Class="swal-button" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  end of 3rd details row-->
+
+                    <?php 
+                    
+                    if(isset($sellingRequest) && !empty($sellingRequest)){
+                        foreach ($sellingRequest as $key => $value) {
+                        ?>
+                        <tr>
+                            <td> <img src="<?php echo "../images/cars/".$value->getImage();?>" alt="" width="120" height="65"></td>
+                            <td><?php echo $value->getName();?> / <?php echo $value->getMaker();?>
+                            <br><?php echo $value->getStyle();?> / <?php echo $value->getIs_used()==2?"Accident Repair":($value->getIs_used()==0?"New":"Used");?></td>
+                            <td><?php echo $value->getPower();?> / <?php echo $value->getChassis();?></td>
+                            <td><?php echo $value->getModel_year();?><br><?php echo $value->getRunning();?></td>
+                            <td><?php echo $value->getIn_color();?> / <?php echo $value->getEx_color();?><br>
+                            <?php echo $value->getTransmission_shift();?> / <?php echo $value->getCooling();?></td>
+                            <td><?php echo $value->getPrice()->getPublic();?><br>
+                            <?php echo $value->getPrice()->getPrice1();?><br>
+                            <?php echo $value->getPrice()->getBuying();?></td>
+                            <td>
+                                <div Class="bttn Bu_one"><?php echo $value->getCurrent_action_text();?></div><br>
+                                <a href="vehicle_preview_full.php?id=<?php echo $value->getId();?>" target="_blank">
+                                    <button Class="swal-button" name="Action">Change Store</button>
+                                </a>
+                                <a href="add_vehicle.php?carId=<?php echo $value->getId();?>" target="_blank">
+                                    <button Class="Bu_two" name="Action">Edit</button>
+                                </a>
+                            </td>
+                        </tr>
+                        <?php
+                        }
+                    }
+                    
+                    ?>
 
                     </tbody>
                 </table>
@@ -504,5 +590,27 @@
 </script>
 <!--===============================================================================================-->
 <script src="../js/main.js"></script>
+
+<script>
+$(document).ready(function(){
+	// Activate tooltips
+	$('[data-toggle="tooltip"]').tooltip();
+    
+	// Filter table rows based on searched term
+    $("#search").on("keyup", function() {
+        var term = $(this).val().toLowerCase();
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(3)").text().toLowerCase();
+            console.log(name);
+            if(name.search(term) < 0){                
+                $row.hide();
+            } else{
+                $row.show();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

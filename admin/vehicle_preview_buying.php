@@ -1,10 +1,17 @@
 
 <?php 
 
+ob_start();
 session_start();
-// echo $_SESSION['valid'];
-echo (time()-$_SESSION['timeout'])/60;
-// echo $_SESSION['username'];
+
+$id = $_SESSION['id'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
 
 $queries = array();
 $carId=null;
@@ -31,7 +38,7 @@ $imagers = array();
 
 if(isset($carId) && isset($inqId)){
     $car = getCarsByIdWithbidPrice($link,$carId);
-    $imagers = getAllCarImagers($link,$carId);
+    $imagers = getAllCarImagers($link,$carId,$type);
     if(!isset($imagers) || empty($imagers)){
         array_push($imagers,"images/noimage.jpg");
     }
@@ -39,18 +46,20 @@ if(isset($carId) && isset($inqId)){
     if(isset($_POST['Action'])){
         if($_POST['Action']==0){
             if(deleteUserInueary($link,$inqId)>0){
+                echo '<script>alert("Successfully Deleted")</script>';
                 echo "<script>window.close();</script>";
             }
         }
         if($_POST['Action']==1){
             moveCarToSoledList($link,$carId,$inqId);
+            echo '<script>alert("Successfully submited")</script>';
             echo "<script>window.close();</script>";
         }
     }
 }else{
     echo "<script>window.close();</script>";
 }
-print_r($_POST);
+// print_r($_POST);
 ?>
 
 
@@ -66,7 +75,7 @@ print_r($_POST);
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="../images/Car_logo_sample.jpg" type="">
+    <link rel="shortcut icon" href="../images/logo.png" type="">
     <title>Vehicle Preview</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
@@ -360,35 +369,72 @@ print_r($_POST);
         object-fit: contain;
     }
     /* End Two Equal Columns */
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+  	min-width: 1000px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    color: #fff;
+    background: #40b2cd;		
+    padding: 16px 25px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box .input-group-addon {
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+    padding: 6px 0;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+ }
 
 </style>
 
 <body>
-<!-- Button section -->
-<header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                            <button class="bttn Bu_one"> Button </button>
-                            <button class="bttn Bu_two"> Button </button>
-                            <button class="bttn Bu_three"> Button </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- End color buttons -3  section -->
 <body class="">
     <?php 
@@ -409,7 +455,7 @@ print_r($_POST);
                                     <?php if(isset($imagers)){
                                         foreach ($imagers as $key => $value) { ?>
                                             <div class="carousel-item <?php if($key==0){echo "active";} ?>"  style="max-width: 800px; object-fit: contain;" data-slide-number=<?php echo $key; ?>>
-                                                <img src="../<?php echo $value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
+                                                <img src="<?php echo "../images/cars/".$value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
                                             </div>
                                        <?php }
                                     }?>
@@ -426,7 +472,7 @@ print_r($_POST);
                                         <?php if(isset($imagers)){
                                             foreach ($imagers as $key => $value) { ?>
                                             <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 <?php if($key==0){echo 'selected';}?>" data-target="#myCarousel" data-slide-to=<?php echo $key; ?>>
-                                                <img src="../<?php echo $value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
+                                                <img src="<?php echo "../images/cars/".$value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
                                             </div>
                                         <?php }
                                         }?>
@@ -454,8 +500,8 @@ print_r($_POST);
                             </table></div>
                             <div class="row">
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
+                                    <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Make : <?php echo $car->getMaker(); ?></p>
-                                    <p style="padding-bottom: 5px;">Model : <?php echo $car->getModel(); ?></p>
                                     <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>
                                     <p style="padding-bottom: 5px;">Interior Color : <?php echo $car->getIn_color(); ?></p>
                                     <p style="padding-bottom: 5px;">Exterior Color : <?php echo $car->getEx_color(); ?></p>
@@ -475,7 +521,7 @@ print_r($_POST);
                                     <p style="padding-bottom: 5px;">Lenght : <?php echo $car->getDimensions_L(); ?></p>
                                     <p style="padding-bottom: 5px;">Width : <?php echo $car->getDimensions_W(); ?></p>
                                     <p style="padding-bottom: 5px;">Hight : <?php echo $car->getDimensions_H(); ?></p>
-                                    <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==0?"New":"Used"; ?></p>
+                                    <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></p>
                                     <p style="padding-bottom: 5px;">Weel : <?php echo $car->getIs_two_weel()==0?"4 Weel":"2 Weel"; ?></p>
                                     <p style="padding-bottom: 5px;">Steering : <?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></p>
                                     </br>

@@ -1,24 +1,132 @@
 <?php
+
 ob_start();
 session_start();
 
 $id = $_SESSION['id'];
+$type = $_SESSION['type'];
 
-if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
     header("Location: login.php"); 
 }else{
     $_SESSION['timeout'] = time();
 }
-require_once '../php/config.php';
-require_once "../php/car_module.php";
-require_once "../php/car_dao.php";
 
-$sellingRequest = getAllUserSellingCarsForAdminLists($link);
+use Shuchkin\SimpleXLSXGen;
+
+$today = null;
+require_once('../php/config.php');
+require_once('../php/car_dao.php');
+
+$summery = [];
+if(isset($_POST['all'])){
+    $summery = getAllSoledCarsForReport($link,null);
+}else{
+    if(isset($_POST['date']) && !empty($_POST['date'])){
+        $today = $_POST['date'];
+        $summery = getAllSoledCarsForReport($link,$_POST['date']);
+    }else{
+        $summery = getAllSoledCarsForReport($link,null);
+    }
+}
+
+if(isset($_POST['download']))
+{
+    $data = [];
+
+    $titles = [
+        '<style height="50"><b><middle><center>Code</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Date</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Store</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Supplier</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Perfecture</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Maker</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Model Year</center></middle></b></style>',
+        '<style height="50"><b><middle><center>Chassis</center></middle></b></style>'
+    ];
+
+    if($type==1){
+        array_push($titles,'<style height="50"><b><middle><center>Bank</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Bid</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Buying</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>R TAX</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Automobile TAX</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>AU Chargers</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Trasport</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Storage</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Insurance</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Repair</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Other</center></middle></b></style>');
+        array_push($titles,'<style height="50"><b><middle><center>Selling</center></middle></b></style>');
+    }
+
+    array_push($titles,'<style height="50"><b><middle><center>Public</center></middle></b></style>');
+
+    array_push($data,$titles);
+
+    foreach ($summery as $key => $value) {
+        $temp = [
+            sprintf("VEH_%05d", $value->getId()),
+            $value->getDate()!==null?$value->getDate():"--",
+            $value->getCurrent_action_text()!==null?$value->getCurrent_action_text():"--",
+            $value->getAdditional()!==null?($value->getAdditional()->getSupplier()??""):"--",
+            $value->getAdditional()!==null?($value->getAdditional()->getPerfecture()??""):"--",
+            $value->getMaker()!==null?$value->getMaker():"--",
+            $value->getModel_year()!==null?$value->getModel_year():"--",
+            $value->getChassis()!==null?$value->getChassis():"--"
+        ];
+
+        if($type==1){
+            array_push($temp,$value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--");
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--");
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getRtax()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getAtax()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getAu_cha()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getTrasport()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getStorage()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getInsurance()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getRepair()??"--":"--");
+            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getOther()??"--":"--");
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getSelling()??"--":"--");
+        }
+
+        if($value->getPriceObject()!==null){
+            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--");
+        }else{
+            array_push($temp,"--");
+        }
+        
+        array_push($data,$temp);
+    }
+
+    // print_r($data);
+    require_once "./sheet/SimpleXLSXGen.php";
+
+    $file_url = './sheet/sale_report_'.($today!==null?$today:date("Y-m-d")).'.xlsx';
+
+    SimpleXLSXGen::fromArray($data)->saveAs($file_url);
+
+    ob_end_clean();
+    header('Content-Description: File Transfer');
+    header('Content-Type: xlsx');
+    header("Content-Transfer-Encoding: Binary");
+    header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
+    header('Content-Transfer-Encoding: binary');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    readfile($file_url);
+    if (file_exists($file_url)) {
+        unlink($file_url);
+    }
+}
 
 ?>
 
+
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -30,7 +138,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>User_Selling_Requests</title>
+    <title>Attendance_form</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
@@ -71,6 +179,14 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     <link rel="stylesheet" type="text/css" href="../css/util.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
 </head>
 
 <style>
@@ -78,13 +194,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     * {
         box-sizing: border-box;
     }
-    .button_search {
-        border: 3px solid orange;
-        border-radius: 5px;
-        background-color: orange;
-        color: white;
 
-    }
     .bttn {
         border: 2px solid black;
         border-radius: 5px;
@@ -108,12 +218,40 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
         border-color: #f44336;
         color: red
     }
-    .Bu_border {
-        border-color: #ffad06;
-        color: #ffc000
-    }
 
     /* end button section   */
+
+    /*  button2 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: white;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* end button2 section   */
+
+    /*  button3 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt2 {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* End button3 section   */
 
     /*  Class for button and header  */
     * {
@@ -335,7 +473,6 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     position: relative;
     top: 2px;
  }
-    /*   end  Header left/center/right code*/
 </style>
 
 <body>
@@ -349,7 +486,21 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                        <h3>User Selling Requests</h3>
+                            <h3>Sales Report</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gjs-cell" id="ijl1">
+                    <div class="heading_container heading_center">
+                        <div class="col-center">
+                            <form class="form-inline" method="post">
+                                <div class="form-group">
+                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
+                                    <button class="bttn Bu_one" class="form-control" name="pick" style="margin-right: 10px;" >Pick Date</button>
+                                    <button class="bttn Bu_one" class="form-control" name="all" >See All</button>
+                                    <button class="bttn Bu_one" class="form-control" name="download" >Download</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -359,16 +510,18 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
 </header>
     <!-- End color buttons -3  section -->
 
-    <!-- List section -->
+    <!-- Attendance list section -->
+<section>
+
     <div class="content">
 
-        <div class="container">		
+        <div class="container">			
                     <div class="row">
                         <div class="col-sm-6">
                         </div>
                         <div class="col-sm-6">
                             <div class="search-box">
-                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis Or Name">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis Or Code">
                             </div>
                         </div>
                     </div>
@@ -377,122 +530,96 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Image</th>
-                        <th scope="col">Car Name<br>Car Model</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Store</th>
+                        <th scope="col">Supplier</th>
+                        <th scope="col">Perfecture</th>
+                        <th scope="col">Bank</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Maker</th>
+                        <th scope="col">Model Year</th>
                         <th scope="col">Chassis</th>
-                        <th scope="col">Running</th>
-                        <th scope="col">Grade</th>
-                        <th scope="col">User Name<br>Contact Number<br>Contact Email</th>
-                        <th scope="col">Action</th>
+                        <?php if($type==1){
+                            ?>
+                        <th scope="col">Bank</th>
+                        <th scope="col">Bid</th>
+                        <th scope="col">Buying</th>
+                        <th scope="col">R TAX</th>
+                        <th scope="col">Automobile TAX</th>
+                        <th scope="col">AU Chargers</th>
+                        <th scope="col">Trasport</th>
+                        <th scope="col">Storage</th>
+                        <th scope="col">Insurance</th>
+                        <th scope="col">Repair</th>
+                        <th scope="col">Other</th>
+                        <th scope="col">Selling</th>
+                            <?php
+                        } ?>
+                        <th scope="col">Public</th>
+                        <!-- <th scope="col"></th> -->
                     </tr>
                     </thead>
                     <tbody>
-
-                    <?php 
-                    
-                    if(isset($sellingRequest) && !empty($sellingRequest)){
-                        foreach ($sellingRequest as $key => $value) {
-                        ?>
-                        <tr>
-                            <td> <img src="<?php echo "../images/cars/".$value->getImage();?>" alt="" width="120" height="65"></td>
-                            <td><?php echo $value->getName();?><br><?php echo $value->getNote();?></td>
-                            <td><?php echo $value->getChassis();?></td>
-                            <td><?php echo $value->getRunning();?></td>
-                            <td><?php echo $value->getGrade()?></td>
-                            <td><?php echo $value->getUserInwuary()->getUser_name();?><br><?php echo $value->getUserInwuary()->getMobile();?><br><?php echo  $value->getUserInwuary()->getEmail();?></td>
-                            <td>
-                                <a href="vehicle_preview.php?id=<?php echo $value->getId();?>" target="_blank">
-                                    <button Class="swal-button" name="Action">Action</button>
-                                </a>
-                            </td>
-                        </tr>
-                        <?php
-                        }
-                    }
-                    
+<!--   1st details row-->
+                    <?php
+                        foreach ($summery as $key => $value) {
                     ?>
+                        <tr>
+                            <td><?php echo sprintf("(VEH_%05d)", $value->getId()??0); ?></td>
+                            <td><?php echo $value->getDate()!==null?$value->getDate():"--"; ?></td>
+                            <td><?php echo $value->getCurrent_action_text()??"--"; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getSupplier()??"--":"--"; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture()??"--":"--"; ?></td>
+                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank()??"--":"--"; ?></td>
+                            <td><?php echo $value->getName()??"--"; ?></td>
+                            <td><?php echo $value->getMaker()??"--"; ?></td>
+                            <td><?php echo $value->getModel_year()??"--"; ?></td>
+                            <td><?php echo $value->getChassis()??"--"; ?></td>
+                                <?php if($type==1){
+                                    ?>
+                                        <td><?php echo $value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--"; ?></td>
+                                        <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getRtax()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getAtax()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getAu_cha()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getTrasport()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getStorage()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getInsurance()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getRepair()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getOther()??"--":"--"; ?></td>
+                                        <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getSelling()??"--":"--"; ?></td>
+                                    <?php
+                                } ?>
+                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--"; ?></td>
+                            <!-- <td><form class="form-inline" action="add_vehicle.php" method="post">
+                                <div class="form-group">
+                                    <input type="hidden" id="carId" name="carId" value="<?php echo $value->getId();?>">
+                                    <button class="bttn Bu_one" class="form-control" name="download" >Edit</button>
+                                </div>
+                            </form></td> -->
+                        </tr>
+                    <?php
+                        }
+                    ?>
+<!--  End of 1st details row-->
+<!--  2nd details row    Samples    -->
 
+<!--  End of 2nd details row-->
+<!--  3rd details row Samples -->
+
+<!--  end of 3rd details row-->
                     </tbody>
                 </table>
             </div>
-
-
-        </div>
-
-    </div>
-    <!-- end List section -->
-</div>
-
-<!-- Trigger/Open The Modal -->
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-            <div class="gjso-row" id="i7xr">
-                <div class="heading_container heading_center">
-                    <h3>Add car to your store</h3>
-                </div>
-                <div class="gjs-cell">
-                    <div class="shadow">
-                        Action Dropdown
-
-                    </div>
-
-                    <div class="gjs-row" id="ivse">
-                        <div class="gjs-cell" id="injq">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="bttn Bu_border"  name="Action">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gjs-cell" id="ijlw">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="swal-button" name="Action">Remove From Store</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+</section>
+<!-- End Attendance list section -->
 
 </div>
 
-
-
-<!-- Popup box-->
-<script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("bttn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
 <!-- jQery -->
 <script src="../js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
@@ -525,7 +652,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
 <script src="../vendor/slick/slick.min.js"></script>
 <script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="../vendor/parallax100/parallax100.js"></script>
+<script src="vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
@@ -613,11 +740,16 @@ $(document).ready(function(){
         var term = $(this).val().toLowerCase();
         $("table tbody tr").each(function(){
             $row = $(this);
-            var name = $row.find("td:nth-child(3)").text().toLowerCase();
+            var name = $row.find("td:nth-child(10)").text().toLowerCase();
             console.log(name);
             if(name.search(term) < 0){                
                 $row.hide();
             } else{
+                $row.show();
+            }
+
+            var code = $row.find("td:nth-child(1)").text().toLowerCase();
+            if(code.search(term) >= 0){                
                 $row.show();
             }
         });

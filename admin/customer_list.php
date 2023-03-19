@@ -1,24 +1,47 @@
-<?php
+<?php 
+
 ob_start();
 session_start();
 
 $id = $_SESSION['id'];
+$type = $_SESSION['type'];
 
-if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
     header("Location: login.php"); 
 }else{
     $_SESSION['timeout'] = time();
 }
-require_once '../php/config.php';
-require_once "../php/car_module.php";
-require_once "../php/car_dao.php";
 
-$sellingRequest = getAllUserSellingCarsForAdminLists($link);
+$today = null;
+require_once('../php/config.php');
+require_once('../php/customer_dao.php');
 
+
+if(isset($_POST['SetDate'])){
+    print_r($_REQUEST);
+    if(updateLastSackanDate($link,$_REQUEST['c_id'],null)>0){
+        echo '<script>alert("Successfully Updated!")</script>';
+    }else{
+        echo '<script>alert("Something Wrong! Please Try Again")</script>';
+    }
+}
+
+
+parse_str($_SERVER['QUERY_STRING'], $queries);
+if(isset($queries) && !empty($queries)){
+   if(isset($queries['today']) && !empty($queries['today'])){
+        $summery = getAllCustomersToSendPostCard($link);
+   }else{
+        $summery = getAllCustomers($link,$today,null,null);
+   }
+}else{
+    $summery = getAllCustomers($link,$today,null,null);
+}
 ?>
 
+
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -30,7 +53,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>User_Selling_Requests</title>
+    <title>Attendance_form</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
@@ -78,13 +101,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     * {
         box-sizing: border-box;
     }
-    .button_search {
-        border: 3px solid orange;
-        border-radius: 5px;
-        background-color: orange;
-        color: white;
 
-    }
     .bttn {
         border: 2px solid black;
         border-radius: 5px;
@@ -100,20 +117,56 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     }
 
     .Bu_two {
-        border-color: #ff9800;
-        color: orange;
+        border-radius: 5px;
+        background-color: steelblue;
+        color: white;
+        padding: 8px 12px;
+        font-size: 16px;
+        font-weight: bold;
     }
 
     .Bu_three {
-        border-color: #f44336;
-        color: red
-    }
-    .Bu_border {
-        border-color: #ffad06;
-        color: #ffc000
+        border-radius: 5px;
+        background-color: #04AA6D;
+        color: white;
+        padding: 8px 12px;
+        font-size: 16px;
+        font-weight: bold;
     }
 
     /* end button section   */
+
+    /*  button2 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: white;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* end button2 section   */
+
+    /*  button3 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt2 {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* End button3 section   */
 
     /*  Class for button and header  */
     * {
@@ -335,7 +388,6 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     position: relative;
     top: 2px;
  }
-    /*   end  Header left/center/right code*/
 </style>
 
 <body>
@@ -349,7 +401,24 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                        <h3>User Selling Requests</h3>
+                            <h3>Customer List</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="gjs-cell" id="ijl1">
+                    <div class="heading_container heading_center">
+                        <div class="col-center">
+                                <div class="form-group">
+                                    <div class="form-inline">
+                                    <form class="form-inline">
+                                        <input class="bttn Bu_one" name="today" style="margin-right: 10px;" type="hidden" value="true">
+                                        <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">Near To Exp: Only</button>
+                                    </form>
+                                    <form >
+                                        <button class="bttn Bu_one" class="form-control" style="margin-right: 10px;">See All</button>
+                                    </form>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -359,7 +428,9 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
 </header>
     <!-- End color buttons -3  section -->
 
-    <!-- List section -->
+    <!-- Attendance list section -->
+<section>
+
     <div class="content">
 
         <div class="container">		
@@ -377,50 +448,58 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Image</th>
-                        <th scope="col">Car Name<br>Car Model</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Shacane Registered Day</th>
+                        <th scope="col">Valid Months</th>
+                        <th scope="col">Last Post Day</th>
                         <th scope="col">Chassis</th>
-                        <th scope="col">Running</th>
-                        <th scope="col">Grade</th>
-                        <th scope="col">User Name<br>Contact Number<br>Contact Email</th>
+                        <th scope="col">Contact Number 1</th>
+                        <th scope="col">Contact Number 2</th>
+                        <th scope="col">Address</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-
-                    <?php 
-                    
-                    if(isset($sellingRequest) && !empty($sellingRequest)){
-                        foreach ($sellingRequest as $key => $value) {
-                        ?>
+<!--   1st details row-->
+                    <?php
+                        foreach ($summery as $key => $value) {
+                    ?>
                         <tr>
-                            <td> <img src="<?php echo "../images/cars/".$value->getImage();?>" alt="" width="120" height="65"></td>
-                            <td><?php echo $value->getName();?><br><?php echo $value->getNote();?></td>
-                            <td><?php echo $value->getChassis();?></td>
-                            <td><?php echo $value->getRunning();?></td>
-                            <td><?php echo $value->getGrade()?></td>
-                            <td><?php echo $value->getUserInwuary()->getUser_name();?><br><?php echo $value->getUserInwuary()->getMobile();?><br><?php echo  $value->getUserInwuary()->getEmail();?></td>
+                            <td><?php echo $value->getName(); ?></td>
+                            <td><?php echo $value->getBday(); ?></td>
+                            <td><?php echo $value->getValid(); ?></td>
+                            <td><?php echo $value->getLastSendDate()=="0"?"New Customer":$value->getLastSendDate(); ?></td>
+                            <td><?php echo $value->getChassis(); ?></td>
+                            <td><?php echo $value->getContact_num1(); ?></td>
+                            <td><?php echo $value->getContact_num2(); ?></td>
+                            <td><?php echo $value->getAddress(); ?></td>
                             <td>
-                                <a href="vehicle_preview.php?id=<?php echo $value->getId();?>" target="_blank">
-                                    <button Class="swal-button" name="Action">Action</button>
-                                </a>
+                                <form id="formAwesome" 
+                                    action="customer_list.php<?php echo (isset($queries['today']) && !empty($queries['today']))?"?today=true":"" ?>" 
+                                    enctype="multipart/form-data" method="post">
+                                    <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
+                                    <button style="font-size: small;" Class="Bu_three" name="Action">Print Card</button>
+                                </form>
+                                <form style="margin-top: 10px;" id="formAwesome" 
+                                    action="customer_list.php<?php echo (isset($queries['today']) && !empty($queries['today']))?"?today=true":"" ?>" 
+                                    enctype="multipart/form-data" method="post">
+                                    <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
+                                    <button style="font-size: small;" Class="Bu_two" name="SetDate">Set New Sakan</button>
+                                </form>
                             </td>
                         </tr>
-                        <?php
+                    <?php
                         }
-                    }
-                    
                     ?>
-
+<!--  end of 3rd details row-->
                     </tbody>
                 </table>
             </div>
-
-
         </div>
-
     </div>
-    <!-- end List section -->
+</section>
+<!-- End Attendance list section -->
+
 </div>
 
 <!-- Trigger/Open The Modal -->
@@ -430,35 +509,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">&times;</span>
-            <div class="gjso-row" id="i7xr">
-                <div class="heading_container heading_center">
-                    <h3>Add car to your store</h3>
-                </div>
-                <div class="gjs-cell">
-                    <div class="shadow">
-                        Action Dropdown
-
-                    </div>
-
-                    <div class="gjs-row" id="ivse">
-                        <div class="gjs-cell" id="injq">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="bttn Bu_border"  name="Action">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gjs-cell" id="ijlw">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="swal-button" name="Action">Remove From Store</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <p>Some text in the Modal..</p>
     </div>
 
 </div>
@@ -525,7 +576,7 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
 <script src="../vendor/slick/slick.min.js"></script>
 <script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="../vendor/parallax100/parallax100.js"></script>
+<script src="vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
@@ -602,7 +653,6 @@ $sellingRequest = getAllUserSellingCarsForAdminLists($link);
 </script>
 <!--===============================================================================================-->
 <script src="../js/main.js"></script>
-
 <script>
 $(document).ready(function(){
 	// Activate tooltips
@@ -613,11 +663,16 @@ $(document).ready(function(){
         var term = $(this).val().toLowerCase();
         $("table tbody tr").each(function(){
             $row = $(this);
-            var name = $row.find("td:nth-child(3)").text().toLowerCase();
+            var name = $row.find("td:nth-child(5)").text().toLowerCase();
             console.log(name);
             if(name.search(term) < 0){                
                 $row.hide();
             } else{
+                $row.show();
+            }
+
+            var code = $row.find("td:nth-child(1)").text().toLowerCase();
+            if(code.search(term) >= 0){                
                 $row.show();
             }
         });

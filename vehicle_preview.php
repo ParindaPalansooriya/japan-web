@@ -27,9 +27,12 @@ if (isset($carId) && isset($_POST['submit'])) {
     $mobile = $_REQUEST['mobile'];
     $nearest_port = $_REQUEST['nearest_port'];
     $message = $_REQUEST['message'];
-    if(insertUserInquary($link,$carId,$user_name,$email,$mobile,$nearest_port,$message)==1){
+    if(insertUserInquary($link,$carId,$user_name,$email,$mobile,$nearest_port,$message)>0){
+        echo '<script>alert("Successfully submited")</script>';
         header("Location: index.php"); 
         exit();
+    }else{
+        echo '<script>alert("Submit Error!")</script>';
     }
 }
 
@@ -38,7 +41,10 @@ if(isset($carId)){
     // if(isset($car)){
     //     echo $car->id;
     // }
-    $imagers = getAllCarImagers($link,$carId);
+    ob_start();
+    session_start();
+    $type = $_SESSION['type']??0;
+    $imagers = getAllCarImagers($link,$carId,$type);
     if(!isset($imagers) || empty($imagers)){
         array_push($imagers,"images/noimage.jpg");
     }
@@ -59,7 +65,7 @@ if(isset($carId)){
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
+    <link rel="shortcut icon" href="images/logo.png" type="">
     <title>Vehicle Preview</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -115,6 +121,50 @@ if(isset($carId)){
     * {
         box-sizing: border-box;
     }
+      .button {
+         display: inline-block;
+         border-radius: 4px;
+         background-color: #f4511e;
+         border: none;
+         border-color: teal;
+         color: #FFFFFF;
+         text-align: center;
+         font-size: 20px;
+         padding: 10px;
+         width: 200px;
+         transition: all 0.5s;
+         cursor: pointer;
+         margin: 5px;
+         }
+
+         .button span {
+         cursor: pointer;
+         display: inline-block;
+         position: relative;
+         transition: 0.5s;
+         }
+
+         .button span:after {
+         content: '\00bb';
+         position: absolute;
+         opacity: 0;
+         top: 0;
+         right: -20px;
+         transition: 0.5s;
+         }
+
+         .button:hover span {
+         padding-right: 25px;
+         border-color: teal;
+         }
+         .button:hover {
+            color: black;
+         }
+
+         .button:hover span:after {
+         opacity: 1;
+         right: 0;
+         }
     .button_search {
         border: 3px solid orange;
         border-radius: 5px;
@@ -372,9 +422,15 @@ if(isset($carId)){
                 <div class="gjs-cell" id="ijl1">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <button class="bttn Bu_one"> Button </button>
-                            <button class="bttn Bu_two"> Button </button>
-                            <button class="bttn Bu_three"> Button </button>
+                            <a href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                                <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: green"><span>Sale 1</span></button>
+                            </a>
+                            <a href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
+                                <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: orange"><span>Sale 2</span></button>
+                            </a>
+                            <a href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
+                                <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: red"><span>Sale 3</span></button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -402,7 +458,7 @@ if(isset($carId)){
                                     <?php if(isset($imagers)){
                                         foreach ($imagers as $key => $value) { ?>
                                             <div class="carousel-item <?php if($key==0){echo "active";} ?>"  style="max-width: 800px; object-fit: contain;" data-slide-number=<?php echo $key; ?>>
-                                                <img src="<?php echo $value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
+                                                <img src="<?php echo "images/cars/".$value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
                                             </div>
                                        <?php }
                                     }?>
@@ -419,7 +475,7 @@ if(isset($carId)){
                                         <?php if(isset($imagers)){
                                             foreach ($imagers as $key => $value) { ?>
                                             <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 <?php if($key==0){echo 'selected';}?>" data-target="#myCarousel" data-slide-to=<?php echo $key; ?>>
-                                                <img src="<?php echo $value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
+                                                <img src="<?php echo "images/cars/".$value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
                                             </div>
                                         <?php }
                                         }?>
@@ -436,19 +492,18 @@ if(isset($carId)){
                     <div class="box">
                         <div class="container-fluid" style="padding: 20px;">
                         <div class="table-responsive">
-
                             <table class="table custom-table">
-                        <thead>
-                            <tr>
-                                <th scope="col" style="width:70%"><h4><?php echo $car->getName(); ?></h4></th>
-                                <th scope="col"><h4><?php echo $car->getPrice(); ?></h4></th>
-                            </tr>
-                        </thead>
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width:70%"><h4><?php echo $car->getName(); ?></h4></th>
+                                        <th scope="col"><h4><?php echo $car->getPrice(); ?></h4></th>
+                                    </tr>
+                                </thead>
                             </table></div>
                             <div class="row">
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
+                                    <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Make : <?php echo $car->getMaker(); ?></p>
-                                    <p style="padding-bottom: 5px;">Model : <?php echo $car->getModel(); ?></p>
                                     <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>
                                     <p style="padding-bottom: 5px;">Interior Color : <?php echo $car->getIn_color(); ?></p>
                                     <p style="padding-bottom: 5px;">Exterior Color : <?php echo $car->getEx_color(); ?></p>
@@ -468,7 +523,7 @@ if(isset($carId)){
                                     <p style="padding-bottom: 5px;">Lenght : <?php echo $car->getDimensions_L(); ?></p>
                                     <p style="padding-bottom: 5px;">Width : <?php echo $car->getDimensions_W(); ?></p>
                                     <p style="padding-bottom: 5px;">Hight : <?php echo $car->getDimensions_H(); ?></p>
-                                    <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==0?"New":"Used"; ?></p>
+                                    <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></p>
                                     <p style="padding-bottom: 5px;">Weel : <?php echo $car->getIs_two_weel()==0?"4 Weel":"2 Weel"; ?></p>
                                     <p style="padding-bottom: 5px;">Steering : <?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></p>
                                     </br>

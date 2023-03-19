@@ -29,28 +29,35 @@ require_once "../php/car_dao.php";
 require_once "../php/car_image_module.php";
 require_once "../php/car_image_dao.php";
 require_once "../php/user_inquary_dao.php";
+require_once "../php/car_price_dao.php";
 
 $imagers = array();
 
 if(isset($carId)){
-    $car = getCarsByIdWithbidPrice($link,$carId);
-    $imagers = getAllCarImagers($link,$carId,$type);
-    // if(!isset($imagers) || empty($imagers)){
-    //     array_push($imagers,"images/noimage.jpg");
-    // }
     $user_inquary = getUserInquary($link,$carId);
+    if(isset($_POST['update'])){
+        if(getCarPriceUpdate($link,$carId,$_REQUEST['sell'],$_REQUEST['pub'],$_REQUEST['buy'],$_REQUEST['ub'])>0){
+            echo '<script>alert("Prices Update success")</script>';
+        }
+    }
     if(isset($_POST['Action'])){
         if($_POST['Action']!=0){
             if(updateAction($link,$carId,$_POST['Action'])>0){
-                echo "<script>window.close();</script>";
+                echo '<script>alert("Block Updated success")</script>';
             }
         }else if($_POST['Action']==0){
-            moveCarToSoledList($link,$carId,-3);
+            moveCarToSoledList($link,$carId,-2);
+            echo '<script>alert("Successfully submited")</script>';
             echo "<script>window.close();</script>";
         }
     }
+    $car = getCarsByIdWithbidPrice($link,$carId);
+    $imagers = getAllCarImagers($link,$carId,$type);
+    $prices = getCarPrice($link,$carId);
+    if(!isset($imagers) || empty($imagers)){
+        array_push($imagers,"images/noimage.jpg");
+    }
 }
-print_r($_POST);
 ?>
 
 
@@ -443,18 +450,12 @@ print_r($_POST);
 
                             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner" style="max-width: 800px; object-fit: contain;">
-                                    <?php if(isset($imagers) && !empty($imagers)){
+                                    <?php if(isset($imagers)){
                                         foreach ($imagers as $key => $value) { ?>
                                             <div class="carousel-item <?php if($key==0){echo "active";} ?>"  style="max-width: 800px; object-fit: contain;" data-slide-number=<?php echo $key; ?>>
                                                 <img src="<?php echo "../images/cars/".$value->getImage(); ?>"  style="max-width: 800px; object-fit: contain;" alt="...">
                                             </div>
                                        <?php }
-                                    }else{
-                                        ?>
-                                            <div class="carousel-item active"  style="max-width: 800px; object-fit: contain;" data-slide-number=<?php echo 0; ?>>
-                                                <img src="../images/cars/noimage.jpg"  style="max-width: 800px; object-fit: contain;" alt="...">
-                                            </div>
-                                       <?php
                                     }?>
                                 </div>
                             </div>
@@ -466,19 +467,13 @@ print_r($_POST);
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
                                     <div class="row mx-0">
-                                        <?php if(isset($imagers) && !empty($imagers)){
+                                        <?php if(isset($imagers)){
                                             foreach ($imagers as $key => $value) { ?>
                                             <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 <?php if($key==0){echo 'selected';}?>" data-target="#myCarousel" data-slide-to=<?php echo $key; ?>>
                                                 <img src="<?php echo "../images/cars/".$value->getImage(); ?>" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
                                             </div>
                                         <?php }
-                                        }else{
-                                            ?>
-                                            <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 selected" data-target="#myCarousel" data-slide-to=<?php echo 0; ?>>
-                                                <img src="../images/cars/noimage.jpg" style="width: 100%; aspect-ratio: 6/4; " class="img-fluid" alt="...">
-                                            </div>
-                                        <?php
-                                    }?>
+                                        }?>
                                     </div>
                                 </div>
                             </div>
@@ -497,7 +492,7 @@ print_r($_POST);
                         <thead>
                             <tr>
                                 <th scope="col" style="width:70%"><h4><?php echo $car->getName(); ?></h4></th>
-                                <th scope="col"><h4><?php echo $car->getPrice(); ?></h4></th>
+                                <th scope="col"><h4><?php echo $car->getCurrent_action_text(); ?></h4></th>
                             </tr>
                         </thead>
                             </table></div>
@@ -533,27 +528,76 @@ print_r($_POST);
                             <?php if( null !== $car->getNote() && !empty($car->getNote())){?>
                                 <p style="padding-bottom: 15px; margin-top: 10px;">note : <?php echo $car->getNote(); ?></p>
                             <?php } ?>
-                            <p style="padding-bottom: 15px;"><h5> User Ditails</h5></p>
-                        <div class="gjs-cell">
+
+                            <?php 
                             
-                            <div class="heading_container heading_center" style="padding-top: 15px;">
-                                <table class="table custom-table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col"><?php echo $user_inquary->getUser_name(); ?></th>
-                                            <th scope="col"><?php echo $user_inquary->getMobile(); ?></th>
-                                            <th scope="col"><?php echo $user_inquary->getEmail(); ?></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
+                            if(isset($user_inquary)){
+                            
+                            ?>
+                            <p style="padding-bottom: 15px;"><h5> User Ditails</h5></p>
+                                <div class="gjs-cell">
+                                    
+                                    <div class="heading_container heading_center" style="padding-top: 15px;">
+                                        <table class="table custom-table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"><?php echo $user_inquary->getUser_name(); ?></th>
+                                                    <th scope="col"><?php echo $user_inquary->getMobile(); ?></th>
+                                                    <th scope="col"><?php echo $user_inquary->getEmail(); ?></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                        <?php 
+                            }
+                            if(isset($user_inquary)){
+                            
+                            ?>
+                            <p style="padding-bottom: 15px;"><h5> Price Ditails</h5></p>
+                                <div class="gjs-cell">
+                                    <form action="vehicle_preview_full.php?id=<?php echo $carId;?>" method="post">
+                                    <div class="heading_container heading_center" style="padding-top: 15px;">
+                                        <table class="table custom-table">
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="col">Total Cost</th>
+                                                    <th scope="col">Public Price</th>
+                                                    <th scope="col">Buying Price</th>
+                                                    <th scope="col">User Bid</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="col">
+                                                        <input type="text" name="sell" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getSelling(); ?>" required>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <input type="text" name="pub" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getPublic(); ?>" >
+                                                    </th>
+                                                    <th scope="col">
+                                                        <input type="text" name="buy" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getBuying(); ?>" required>
+                                                    </th>
+                                                    <th scope="col">
+                                                        <input type="text" name="ub" style="font-size:0.8em" class="form-control" id="email" value="<?php echo $prices->getPrice1(); ?>" readonly>
+                                                    </th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="heading_container heading_center">
+                                        <button Class="bttn" name="update">Update Price</button>
+                                    </div>
+                                    </form>
+                                </div>
+                        <?php 
+                            }
+                        ?>
                         </div>
                     </div>
                 </div>
-                 <!-- 1 Kojo, 1Sale, 2Kojo, 2Sale, 3Kojo, 3Sale, Miho Kojo, Export -->
                     <table class="table custom-table">
-                        <thead style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" >
+                        <thead style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                             <tr>
                                 <th scope="col">
                                         <button id="Bttn2" Class="bttn2" name="Action" value="1">1 Kojo</button>
@@ -569,9 +613,8 @@ print_r($_POST);
                                 </th>
                             </tr>
                         </thead>
-                        <thead style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" >
+                        <thead style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                             <tr>
-                                </th>
                                 <th scope="col">
                                         <button id="Bttn6" Class="bttn2" name="Action" value="5">3 Kojo</button>
                                 </th>
@@ -581,14 +624,13 @@ print_r($_POST);
                                 <th scope="col">
                                         <button id="Bttn8" Class="bttn2" name="Action" value="7">Miho Kojo</button>
                                 </th>
-                                <!-- <th scope="col">
-                                        <button id="Bttn9" Class="bttn2" name="Action" value="-1">Export</button>
-                                </th> -->
+                                <th scope="col">
+                                        <button id="Bttn13" Class="bttn2" name="Action" value="11">Parts</button>
+                                </th>
                             </tr>
                         </thead>
                         <thead>
                             <tr>
-                                </th>
                                 <th scope="col">
                                         <button id="Bttn10" Class="bttn2" name="Action" value="8">USS</button>
                                 </th>
@@ -598,11 +640,11 @@ print_r($_POST);
                                 <th style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" scope="col">
                                         <button id="Bttn12" Class="bttn2" name="Action" value="10">Other Option</button>
                                 </th>
-                                <th style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>" scope="col">
-                                        <button id="Bttn13" Class="bttn2" name="Action" value="11">Parts</button>
+                                <th scope="col">
+                                        <button id="Bttn9" Class="bttn2" name="Action" value="-1">Export</button>
                                 </th>
                                 <th scope="col">
-                                        <button id="Bttn1" Class="swal-button" name="Action" value="0">Remove</button>
+                                        <button id="Bttn1" Class="swal-button" name="Action" value="0">Soled</button>
                                 </th>
                             </tr>
                         </thead>
@@ -620,10 +662,10 @@ print_r($_POST);
     <div class="modal-content">
         <div class="container-width">
         <div class="box">
-            <form action="vehicle_preview.php?id=<?php echo $carId;?>" method="post">
+            <form action="vehicle_preview_full.php?id=<?php echo $carId;?>" method="post">
             <div class="heading_container heading_center" >
                 <h4 id="title" style="padding-bottom: 15px; margin-top: 10px;">Please Conform</h4>
-                <button id="Bttn21" Class="swal-button" name="Action" value="0">Remove</button>
+                <button id="Bttn21" Class="swal-button" name="Action" value="0">Soled</button>
                 <button id="Bttn22" Class="bttn2" name="Action" value="1">1 Kojo</button>
                 <button id="Bttn23" Class="bttn2" name="Action" value="2">1Sale</button>
                 <button id="Bttn24" Class="bttn2" name="Action" value="3">2 Kojo</button>
@@ -698,7 +740,7 @@ print_r($_POST);
         btn212.style.display = "none";
         btn213.style.display = "none";
         btn21.style.display = "block";
-        title.innerHTML = "Please conform to remove this Item";
+        title.innerHTML = "Please conform to add to Soled this Item";
     }
 
     btn2.onclick = function() {
@@ -916,7 +958,6 @@ print_r($_POST);
         btn213.style.display = "block";
         title.innerHTML = "Please conform to Add this Item to Parts";
     }
-
 
     window.onclick = function(event) {
         if (event.target == modal) {

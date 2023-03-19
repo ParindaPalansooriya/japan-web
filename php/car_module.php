@@ -29,10 +29,15 @@ class Cars{
     public $is_used;
     public $is_two_weel;
     public $is_steering_right;
+    public $date;
+    public $ex_color;
+    public $in_color;
 
     public function __construct($maker_id, $model_id, $interior_color_id, $exterior_color_id, $current_action_id, $body_style_id,$passengers, 
     $doors, $name, $grade, $power, $model_year, $evaluation, $running, $cooling, $note, $fuel, $chassis, $dimensions_L, $dimensions_W, $dimensions_H, 
-    $transmission_shift, $id, $is_public, $is_used, $is_two_weel, $is_steering_right)
+    $transmission_shift, $id, $is_public, $is_used, $is_two_weel, $is_steering_right,
+    $interior_color,
+    $exterior_color)
     {
         $this->maker_id = $maker_id;
         $this->model_id = $model_id;
@@ -61,6 +66,8 @@ class Cars{
         $this->is_used = $is_used;
         $this->is_two_weel = $is_two_weel;
         $this->is_steering_right = $is_steering_right;
+        $this->in_color = $interior_color;
+        $this->ex_color = $exterior_color;
     }
 
     
@@ -68,11 +75,12 @@ class Cars{
     public $style;
     public $maker;
     public $model;
-    public $ex_color;
-    public $in_color;
+    
     public $price;
 
     public $userInwuary;
+    public $additional;
+    public $deductions;
 
     /**
      * Get the value of in_color
@@ -180,7 +188,7 @@ class Cars{
     public function getImage()
     {
         if(!isset($this->image) || empty($this->image)){
-            return "images/unnamed.png";
+            return "noimage.png";
         }
         return $this->image;
     }
@@ -282,6 +290,50 @@ class Cars{
      */ 
     public function getCurrent_action_id()
     {
+        return $this->current_action_id;
+    }
+
+    public function getCurrent_action_text()
+    {
+        if($this->current_action_id==0){
+            return "No Block";
+        }
+        if($this->current_action_id==1){
+            return "1 Kojo";
+        }
+        if($this->current_action_id==2){
+            return "1 Sale";
+        }
+        if($this->current_action_id==3){
+            return "2 Kojo";
+        }
+        if($this->current_action_id==4){
+            return "2 Sale";
+        }
+        if($this->current_action_id==5){
+            return "3 Kojo";
+        }
+        if($this->current_action_id==6){
+            return "3 Sale";
+        }
+        if($this->current_action_id==7){
+            return "Miho Kojo";
+        }
+        if($this->current_action_id==-1){
+            return "Export";
+        }
+        if($this->current_action_id==8){
+            return "USS";
+        }
+        if($this->current_action_id==9){
+            return "CAA";
+        }
+        if($this->current_action_id==10){
+            return "Other Option";
+        }
+        if($this->current_action_id==11){
+            return "Parts";
+        }
         return $this->current_action_id;
     }
 
@@ -748,6 +800,11 @@ class Cars{
         return $this->price;
     }
 
+    public function getPriceObject()
+    {
+        return $this->price;
+    }
+
     /**
      * Set the value of price
      *
@@ -776,6 +833,66 @@ class Cars{
     public function setUserInwuary($userInwuary)
     {
         $this->userInwuary = $userInwuary;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of additional
+     */ 
+    public function getAdditional()
+    {
+        return $this->additional;
+    }
+
+    /**
+     * Set the value of additional
+     *
+     * @return  self
+     */ 
+    public function setAdditional($additional)
+    {
+        $this->additional = $additional;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deductions
+     */ 
+    public function getDeductions()
+    {
+        return $this->deductions;
+    }
+
+    /**
+     * Set the value of deductions
+     *
+     * @return  self
+     */ 
+    public function setDeductions($deductions)
+    {
+        $this->deductions = $deductions;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of date
+     */ 
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set the value of date
+     *
+     * @return  self
+     */ 
+    public function setDate($date)
+    {
+        $this->date = $date;
 
         return $this;
     }
