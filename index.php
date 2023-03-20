@@ -37,7 +37,7 @@ require_once "./php/backup_service.php";
       <!-- Card  -->
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="assets/theme/css/style.css">
 
 
@@ -287,6 +287,24 @@ require_once "./php/backup_service.php";
 	-webkit-border-radius-bottom-right: 5px;
         cursor:pointer;
 }
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:#25d366;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+  font-size:30px;
+	box-shadow: 2px 2px 3px #999;
+  z-index:100;
+}
+
+.my-float{
+	margin-top:16px;
+}
 
 /* ===========================
    ====== Medua Query for Search Box ====== 
@@ -325,6 +343,11 @@ require_once "./php/backup_service.php";
 
    </style>
    <body>
+
+   <a href="https://api.whatsapp.com/send?phone=0716625919&text=hi,%20This%20massage%20from%20web.%20If%20you%20have%20a%20free%20time%20please%20let%20me%20know." class="float" target="_blank">
+   <i class="fa fa-whatsapp my-float"></i>
+   </a>
+
       <div class="hero_area">
       <!-- head section -->
 
@@ -335,7 +358,7 @@ require_once "./php/backup_service.php";
                                     <div class="detail-box">
                                           <img src="images/logo.png" style="margin-bottom: 50px; object-fit: contain;" width="200px" height="200px">
                                           <h2 style="margin-bottom: 30px;">
-                                          SURCH FOR EXPORT MARKET VEHICLES (輸出)
+                                          SEARCH FOR EXPORT MARKET VEHICLES (輸出)
                                           </h2>
                                           <p style="margin-bottom: 50px;">
                                              Passenger cars, vans, light trucks and even margin cars or damaged vehicles,
@@ -434,7 +457,7 @@ require_once "./php/backup_service.php";
                            <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
                               <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
                               <div class="card"  style="max-width: 300px; min-width: 200px;">
-                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <img class="card-img-top" src="./images/1sale.jpg" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
                                  <div class="card-body">
                                     <p class="card-text" style="color: #888; font-weight: bold;">号川原城町店</p>
                                     <p class="card-text" style="color: #888; font-weight: bold;">（柳澤店長）</p>
@@ -447,7 +470,7 @@ require_once "./php/backup_service.php";
                            <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
                               <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
                               <div class="card"  style="max-width: 300px; min-width: 200px;">
-                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <img class="card-img-top" src="./images/2sale.jpg" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
                                  <div class="card-body">
                                     <p class="card-text" style="color: #888; font-weight: bold;">号中根台店</p>
                                     <p class="card-text" style="color: #888; font-weight: bold;">（菊池店長）</p>
@@ -460,7 +483,7 @@ require_once "./php/backup_service.php";
                            <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
                               <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
                               <div class="card"  style="max-width: 300px; min-width: 200px;">
-                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <img class="card-img-top" src="./images/3sale.jpg" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
                                  <div class="card-body">
                                     <p class="card-text" style="color: #888; font-weight: bold;">号長沖店</p>
                                     <p class="card-text" style="color: #888; font-weight: bold;">（藤本店長）</p>
@@ -473,7 +496,7 @@ require_once "./php/backup_service.php";
                            <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235004/" target="_blank">
                               <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
                               <div class="card"  style="max-width: 300px; min-width: 200px;">
-                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <img class="card-img-top" src="./images/4sale.jpg" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
                                  <div class="card-body">
                                     <p class="card-text" style="color: #888; font-weight: bold;">号店</p>
                                     <p class="card-text" style="color: #888; font-weight: bold;">（豊島店長）</p>
@@ -486,7 +509,7 @@ require_once "./php/backup_service.php";
                            <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
                               <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
                               <div class="card"  style="max-width: 300px; min-width: 200px;">
-                                 <img class="card-img-top" src="./images/back.png" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
+                                 <img class="card-img-top" src="./images/parts.jpg" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;" alt="Card image cap">
                                  <div class="card-body">
                                     <p class="card-text" style="color: #888; font-weight: bold;">PARTS FOR EXPORT</p>
                                     <p class="card-text" style="color: #888; font-weight: bold;">（自動車部品）</p>
@@ -534,7 +557,7 @@ require_once "./php/backup_service.php";
                      </div>
                      <div class="detail-box">
                         <h5>
-                           BUY A CAR
+                           BUY A CAR (EXPORT)
                         </h5>
                         <h6>
                            MORE THAT 1,250 CARS LISTED

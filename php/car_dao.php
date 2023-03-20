@@ -342,14 +342,14 @@ function getAllCarsForReport($link){
     return $retuen_val;
 }
 
-function getAllSoledCarsForReport($link,$date){
+function getAllSoledCarsForReport($link,$date1,$date2){
     $retuen_val = [];
     require_once "car_module.php";
     $sql2 = "SELECT *,
     (select image from car_imagers where soled_cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
     (select name from car_makers where soled_cars.maker_id=car_makers.id) as maker ,
     (select name from body_style where soled_cars.body_style_id=body_style.id) as body_style 
-    FROM soled_cars where  inquary_id!=-3 ".($date!==null?(" and date like '%".$date."%'"):"").";";
+    FROM soled_cars where  inquary_id!=-3 ".($date1!==null && $date2!==null?(" and date between '".$date1."' and '".$date2."' "):"").";";
 
     if($result = mysqli_query($link, $sql2)){
         while($row = mysqli_fetch_array($result)){

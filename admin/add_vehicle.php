@@ -54,23 +54,21 @@ if(isset($_REQUEST['filepath'])){
 }
 if(isset($_POST['Submit1']))
 { 
-    if(isset($_POST['m_image']) && !empty($_POST['m_image'])){
-        $folderPath = '../images/cars/';
-        $image_parts = explode(";base64,", $_POST['m_image']);
+    foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
 
-        $image_base64 = base64_decode($image_parts[1]);
-        $file = $folderPath .microtime_float() . 'mobile-image.png';
-        file_put_contents($file, $image_base64);
-        array_push($filepath,$file);
-    }else{
-        foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
-            $file_name=$_FILES["files"]["name"][$key];
-            $file_tmp=$_FILES["files"]["tmp_name"][$key];
-            $filepathTemp = "../images/cars/".microtime_float().$file_name;
-            if(move_uploaded_file($_FILES["files"]["tmp_name"][$key], $filepathTemp)) 
-            {
-                array_push($filepath,$filepathTemp);
-            } 
+        $file_name=$_FILES["files"]["name"][$key];
+        $file_tmp=$_FILES["files"]["tmp_name"][$key];
+        $filepathTemp = "../images/cars/".microtime_float().$file_name;
+
+        $image = imagecreatefromjpeg($_FILES["files"]["tmp_name"][$key]);
+        imagejpeg($image,$filepathTemp, 60);
+        imagedestroy($image);
+        
+        if(file_exists($filepathTemp)) 
+        {
+            array_push($filepath,$filepathTemp);
+        }else{
+            echo '<script>alert("Imager upload error. Try again please")</script>';
         }
     }
 } 
@@ -871,11 +869,11 @@ if(isset($_POST['Submit']))
                             <input type="hidden" id="carId" name="carId" value="<?php echo $carId;?>">
                             <input type="hidden" id="m_image" name="m_image">
                             <input type="file" style="margin-left: 20px; font-size:0.8em" name="files[]" multiple>
-                            <hr/>
+                            <!-- <hr/>
                             <h6 > Capcher Your Vehicle Image from Camera</h6>
                             <div Class="bttn2" style="max-width: 130px;" onClick="openCanera()" value="10">Capcher</div><br/><br/>
                             <div id="results"></div>
-                            <hr/>
+                            <hr/> -->
                             <input type="submit" class="bttn2" style="font-size:0.8em;" value="Upload" name="Submit1"> <br/>
                             </form>
                         <div class="box">
@@ -909,10 +907,8 @@ if(isset($_POST['Submit']))
     </div>
 </section>
 
-
+<!-- 
 <div id="myModal" class="modal">
-
-    <!-- Modal content -->
     <div class="modal-content">
         <div class="container">
         <div class="box">
@@ -928,11 +924,11 @@ if(isset($_POST['Submit']))
     </div>
     </div>
 
-</div>
+</div> -->
 
 </body>
 <!-- end box with filter section -->
-
+<!-- 
 <script language="JavaScript">
     var modal = document.getElementById("myModal");
         Webcam.reset();
@@ -978,7 +974,7 @@ if(isset($_POST['Submit']))
 			}
 		});
 	}
-</script>
+</script> -->
 
 <script>
 function myFunction() {

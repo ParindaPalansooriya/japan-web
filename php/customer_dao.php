@@ -102,7 +102,7 @@ function updateLastSendDate($link,$id){
 
 function updateLastSackanDate($link,$id,$date){
     if($date!==null){
-        $sql = "UPDATE customers SET bday = $date WHERE id = $id ;";
+        $sql = "UPDATE customers SET bday = '$date' WHERE id = $id ;";
     }else{
         $sql = "UPDATE customers SET bday = CURDATE() WHERE id = $id ;";
     }

@@ -12,113 +12,25 @@ if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($
     $_SESSION['timeout'] = time();
 }
 
-use Shuchkin\SimpleXLSXGen;
-
-$today = null;
+$day1 = null;
+$day2 = null;
 require_once('../php/config.php');
 require_once('../php/car_dao.php');
 
 $summery = [];
 if(isset($_POST['all'])){
-    $summery = getAllSoledCarsForReport($link,null);
+    $day1 = null;
+    $day2 = null;
+    $summery = getAllSoledCarsForReport($link,null,null);
 }else{
-    if(isset($_POST['date']) && !empty($_POST['date'])){
-        $today = $_POST['date'];
-        $summery = getAllSoledCarsForReport($link,$_POST['date']);
+    if(isset($_POST['date1']) && !empty($_POST['date1']) && isset($_POST['date2']) && !empty($_POST['date2'])){
+        $day1 = $_POST['date1'];
+        $day2 = $_POST['date2'];
+        $summery = getAllSoledCarsForReport($link,$_POST['date1'],$_POST['date2']);
     }else{
-        $summery = getAllSoledCarsForReport($link,null);
-    }
-}
-
-if(isset($_POST['download']))
-{
-    $data = [];
-
-    $titles = [
-        '<style height="50"><b><middle><center>Code</center></middle></b></style>',
-        '<style height="50"><b><middle><center>Date</center></middle></b></style>',
-        '<style height="50"><b><middle><center>Store</center></middle></b></style>',
-        '<style height="50"><b><middle><center>Supplier</center></middle></b></style>',
-        '<style height="50"><b><middle><center>Perfecture</center></middle></b></style>',
-        '<style height="50"><b><middle><center>Maker</center></middle></b></style>',
-        '<style height="50"><b><middle><center>Model Year</center></middle></b></style>',
-        '<style height="50"><b><middle><center>Chassis</center></middle></b></style>'
-    ];
-
-    if($type==1){
-        array_push($titles,'<style height="50"><b><middle><center>Bank</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>Bid</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>Buying</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>R TAX</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>Automobile TAX</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>AU Chargers</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>Trasport</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>Storage</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>Insurance</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>Repair</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>Other</center></middle></b></style>');
-        array_push($titles,'<style height="50"><b><middle><center>Selling</center></middle></b></style>');
-    }
-
-    array_push($titles,'<style height="50"><b><middle><center>Public</center></middle></b></style>');
-
-    array_push($data,$titles);
-
-    foreach ($summery as $key => $value) {
-        $temp = [
-            sprintf("VEH_%05d", $value->getId()),
-            $value->getDate()!==null?$value->getDate():"--",
-            $value->getCurrent_action_text()!==null?$value->getCurrent_action_text():"--",
-            $value->getAdditional()!==null?($value->getAdditional()->getSupplier()??""):"--",
-            $value->getAdditional()!==null?($value->getAdditional()->getPerfecture()??""):"--",
-            $value->getMaker()!==null?$value->getMaker():"--",
-            $value->getModel_year()!==null?$value->getModel_year():"--",
-            $value->getChassis()!==null?$value->getChassis():"--"
-        ];
-
-        if($type==1){
-            array_push($temp,$value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--");
-            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--");
-            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--");
-            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getRtax()??"--":"--");
-            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getAtax()??"--":"--");
-            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getAu_cha()??"--":"--");
-            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getTrasport()??"--":"--");
-            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getStorage()??"--":"--");
-            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getInsurance()??"--":"--");
-            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getRepair()??"--":"--");
-            array_push($temp,$value->getDeductions()!==null?$value->getDeductions()->getOther()??"--":"--");
-            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getSelling()??"--":"--");
-        }
-
-        if($value->getPriceObject()!==null){
-            array_push($temp,$value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--");
-        }else{
-            array_push($temp,"--");
-        }
-        
-        array_push($data,$temp);
-    }
-
-    // print_r($data);
-    require_once "./sheet/SimpleXLSXGen.php";
-
-    $file_url = './sheet/sale_report_'.($today!==null?$today:date("Y-m-d")).'.xlsx';
-
-    SimpleXLSXGen::fromArray($data)->saveAs($file_url);
-
-    ob_end_clean();
-    header('Content-Description: File Transfer');
-    header('Content-Type: xlsx');
-    header("Content-Transfer-Encoding: Binary");
-    header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
-    header('Content-Transfer-Encoding: binary');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate');
-    header('Pragma: public');
-    readfile($file_url);
-    if (file_exists($file_url)) {
-        unlink($file_url);
+        $day1 = null;
+        $day2 = null;
+        $summery = getAllSoledCarsForReport($link,null,null);
     }
 }
 
@@ -179,14 +91,7 @@ if(isset($_POST['download']))
     <link rel="stylesheet" type="text/css" href="../css/util.css">
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
-
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 </head>
 
 <style>
@@ -493,14 +398,20 @@ if(isset($_POST['download']))
                 <div class="gjs-cell" id="ijl1">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <form class="form-inline" method="post">
+                            <div class="form-inline" >
+                                <form method="post">
+                                    <div class="form-group">
+                                        <input class="bttn Bu_one" id="date1" name="date1" style="margin-right: 10px;" type="date" value="<?php echo $day1;?>">
+                                        <h5 style=" padding-right: 10px; font-weight: bold;">TO</h5>
+                                        <input class="bttn Bu_one" id="date2" name="date2" style="margin-right: 10px;" type="date" value="<?php echo $day2;?>">
+                                        <button class="bttn Bu_one" class="form-control" name="pick" style="margin-right: 10px;" >Pick Date</button>
+                                        <button class="bttn Bu_one" class="form-control" name="all" >See All</button>
+                                    </div>
+                                </form>
                                 <div class="form-group">
-                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>">
-                                    <button class="bttn Bu_one" class="form-control" name="pick" style="margin-right: 10px;" >Pick Date</button>
-                                    <button class="bttn Bu_one" class="form-control" name="all" >See All</button>
-                                    <button class="bttn Bu_one" class="form-control" name="download" >Download</button>
-                                </div>
-                            </form>
+                                    <button class="bttn Bu_one" onclick=" htmlTableToExcel('xlsx') " class="form-control" name="download" >Download</button>
+                                </div> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -518,6 +429,86 @@ if(isset($_POST['download']))
         <div class="container">			
                     <div class="row">
                         <div class="col-sm-6">
+                            <div class="form-inline">
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox0" >
+                                        <a style="padding-left: 10px;"> No Block</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox1" >
+                                        <a style="padding-left: 10px;"> 1 Kojo</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox2" >
+                                        <a style="padding-left: 10px;"> Sale 1</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox3" >
+                                        <a style="padding-left: 10px;"> 2 Kojo</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox4" >
+                                        <a style="padding-left: 10px;"> Sale 2</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox5" >
+                                        <a style="padding-left: 10px;"> 3 Kojo</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox6" >
+                                        <a style="padding-left: 10px;"> Sale 3</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox7" >
+                                        <a style="padding-left: 10px;"> Miho Kojo</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox8" >
+                                        <a style="padding-left: 10px;"> Export</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox9" >
+                                        <a style="padding-left: 10px;"> USS</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox10" >
+                                        <a style="padding-left: 10px;"> CAA</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox11" >
+                                        <a style="padding-left: 10px;"> Other Option</a>
+                                    </div>
+                                </div>
+                                <div class="form-control" style="margin-right: 10px; margin-bottom: 10px; max-width: 150px;">
+                                    <div class="form-inline">
+                                        <input style="width: 20px; height: 20px;" type="checkbox" id="checkbox12" >
+                                        <a style="padding-left: 10px;"> Parts</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="search-box">
@@ -527,7 +518,7 @@ if(isset($_POST['download']))
                     </div>
             <div class="table-responsive">
 
-                <table class="table custom-table">
+                <table class="table custom-table" id="tblToExcl">
                     <thead>
                     <tr>
                         <th scope="col">Code</th>
@@ -732,29 +723,251 @@ if(isset($_POST['download']))
 
 <script>
 $(document).ready(function(){
+	var array = [];
+    var term = null;
+
 	// Activate tooltips
 	$('[data-toggle="tooltip"]').tooltip();
     
 	// Filter table rows based on searched term
     $("#search").on("keyup", function() {
-        var term = $(this).val().toLowerCase();
+        term = $(this).val().toLowerCase();
         $("table tbody tr").each(function(){
             $row = $(this);
             var name = $row.find("td:nth-child(10)").text().toLowerCase();
-            console.log(name);
+            var block = $row.find("td:nth-child(3)").text().toLowerCase();
+            const index = array.indexOf(block);
             if(name.search(term) < 0){                
                 $row.hide();
             } else{
-                $row.show();
+                if(array.length === 0){
+                    $row.show();
+                }else{
+                    if(index < 0){                
+                        $row.hide();
+                    } else{
+                        $row.show();
+                    }
+                }
             }
 
             var code = $row.find("td:nth-child(1)").text().toLowerCase();
             if(code.search(term) >= 0){                
-                $row.show();
+                if(array.length === 0){
+                    $row.show();
+                }else{
+                    if(index < 0){                
+                        $row.hide();
+                    } else{
+                        $row.show();
+                    }
+                }
             }
         });
     });
+
+    $("#checkbox0").on("change", function() {
+        if(this.checked){
+            array.push("no block");
+        }else{
+            const index = array.indexOf("no block");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox1").on("change", function() {
+        if(this.checked){
+            array.push("1 kojo");
+        }else{
+            const index = array.indexOf("1 kojo");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox2").on("change", function() {
+        if(this.checked){
+            array.push("1 sale");
+        }else{
+            const index = array.indexOf("1 sale");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox3").on("change", function() {
+        if(this.checked){
+            array.push("2 kojo");
+        }else{
+            const index = array.indexOf("2 kojo");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox4").on("change", function() {
+        if(this.checked){
+            array.push("2 sale");
+        }else{
+            const index = array.indexOf("2 sale");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox5").on("change", function() {
+        if(this.checked){
+            array.push("3 kojo");
+        }else{
+            const index = array.indexOf("3 kojo");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox6").on("change", function() {
+        if(this.checked){
+            array.push("3 sale");
+        }else{
+            const index = array.indexOf("3 sale");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox7").on("change", function() {
+        if(this.checked){
+            array.push("miho kojo");
+        }else{
+            const index = array.indexOf("miho kojo");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox8").on("change", function() {
+        if(this.checked){
+            array.push("export");
+        }else{
+            const index = array.indexOf("export");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox9").on("change", function() {
+        if(this.checked){
+            array.push("uss");
+        }else{
+            const index = array.indexOf("uss");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox10").on("change", function() {
+        if(this.checked){
+            array.push("caa");
+        }else{
+            const index = array.indexOf("caa");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox11").on("change", function() {
+        if(this.checked){
+            array.push("other option");
+        }else{
+            const index = array.indexOf("other option");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    $("#checkbox12").on("change", function() {
+        if(this.checked){
+            array.push("parts");
+        }else{
+            const index = array.indexOf("parts");
+            console.log(index);
+            if (index > -1) {
+                array.splice(index, 1);
+            }
+        }
+        showRows();
+    });
+
+    function showRows(){
+        document.getElementById('search').value = ''
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(3)").text().toLowerCase();
+            console.log(name);
+            if(array.length === 0){
+                $row.show();
+            }else{
+                const index = array.indexOf(name);
+                if(index < 0){                
+                    $row.hide();
+                } else{
+                    $row.show();
+                }
+            }
+        });
+    }
 });
+
+function htmlTableToExcel(type){
+    var data = document.getElementById('tblToExcl');
+    var date1 = document.getElementById('date1');
+    var date2 = document.getElementById('date2');
+
+    var excelFile = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+    XLSX.write(excelFile, { bookType: type, bookSST: true, type: 'base64' });
+    if(date1.value=="" && date2.value==""){
+        XLSX.writeFile(excelFile, 'Sales full report.' + type);
+    }else{
+        XLSX.writeFile(excelFile, 'Sales report '+date1.value+' to '+date2.value+'.' + type);
+    }
+}
 </script>
 </body>
 </html>
