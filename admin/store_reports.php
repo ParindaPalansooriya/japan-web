@@ -383,7 +383,7 @@ $summery = getAllCarsForReport($link);
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                            <h3>Current Store</h3>
+                            <h3>Available Stock</h3>
                         </div>
                     </div>
                 </div>
@@ -525,7 +525,7 @@ $summery = getAllCarsForReport($link);
                         <th scope="col">Insurance</th>
                         <th scope="col">Repair</th>
                         <th scope="col">Other</th>
-                        <th scope="col">Selling</th>
+                        <th scope="col">Total Cost</th>
                             <?php
                         } ?>
                         <th scope="col">Public</th>
@@ -564,7 +564,7 @@ $summery = getAllCarsForReport($link);
                                     <?php
                                 } ?>
                             <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--"; ?></td>
-                            <td><form class="form-inline" action="add_vehicle.php" method="post">
+                            <td><form class="form-inline" action="add_vehicle.php" method="post"  target="_blank">
                                 <div class="form-group">
                                     <input type="hidden" id="carId" name="carId" value="<?php echo $value->getId();?>">
                                     <button class="bttn Bu_one" class="form-control" name="download" >Edit</button>

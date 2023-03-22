@@ -407,9 +407,10 @@ if(isset($_POST['Submit']))
             <div id="i91j" class="gjs-cell">
                 <h5>Vehicle Details</h5>
                 <div >
-                <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
-                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label>
-                    <div class="box" style="display: <?php echo isset($filepath) && !empty($filepath) ? "block":"none" ?>;" >
+                <!-- <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
+                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label> -->
+                    <div class="box" >
+                    <!-- style="display: <?php echo isset($filepath) && !empty($filepath) ? "block":"none" ?>;" -->
                     <form id="formAwesome" action="add_vehicle.php" enctype="multipart/form-data" method="post">
                             <div class="modal-body">
                             <input type="hidden" id="carId" name="carId" value="<?php echo $carId;?>">
@@ -421,7 +422,8 @@ if(isset($_POST['Submit']))
                                     <?php 
                                     if(isset($maker)){
                                         foreach ($maker as $key => $value) {
-                                            ?><option value="<?php echo $value->getId() ?>" <?php echo $car !== null && ($car->getMaker_id())==($value->getId())? "selected":"" ;?>><?php echo $value->getName() ?></option><?php
+                                            ?><option value="<?php echo $value->getId() ?>" <?php echo $car !== null && ($car->getMaker_id())==($value->getId())? "selected":"" ;?>>
+                                            <?php echo $value->getId()==1?"Select":$value->getName() ?></option><?php
                                         }
                                     }
                                     ?>
@@ -553,11 +555,11 @@ if(isset($_POST['Submit']))
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="firstName" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                <label for="firstName" style="font-size:0.9em; font-weight: bold;" class="col-sm-6 col-form-label">
                                 Vehicle Name
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="name" value= "<?php echo $car !== null ? $car->getName():"" ;?>" style="font-size:0.8em" class="form-control" id="firstName" placeholder="John" <?php if($type!=1){echo 'required';}?>>
+                                <input type="text" name="name" value= "<?php echo $car !== null ? $car->getName():"" ;?>" style="font-size:0.9em; font-weight: bold;" class="form-control" id="firstName" placeholder="John" <?php if($type!=1){echo 'required';}?>>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -810,11 +812,11 @@ if(isset($_POST['Submit']))
                             </div>
                                 <?php } ?>
                             <div class="form-group row">
-                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                <label for="text" name="name" style="font-size:0.9em; font-weight: bold;" class="col-sm-6 col-form-label">
                                 Total Cost
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="number" name="sell" value= "<?php echo $car !== null && $car->getPriceObject() !== null ? $car->getPriceObject()->getSelling():"" ;?>" style="font-size:0.8em" class="form-control" id="sell" placeholder="john" required <?php if($type!=1){echo 'readonly';}?>>
+                                <input type="number" name="sell" value= "<?php echo $car !== null && $car->getPriceObject() !== null ? $car->getPriceObject()->getSelling():"" ;?>" style="font-size:0.9em; font-weight: bold;" class="form-control" id="sell" placeholder="john" required <?php if($type!=1){echo 'readonly';}?>>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -840,10 +842,10 @@ if(isset($_POST['Submit']))
                                     }
                                 }
                                 ?>
-                                <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
-                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label>
-                                <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Submit" name="Submit" 
-                                <?php echo isset($filepath) && !empty($filepath) ? "":"disabled" ?>>Submit</button>
+                                <!-- <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
+                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label> -->
+                                <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Submit" name="Submit" >Submit</button>
+                                <!-- <?php echo isset($filepath) && !empty($filepath) ? "":"disabled" ?> -->
                             </div>
                             </div>
                         </form>

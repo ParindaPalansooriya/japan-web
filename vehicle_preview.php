@@ -408,7 +408,7 @@ if(isset($carId)){
 
 <body>
 <!-- Button section -->
-<header class="header_section">
+<!-- <header class="header_section">
     <div class="gjso-row" id="i7xa">
         <div class="gjs-cell">
             <div class="gjs-row" id="ivs4">
@@ -437,7 +437,7 @@ if(isset($carId)){
             </div>
         </div>
     </div>
-</header>
+</header> -->
 <!-- End color buttons -3  section -->
 <body class="">
     <?php 
@@ -496,7 +496,7 @@ if(isset($carId)){
                                 <thead>
                                     <tr>
                                         <th scope="col" style="width:70%"><h4><?php echo $car->getName(); ?></h4></th>
-                                        <th scope="col"><h4><?php echo $car->getPrice(); ?></h4></th>
+                                        <th scope="col"><h4>FOB <?php echo $car->getPrice(); ?>¥</h4></th>
                                     </tr>
                                 </thead>
                             </table></div>
