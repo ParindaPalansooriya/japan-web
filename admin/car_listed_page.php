@@ -1,5 +1,28 @@
+
+<?php
+
+ob_start();
+session_start();
+
+$id = $_SESSION['id'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
+require_once '../php/config.php';
+require_once "../php/car_module.php";
+require_once "../php/car_dao.php";
+
+$sellingRequest = getAllCarsForAdminLists($link);
+
+?>
+
+
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<html>
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -10,47 +33,47 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
-    <title>Attendance_form</title>
+    <link rel="shortcut icon" href="../images/logo.png" type="">
+    <title>Car_Listed_Page</title>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
     <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="../css/responsive.css" rel="stylesheet" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/daterangepicker/daterangepicker.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/slick/slick.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/MagnificPopup/magnific-popup.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/util.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
 </head>
 
@@ -59,7 +82,13 @@
     * {
         box-sizing: border-box;
     }
+    .button_search {
+        border: 3px solid orange;
+        border-radius: 5px;
+        background-color: orange;
+        color: white;
 
+    }
     .bttn {
         border: 2px solid black;
         border-radius: 5px;
@@ -75,48 +104,24 @@
     }
 
     .Bu_two {
-        border-color: #ff9800;
-        color: orange;
+        /* border: 2px solid white; */
+        border-radius: 5px;
+        background-color: red;
+        color: white;
+        padding: 8px 28px;
+        font-size: 16px;
     }
 
     .Bu_three {
         border-color: #f44336;
         color: red
     }
+    .Bu_border {
+        border-color: #ffad06;
+        color: #ffc000
+    }
 
     /* end button section   */
-
-    /*  button2 section   */
-    * {
-        box-sizing: border-box;
-    }
-
-    .butt {
-        border: 2px solid #ffad06;
-        border-radius: 5px;
-        background-color: white;
-        color: #ffad06;
-        padding: 8px 28px;
-        font-size: 16px;
-
-    }
-    /* end button2 section   */
-
-    /*  button3 section   */
-    * {
-        box-sizing: border-box;
-    }
-
-    .butt2 {
-        border: 2px solid #ffad06;
-        border-radius: 5px;
-        background-color: #ffffff;
-        color: #ffad06;
-        padding: 8px 28px;
-        font-size: 16px;
-
-    }
-    /* End button3 section   */
 
     /*  Class for button and header  */
     * {
@@ -276,6 +281,68 @@
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+  	min-width: 1000px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    color: #fff;
+    background: #40b2cd;		
+    padding: 16px 25px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box .input-group-addon {
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+    padding: 6px 0;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+ }
     /*   end  Header left/center/right code*/
 </style>
 
@@ -290,18 +357,9 @@
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                        <h3>Attendance Form</h3>
+                        <h3>Manage Your Store</h3>
                         </div>
                     </div>
-                </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                                    <button class="bttn Bu_one"> Button </button>
-                                    <button class="bttn Bu_two"> Button </button>
-                                    <button class="bttn Bu_three"> Button </button>
-                                </div>
-                        </div>
                 </div>
             </div>
         </div>
@@ -309,109 +367,76 @@
 </header>
     <!-- End color buttons -3  section -->
 
-    <!-- Attendance list section -->
-<section>
-
+    <!-- List section -->
     <div class="content">
 
-        <div class="container">
-            <br>
-            <h4>Form 1</h4>
-            <br>
+        <div class="container">		
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="search-box">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis">
+                            </div>
+                        </div>
+                    </div>
             <div class="table-responsive">
 
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Sale name</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">What was done</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Car Name / Maker<br>Body Style / Condition</th>
+                        <th scope="col">Power / Chassis</th>
+                        <th scope="col">Model Year<br>Running</th>
+                        <th scope="col">Color / Color Code<br>Shift / Cooling</th>
+                        <th scope="col">Public<br>User Bid<br>Bougth</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-<!--   1st details row-->
-                    <tr>
-                        <td>28-12-2022</td>
-                        <td>Jeep</td>
-                        <td>22.23</td>
-                        <td>Testing</td>
-                        <td>
-                            <button  id="butt" Class="butt" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  End of 1st details row-->
-<!--  2nd details row    Samples    -->
 
-<!--  End of 2nd details row-->
-<!--  3rd details row Samples -->
+                    <?php 
+                    
+                    if(isset($sellingRequest) && !empty($sellingRequest)){
+                        foreach ($sellingRequest as $key => $value) {
+                        ?>
+                        <tr>
+                            <td> <img src="<?php echo "../images/cars/".$value->getImage();?>" alt="" width="120" height="65"></td>
+                            <td><?php echo $value->getName();?> / <?php echo $value->getMaker();?>
+                            <br><?php echo $value->getStyle();?> / <?php echo $value->getIs_used()==2?"Accident Repair":($value->getIs_used()==0?"New":"Used");?></td>
+                            <td><?php echo $value->getPower();?> / <?php echo $value->getChassis();?></td>
+                            <td><?php echo $value->getModel_year();?><br><?php echo $value->getRunning();?></td>
+                            <td><?php echo $value->getIn_color();?> / <?php echo $value->getEx_color();?><br>
+                            <?php echo $value->getTransmission_shift();?> / <?php echo $value->getCooling();?></td>
+                            <td><?php echo $value->getPrice()->getPublic();?><br>
+                            <?php echo $value->getPrice()->getPrice1();?><br>
+                            <?php echo $value->getPrice()->getBuying();?></td>
+                            <td>
+                                <div Class="bttn Bu_one"><?php echo $value->getCurrent_action_text();?></div><br>
+                                <a href="vehicle_preview_full.php?id=<?php echo $value->getId();?>" target="_blank">
+                                    <button Class="swal-button" name="Action">Change Store</button>
+                                </a>
+                                <a href="add_vehicle.php?carId=<?php echo $value->getId();?>" target="_blank">
+                                    <button Class="Bu_two" name="Action">Edit</button>
+                                </a>
+                            </td>
+                        </tr>
+                        <?php
+                        }
+                    }
+                    
+                    ?>
 
-<!--  end of 3rd details row-->
                     </tbody>
                 </table>
             </div>
+
+
         </div>
+
     </div>
-</section>
-<!-- End Attendance list section -->
-
-    <hr>
-
-    <!-- List 2 section -->
-    <section>
-
-        <div class="content">
-
-            <div class="container">
-                <br>
-                <h4>Form 2</h4>
-                <br>
-                <div class="table-responsive">
-
-                    <table class="table custom-table">
-                        <thead>
-                        <tr>
-                            <th scope="col">Date</th>
-                            <th scope="col">Sale name</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Customer Name</th>
-                            <th scope="col">Contact No</th>
-                            <th scope="col">Remarks</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <!--   1st details row-->
-                        <tr>
-                            <td>28-12-2022</td>
-                            <td>Honda Civic</td>
-                            <td>22.25</td>
-                            <td>Pari H M P P</td>
-                            <td>+81 123 4567 4567</td>
-                            <td>Testing</td>
-                            <td>
-                                <button  id="butt2" Class="butt2" name="Action">Action</button>
-                            </td>
-                        </tr>
-                        <!--  End of 1st details row-->
-                        <!--  2nd details row    Samples    -->
-
-                        <!--  End of 2nd details row-->
-                        <!--  3rd details row Samples -->
-
-                        <!--  end of 3rd details row-->
-
-                        </tbody>
-                    </table>
-                </div>
-
-
-            </div>
-
-        </div>
-    </section>
-
+    <!-- end List section -->
 </div>
 
 <!-- Trigger/Open The Modal -->
@@ -457,22 +482,22 @@
     }
 </script>
 <!-- jQery -->
-<script src="js/jquery-3.4.1.min.js"></script>
+<script src="../js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
-<script src="js/popper.min.js"></script>
+<script src="../js/popper.min.js"></script>
 <!-- bootstrap js -->
-<script src="js/bootstrap.js"></script>
+<script src="../js/bootstrap.js"></script>
 <!-- custom js -->
-<script src="js/custom.js"></script>
+<script src="../js/custom.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/animsition/js/animsition.min.js"></script>
+<script src="../vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/bootstrap/js/popper.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../vendor/bootstrap/js/popper.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/select2/select2.min.js"></script>
+<script src="../vendor/select2/select2.min.js"></script>
 <script>
     $(".js-select2").each(function(){
         $(this).select2({
@@ -482,18 +507,18 @@
     })
 </script>
 <!--===============================================================================================-->
-<script src="vendor/daterangepicker/moment.min.js"></script>
-<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<script src="../vendor/daterangepicker/moment.min.js"></script>
+<script src="../vendor/daterangepicker/daterangepicker.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/slick/slick.min.js"></script>
-<script src="js/slick-custom.js"></script>
+<script src="../vendor/slick/slick.min.js"></script>
+<script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/parallax100/parallax100.js"></script>
+<script src="../vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
 <!--===============================================================================================-->
-<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <script>
     $('.gallery-lb').each(function() { // the containers for all your galleries
         $(this).magnificPopup({
@@ -507,9 +532,9 @@
     });
 </script>
 <!--===============================================================================================-->
-<script src="vendor/isotope/isotope.pkgd.min.js"></script>
+<script src="../vendor/isotope/isotope.pkgd.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/sweetalert/sweetalert.min.js"></script>
+<script src="../vendor/sweetalert/sweetalert.min.js"></script>
 <script>
     $('.js-addwish-b2').on('click', function(e){
         e.preventDefault();
@@ -547,7 +572,7 @@
 
 </script>
 <!--===============================================================================================-->
-<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script>
     $('.js-pscroll').each(function(){
         $(this).css('position','relative');
@@ -564,6 +589,28 @@
     });
 </script>
 <!--===============================================================================================-->
-<script src="js/main.js"></script>
+<script src="../js/main.js"></script>
+
+<script>
+$(document).ready(function(){
+	// Activate tooltips
+	$('[data-toggle="tooltip"]').tooltip();
+    
+	// Filter table rows based on searched term
+    $("#search").on("keyup", function() {
+        var term = $(this).val().toLowerCase();
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(3)").text().toLowerCase();
+            console.log(name);
+            if(name.search(term) < 0){                
+                $row.hide();
+            } else{
+                $row.show();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

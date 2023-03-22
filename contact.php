@@ -1,3 +1,22 @@
+<?php
+
+if(isset($_POST['Submit']))
+{ 
+    require_once('./php/config.php');
+    require_once('./php/contact_us_dao.php');
+    require_once('./php/contat_us_module.php');
+
+    if(insertContactUs($link,$_REQUEST['Name'],$_REQUEST['email'],$_REQUEST['Number'],$_REQUEST['msg'])>0){
+        echo '<script>alert("Thank You for conatct us.Yor request submited")</script>';
+        echo "<script>window.close();</script>";
+    }else{
+        echo '<script>alert("Submit Error!")</script>';
+    }
+
+}
+?>
+
+
 <!DOCTYPE html>
 <html>
    <head>
@@ -29,17 +48,6 @@
       <link rel="stylesheet" type="text/css" href="css/main.css">
    <!--===============================================================================================-->
 
-      <!-- Site Metas 
-      <meta name="keywords" content="" />
-      <meta name="description" content="" />
-      <meta name="author" content="" />
--->
-
-      <!-- Custom styles for this template 
-      <link href="css/style.css" rel="stylesheet" />   -->
-      <!-- responsive style 
-      <link href="css/responsive.css" rel="stylesheet" />   -->
-
       <style>
          /*  button section   */
          * {
@@ -61,6 +69,26 @@
              font-size: 16px;
      
          }
+		.bttn2 {
+			border: 3px solid orange;
+			border-radius: 10px;
+			background-color: orange;
+			color: white;
+			padding: 8px 28px;
+			font-size: 16px;
+			font-weight: 800;
+
+		}
+		.bttn3 {
+			border: 3px solid rgb(0, 255, 106);
+			border-radius: 10px;
+			background-color: rgb(0, 255, 106);
+			color: white;
+			padding: 8px 28px;
+			font-size: 16px;
+			font-weight: 800;
+
+		}
          .Bu_one {
              border-color: #04AA6D;
              color: green;
@@ -187,39 +215,6 @@
       </style>      
 
    </head>
-   <!-- Button section -->
-<header class="header_section">
-   <div class="gjso-row" id="i7xa">
-       <div class="gjs-cell">
-           <div class="gjs-row" id="ivs4">
-               <div class="gjs-cell" id="injr">
-                   <div class="heading_container heading_center">
-                       <div class="col-center">
-
-                       </div>
-                   </div>
-               </div>
-               <div class="gjs-cell" id="ijl1">
-                   <div class="heading_container heading_center">
-                       <div class="col-center">
-                           <!-- <button class="bttn Bu_one"> Button </button> -->
-                           <!-- <button class="bttn Bu_two"> Button </button> -->
-                           <!-- <button class="bttn Bu_three"> Button </button> -->
-                       </div>
-                   </div>
-               </div>
-           </div>
-       </div>
-   </div>
-</header>
-<!-- End color buttons -3  section -->
-	
-	<!-- Title page -->
-	<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('images/bg-01.jpg');">
-		<h2 class="ltext-105 cl0 txt-center">
-			Contact Us
-		</h2>
-	</section>	
 
 
 	<!-- Content page -->
@@ -227,35 +222,27 @@
 		<div class="container">
 			<div class="flex-w flex-tr">
 				<div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-					<form>
+					<form  action="contact.php" enctype="multipart/form-data" method="post">
 						<h4 class="mtext-105 cl2 txt-center p-b-30">
 							Send Us A Message
 						</h4>
-                  <div class="bor8 m-b-20 how-pos4-parent">
-							<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="Name" placeholder="Your name">
-                     <img class="how-pos4 pointer-none" src="images/icons/icon-pen.png" alt="ICON">
+                  		<div class="bor8 m-b-20 how-pos4-parent">
+							<input class="stext-111 cl2 plh3 size-116 p-l-28 p-r-30" type="text" name="Name" placeholder="Your name">
 						</div>
 
 						<div class="bor8 m-b-20 how-pos4-parent">
-							<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email" placeholder="Your email address">
-                     <img class="how-pos4 pointer-none" src="images/icons/icon-email.png" alt="ICON">
+							<input class="stext-111 cl2 plh3 size-116 p-l-28 p-r-30" type="text" name="email" placeholder="Your email address">
 						</div>
 
-                  <div class="bor8 m-b-20 how-pos4-parent">
-							<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="Name" placeholder="Country">
-                     <img class="how-pos4 pointer-none" src="images/icons/icon-heart-01.png" alt="ICON">
-						</div>
-
-                  <div class="bor8 m-b-20 how-pos4-parent">
-							<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="Number" placeholder="Phone number">
-                     <img class="how-pos4 pointer-none" src="images/icons/icon-phone.png" alt="ICON">
+                  		<div class="bor8 m-b-20 how-pos4-parent">
+							<input class="stext-111 cl2 plh3 size-116 p-l-28 p-r-30" type="text" name="Number" placeholder="Phone number">
 						</div>
 
 						<div class="bor8 m-b-30">
 							<textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg" placeholder="How Can We Help? "></textarea>
 						</div>
 
-						<button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
+						<button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 p-lr-15 trans-04 pointer bttn2" name="Submit" >
 							Submit
 						</button>
 					</form>
@@ -313,7 +300,7 @@
 
 					</div>
 
-               <div class="flex-w w-full p-b-42">
+               <!-- <div class="flex-w w-full p-b-42">
 						<span class="fs-18 cl5 txt-center size-211">
 							<span class="lnr lnr-phone-handset"></span>
 						</span>
@@ -326,173 +313,20 @@
                      <p class="stext-115 cl1 size-213 p-t-18">
 								
 							</p>
-							<button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
+							<button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04 bttn3">
                         Live Chat
                      </button> 
   
 						</div>
 
 
-					</div>
+					</div> -->
                
 
 				</div>
 			</div>
 		</div>
 	</section>	
-	
-	
-	<!-- Map -->
-	<div class="map">
-		<div class="size-303" id="google_map" data-map-x="35.672979" data-map-y="139.777259" data-pin="images/icons/pin.png" data-scrollwhell="0" data-draggable="1" data-zoom="13"></div>
-	</div>
-
-
-
-	<!-- Footer -->
-	<footer class="bg3 p-t-75 p-b-32">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">
-						Categories
-					</h4>
-
-					<ul>
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Sedan
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								SUV
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Hatchback
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Truck
-							</a>
-						</li>
-					</ul>
-				</div>
-
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">
-						Help
-					</h4>
-
-					<ul>
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								How to Buy
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Send inquiry
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Shipment in Japan or your Country
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								FAQs
-							</a>
-						</li>
-					</ul>
-				</div>
-
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">
-						Follow us on
-					</h4>
-
-					<p class="stext-107 cl7 size-201">
-						Now we are on social media. Follow us to get new arrivals 
-					</p>
-
-					<div class="p-t-27">
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-							<i class="fa fa-facebook"></i>
-						</a>
-
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-							<i class="fa fa-instagram"></i>
-						</a>
-
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-							<i class="fa fa-pinterest-p"></i>
-						</a>
-					</div>
-				</div>
-
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">
-						GET IN TOUCH
-					</h4>
-
-					<form>
-						<div class="wrap-input1 w-full p-b-4">
-							<input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email" placeholder="email@example.com">
-							<div class="focus-input1 trans-04"></div>
-						</div>
-
-						<div class="p-t-18">
-							<button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-								Subscribe to our Newsletter!
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-
-			<div class="p-t-40">
-				<div class="flex-c-m flex-w p-b-18">
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
-					</a>
-
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
-					</a>
-
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
-					</a>
-
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
-					</a>
-
-					<a href="#" class="m-all-1">
-						<img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
-					</a>
-				</div>
-
-				<p class="stext-107 cl6 txt-center">
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;2022 All rights reserved | Made by <i class="fa fa-heart-o" aria-hidden="true"></i>Wayabois<i class="fa fa-heart-o" aria-hidden="true"></i>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-
-				</p>
-			</div>
-		</div>
-	</footer>
 
 	<!-- Back to top -->
 	<div class="btn-back-to-top" id="myBtn">

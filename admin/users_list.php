@@ -1,5 +1,55 @@
+<?php 
+
+ob_start();
+session_start();
+
+$id = $_SESSION['id'];
+$type = $_SESSION['type'];
+
+if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+    header("Location: login.php"); 
+}else{
+    $_SESSION['timeout'] = time();
+}
+
+$useId = null;
+$action = null;
+
+require_once('../php/config.php');
+require_once('../php/control_users_dao.php');
+
+parse_str($_SERVER['QUERY_STRING'], $queries);
+if(isset($queries) && !empty($queries)){
+   if(isset($queries['id']) && !empty($queries['id'])){
+      $useId = $queries['id'];
+   }
+   if(isset($queries['action'])){
+      $action = $queries['action'];
+   }
+}
+
+if(isset($useId) && !empty($useId) && isset($action)){
+    if($action=="delete"){
+        if(deleteUser($link,$useId)>0){
+            echo '<script>alert("User Successfully Deleted")</script>';
+        }else{
+            echo '<script>alert("Something Wrong! Please Try Again")</script>';
+        }
+    }else{
+        if(updateUserStatus($link,$useId,$action)>0){
+            echo '<script>alert("User Successfully '.($action==1?"Actived":"Deactived").'")</script>';
+        }else{
+            echo '<script>alert("Something Wrong! Please Try Again")</script>';
+        }
+    }
+}
+
+$summery = getAllControlUsers($link);
+?>
+
+
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <!-- Basic -->
     <meta charset="utf-8" />
@@ -10,47 +60,47 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="images/Car_logo_sample.jpg" type="">
-    <title>User_Buying_Requests</title>
+    <link rel="shortcut icon" href="../images/logo.png" type="">
+    <title>Attendance_form</title>
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../css/font-awesome.min.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
     <!-- responsive style -->
-    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="../css/responsive.css" rel="stylesheet" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/daterangepicker/daterangepicker.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/slick/slick.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/MagnificPopup/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/MagnificPopup/magnific-popup.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/util.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
     <!--===============================================================================================-->
 </head>
 
@@ -59,13 +109,7 @@
     * {
         box-sizing: border-box;
     }
-    .button_search {
-        border: 3px solid orange;
-        border-radius: 5px;
-        background-color: orange;
-        color: white;
 
-    }
     .bttn {
         border: 2px solid black;
         border-radius: 5px;
@@ -73,7 +117,6 @@
         color: black;
         padding: 8px 28px;
         font-size: 16px;
-
     }
     .Bu_one {
         border-color: #04AA6D;
@@ -81,20 +124,53 @@
     }
 
     .Bu_two {
-        border-color: #ff9800;
-        color: orange;
+        /* border: 2px solid black; */
+        border-radius: 5px;
+        background-color: red;
+        color: white;
+        padding: 8px 28px;
+        margin-left: 10px;
+        font-size: 16px;
     }
 
     .Bu_three {
         border-color: #f44336;
         color: red
     }
-    .Bu_border {
-        border-color: #ffad06;
-        color: #ffc000
-    }
 
     /* end button section   */
+
+    /*  button2 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: white;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* end button2 section   */
+
+    /*  button3 section   */
+    * {
+        box-sizing: border-box;
+    }
+
+    .butt2 {
+        border: 2px solid #ffad06;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #ffad06;
+        padding: 8px 28px;
+        font-size: 16px;
+
+    }
+    /* End button3 section   */
 
     /*  Class for button and header  */
     * {
@@ -254,7 +330,68 @@
     .header-left   { border: 1px solid #ffffff; width: 250px; }
     .header-right  { border: 1px solid #ffffff; width: 250px; }
     .header-center { border: 1px solid #ffffff; width: 630px; }
-    /*   end  Header left/center/right code*/
+.table-responsive {
+    margin: 30px 0;
+}
+.table-wrapper {
+  	min-width: 1000px;
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    color: #fff;
+    background: #40b2cd;		
+    padding: 16px 25px;
+    margin: -20px -25px 10px;
+    border-radius: 3px 3px 0 0;
+}
+.table-title h2 {
+    margin: 5px 0 0;
+    font-size: 24px;
+}
+.search-box {
+    position: relative;
+    float: right;
+}
+.search-box .input-group {
+    min-width: 300px;
+    position: absolute;
+    right: 0;
+}
+.search-box .input-group-addon, .search-box input {
+    border-color: #ddd;
+    border-radius: 0;
+}	
+.search-box input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f4fcfd;
+    border: none;
+    border-radius: 2px !important;
+}
+.search-box input:focus {
+    background: #fff;
+}
+.search-box input::placeholder {
+    font-style: italic;
+}
+.search-box .input-group-addon {
+    min-width: 35px;
+    border: none;
+    background: transparent;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+    padding: 6px 0;
+}
+.search-box i {
+    color: #a0a5b1;
+    font-size: 19px;
+    position: relative;
+    top: 2px;
+ }
 </style>
 
 <body>
@@ -268,16 +405,7 @@
                 <div class="gjs-cell" id="injr">
                     <div class="heading_container heading_center">
                         <div class="col-center">
-                        <h3>User Buying Requests</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                                    <button class="bttn Bu_one"> Button </button>
-                                    <button class="bttn Bu_two"> Button </button>
-                                    <button class="bttn Bu_three"> Button </button>
+                            <h3>User List</h3>
                         </div>
                     </div>
                 </div>
@@ -287,75 +415,61 @@
 </header>
     <!-- End color buttons -3  section -->
 
-    <!-- List section -->
+    <!-- Attendance list section -->
+<section>
+
     <div class="content">
 
-        <div class="container">
+        <div class="container">		
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="search-box">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Name">
+                            </div>
+                        </div>
+                    </div>
             <div class="table-responsive">
 
                 <table class="table custom-table">
                     <thead>
                     <tr>
-                        <th scope="col">Image</th>
-                        <th scope="col">Car Name/Grade<br>Venue/Exhibiton Num</th>
-                        <th scope="col">Model<br>Power</th>
-                        <th scope="col">Model Year<br>Running</th>
-                        <th scope="col">Color/Color Code<br>Shift/Cooling</th>
-                        <th scope="col">User Name<br>Contact Number</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
 <!--   1st details row-->
-                    <tr>
-                        <td> <img src="images/images002.png" width="120" height="65"></td>
-                        <td>Car Name/Grade<br>Venue/Exhibiton Num</td>
-                        <td>SModel<br>Power</td>
-                        <td>Model Year<br>Running</td>
-                        <td>Color/Color Code<br>Shift/Cooling</td>
-                        <td>User Name<br>Contact Number</td>
-                        <td>
-                            <button  id="bttn" Class="swal-button" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  End of 1st details row-->
-<!--  2nd details row    Samples    -->
-                    <tr>
-                        <td> <img src="images/images002.png" width="120" height="65"></td>
-                        <td>Car Name/Grade<br>Venue/Exhibiton Num</td>
-                        <td>SModel<br>Power</td>
-                        <td>Model Year<br>Running</td>
-                        <td>Color/Color Code<br>Shift/Cooling</td>
-                        <td>User Name<br>Contact Number</td>
-                        <td>
-                            <button Class="swal-button" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  End of 2nd details row-->
-<!--  3rd details row Samples -->
-                    <tr>
-                        <td> <img src="images/images002.png" width="120" height="65"></td>
-                        <td>Car Name/Grade<br>Venue/Exhibiton Num</td>
-                        <td>SModel<br>Power</td>
-                        <td>Model Year<br>Running</td>
-                        <td>Color/Color Code<br>Shift/Cooling</td>
-                        <td>User Name<br>Contact Number</td>
-                        <td>
-                            <button  Class="swal-button" name="Action">Action</button>
-                        </td>
-                    </tr>
-<!--  end of 3rd details row-->
-
-
+                    <?php
+                        foreach ($summery as $key => $value) {
+                    ?>
+                        <tr>
+                            <td><?php echo $value->getUser_name(); ?></td>
+                            <td><?php echo $value->getUser_type()==1?"Supper Admin":($value->getUser_type()==2?"Store Admin":"Store Employee"); ?></td>
+                            <td><?php echo $value->getIs_active()==1?"Actived":"Deactived"; ?></td>
+                            <td>
+                                <a href="users_list.php?id=<?php echo $value->getId();?>&action=<?php echo $value->getIs_active()==1?0:1;?>">
+                                    <button Class="swal-button" name="Action"><?php echo $value->getIs_active()==1?"Deactive":"Active";?></button>
+                                </a>
+                                <a href="users_list.php?id=<?php echo $value->getId();?>&action=delete">
+                                    <button Class="Bu_two" name="Action">Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php
+                        }
+                    ?>
                     </tbody>
                 </table>
             </div>
-
-
         </div>
-
     </div>
-    <!-- end List section -->
+</section>
+<!-- End Attendance list section -->
+
 </div>
 
 <!-- Trigger/Open The Modal -->
@@ -364,31 +478,8 @@
 
     <!-- Modal content -->
     <div class="modal-content">
-        <div class="heading_container heading_center">
-            <div class="gjso-row" id="i7xr">
-                    <div class="heading_container heading_center">
-                        <h3>Do you want to remove this car from your store?</h3>
-                    </div>
-                <div class="gjs-cell">
-                    <div class="gjs-row" id="ivse">
-                        <div class="gjs-cell" id="injq">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="close" name="Action">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="gjs-cell" id="ijlw">
-                            <div class="heading_container heading_center">
-                                <div class="col-center">
-                                    <button Class="swal-button" name="Action">Remove From Store</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
     </div>
 
 </div>
@@ -424,22 +515,22 @@
     }
 </script>
 <!-- jQery -->
-<script src="js/jquery-3.4.1.min.js"></script>
+<script src="../js/jquery-3.4.1.min.js"></script>
 <!-- popper js -->
-<script src="js/popper.min.js"></script>
+<script src="../js/popper.min.js"></script>
 <!-- bootstrap js -->
-<script src="js/bootstrap.js"></script>
+<script src="../js/bootstrap.js"></script>
 <!-- custom js -->
-<script src="js/custom.js"></script>
+<script src="../js/custom.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/animsition/js/animsition.min.js"></script>
+<script src="../vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/bootstrap/js/popper.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../vendor/bootstrap/js/popper.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/select2/select2.min.js"></script>
+<script src="../vendor/select2/select2.min.js"></script>
 <script>
     $(".js-select2").each(function(){
         $(this).select2({
@@ -449,18 +540,18 @@
     })
 </script>
 <!--===============================================================================================-->
-<script src="vendor/daterangepicker/moment.min.js"></script>
-<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<script src="../vendor/daterangepicker/moment.min.js"></script>
+<script src="../vendor/daterangepicker/daterangepicker.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/slick/slick.min.js"></script>
-<script src="js/slick-custom.js"></script>
+<script src="../vendor/slick/slick.min.js"></script>
+<script src="../js/slick-custom.js"></script>
 <!--===============================================================================================-->
 <script src="vendor/parallax100/parallax100.js"></script>
 <script>
     $('.parallax100').parallax100();
 </script>
 <!--===============================================================================================-->
-<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <script>
     $('.gallery-lb').each(function() { // the containers for all your galleries
         $(this).magnificPopup({
@@ -474,9 +565,9 @@
     });
 </script>
 <!--===============================================================================================-->
-<script src="vendor/isotope/isotope.pkgd.min.js"></script>
+<script src="../vendor/isotope/isotope.pkgd.min.js"></script>
 <!--===============================================================================================-->
-<script src="vendor/sweetalert/sweetalert.min.js"></script>
+<script src="../vendor/sweetalert/sweetalert.min.js"></script>
 <script>
     $('.js-addwish-b2').on('click', function(e){
         e.preventDefault();
@@ -514,7 +605,7 @@
 
 </script>
 <!--===============================================================================================-->
-<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script>
     $('.js-pscroll').each(function(){
         $(this).css('position','relative');
@@ -531,6 +622,28 @@
     });
 </script>
 <!--===============================================================================================-->
-<script src="js/main.js"></script>
+<script src="../js/main.js"></script>
+
+<script>
+$(document).ready(function(){
+	// Activate tooltips
+	$('[data-toggle="tooltip"]').tooltip();
+    
+	// Filter table rows based on searched term
+    $("#search").on("keyup", function() {
+        var term = $(this).val().toLowerCase();
+        $("table tbody tr").each(function(){
+            $row = $(this);
+            var name = $row.find("td:nth-child(1)").text().toLowerCase();
+            console.log(name);
+            if(name.search(term) < 0){                
+                $row.hide();
+            } else{
+                $row.show();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
