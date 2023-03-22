@@ -152,7 +152,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         color: #04AA6D;
         padding: 8px 28px;
         font-size: 16px;
-        width: 200px;
+        width: 250px;
 
     }
 
@@ -163,7 +163,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         color: #f44336;
         padding: 8px 28px;
         font-size: 16px;
-        width: 200px;
+        width: 250px;
 
     }
 
@@ -174,7 +174,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         color: palevioletred;
         padding: 8px 28px;
         font-size: 16px;
-        width: 200px;
+        width: 250px;
 
     }
 
@@ -186,7 +186,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         padding: 5px 30px;
         font-size: 14px;
         margin-top: 15px;
-        width: 200px;
+        width: 250px;
     }
 
     .butt2 {
@@ -196,7 +196,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
         color: #ffad06;
         padding: 8px 28px;
         font-size: 16px;
-        width: 200px;
+        width: 250px;
 
     }
     /* End button3 section   */
@@ -435,105 +435,100 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
             <div class="container">
                 <div class="table-responsive">
                     <table class="table custom-table">
+                        <tbody style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                            <tr>
+                                <td style="padding-top: 100px;">
+                                    <a href="add_vehicle.php" target="_blank">
+                                        <button  id="butt5" Class="bttn_st" style="width: 250px;" name="Action">Add to Store</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 100px;">
+                                    <a href="sales_report.php" target="_blank">
+                                        <button  id="butt4" Class="butt4" name="Action">Sales Reprots</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 100px;">
+                                    <a href="store_reports.php" target="_blank">
+                                        <button  id="butt5" Class="butt5" name="Action">Store Reprots</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
                         <tbody>
                         <!--   1st details row-->
-                        <tr>
-                            <td style="padding-top: 100px;">
-                                <a href="contact_us_list.php">
-                                    <button  id="butt2" Class="butt2" name="Action">Contact Requests</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 100px;">
-                                <a href="user_selling_requests.php">
-                                    <button  id="butt3" Class="butt3" name="Action">Selling Request</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 100px;">
-                                <a href="user_buying_requests.php">
-                                    <button  id="butt4" Class="butt4" name="Action">Orders</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 100px;">
-                                <a href="car_listed_page.php">
-                                    <button  id="butt5" Class="butt5" name="Action">Store Manage</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 100px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
-                                <a href="add_vehicle.php" target="_blank">
-                                    <button  id="butt5" Class="bttn_st" name="Action">Add to Store</button>
-                                </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td style="padding-top: 100px;">
+                                    <a href="contact_us_list.php">
+                                        <button  id="butt2" Class="butt2" name="Action">Contact Requests</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 100px;">
+                                    <a href="user_selling_requests.php">
+                                        <button  id="butt3" Class="butt3" name="Action">Selling Request</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 100px;">
+                                    <a href="user_buying_requests.php">
+                                        <button  id="butt4" Class="butt4" name="Action">Orders</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 100px;">
+                                    <a href="car_listed_page.php">
+                                        <button  id="butt5" Class="butt5" name="Action">Store Manage</button>
+                                    </a>
+                                </td>
+                            </tr>
                         </tbody>
                         <div>
                         <h3>Admin Panel</h3>
                         </div>
                         <tbody>
-                        <!--  1st details row-->
-                        <tr>
-                            <td style="padding-top: 20px;">
-                                <a href="day_end_submit.php" target="_blank">
-                                    <button  id="butt2" Class="butt2" name="Action">Day Summery</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;">
-                                <a href="day_end_customer_submit.php" target="_blank">
-                                    <button  id="butt3" Class="butt3" name="Action">Customer Call Log</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
-                                <a href="day_end_submit_list.php" target="_blank">
-                                    <button  id="butt4" Class="butt4" name="Action">Day Summery List</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
-                                <a href="day_end_customer_submit_list.php" target="_blank">
-                                    <button  id="butt5" Class="butt5" name="Action">Customer Call Log List</button>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                        <tbody>
                             <tr>
-                                <td style="padding-top: 100px;">
-                                <!-- <a>Pick Youe Report Date</a>
-                                    <input class="bttn Bu_one" name="date" style="margin-right: 10px;" type="date" value="<?php echo $today;?>"> -->
+                                <td style="padding-top: 20px;">
+                                    <a href="day_end_submit.php" target="_blank">
+                                        <button  id="butt2" Class="butt2" name="Action">Day Summery</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 20px;">
+                                    <a href="day_end_customer_submit.php" target="_blank">
+                                        <button  id="butt3" Class="butt3" name="Action">Customer Call Log</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                    <a href="day_end_submit_list.php" target="_blank">
+                                        <button  id="butt4" Class="butt4" name="Action">Day Summery List</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                                    <a href="day_end_customer_submit_list.php" target="_blank">
+                                        <button  id="butt5" Class="butt5" name="Action">Customer Call Log List</button>
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>
-                        <tbody>
-                        <tr>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
-                                <a href="insert_customer.php" target="_blank">
-                                    <button  id="butt1" Class="butt2" name="Action">Add Customer</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
-                                <a href="customer_list.php" target="_blank">
-                                    <button  id="butt2" Class="butt3" name="Action">Custom List</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
-                                <a href="sales_report.php" target="_blank">
-                                    <button  id="butt4" Class="butt4" name="Action">Sales Reprots</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
-                                <a href="store_reports.php" target="_blank">
-                                    <button  id="butt5" Class="butt5" name="Action">Store Reprots</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
-                                <a href="user_registor.php" target="_blank">
-                                    <button  id="butt5" Class="butt2" name="Action">Add Controll User</button>
-                                </a>
-                            </td>
-                            <td style="padding-top: 20px;<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
-                                <a href="users_list.php" target="_blank">
-                                    <button  id="butt5" Class="butt3" name="Action">User List</button>
-                                </a>
-                            </td>
-                        </tr>
+                        <tbody style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                            <tr>
+                                <td style="padding-top: 100px;">
+                                    <a href="insert_customer.php" target="_blank">
+                                        <button  id="butt1" Class="butt2" name="Action">Add Business Customer</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 100px;">
+                                    <a href="customer_list.php" target="_blank">
+                                        <button  id="butt2" Class="butt3" name="Action">Business Custom List</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 100px;">
+                                    <a href="user_registor.php" target="_blank">
+                                        <button  id="butt5" Class="butt2" name="Action">Add Controll User</button>
+                                    </a>
+                                </td>
+                                <td style="padding-top: 100px;">
+                                    <a href="users_list.php" target="_blank">
+                                        <button  id="butt5" Class="butt3" name="Action">User List</button>
+                                    </a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

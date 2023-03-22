@@ -403,7 +403,7 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers);
                                              <div class="card-body" style="min-width: 400px;">
                                                 <div class="row d-flex  justify-content-between align-items-center px-0">
                                                    <div class="col-7 text-left">
-                                                      <h5 class="card-title itemtitle"><?php echo $value1->name; ?></h5>
+                                                      <p class="card-text car_manufacturer float-start"><?php echo $value1->maker; ?></p>
                                                    </div>
                                                    <div class="col-5 text-right">
                                                       <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
@@ -413,15 +413,9 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers);
                                                       </div>
                                                    </div>
                                                 </div>
-                                                <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center ">
-                     
-                     
-                                                   <div class="col-6 text-left">
-                                                      <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?></p>
-                                                   </div>
-                                                   <div class="col-6 text-right">
-                                                      <p class="card-text car_manufacturer float-end"><?php echo $value1->maker; ?></p>
-                                                   </div>
+                                                <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center " style="margin-left: -6px;">
+                                                   <h5 class="card-title itemtitle"><?php echo $value1->name; ?></h5>
+                                                   <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?>¥</p>
                                                    <p class="card-text car_manufacturer float-end" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
                                                 </div>
                                                 <div class="row mt-4  px-0">
@@ -441,7 +435,7 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers);
                                                          <small class="featuremain_tag">Registered Year</small>
                                                       </div>
                                                       <div class=" p-2 featuremain">
-                                                         <h4><?php echo $value1->running; ?><small>k</small></h4>
+                                                         <h4><?php echo $value1->running; ?><small> KM</small></h4>
                                                          <small class="featuremain_tag">Kilometers Span</small>
                                                       </div>
                                                    </div>

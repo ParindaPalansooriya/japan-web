@@ -18,8 +18,7 @@ require_once('../php/customer_dao.php');
 
 
 if(isset($_POST['SetDate'])){
-    print_r($_REQUEST);
-    if(updateLastSackanDate($link,$_REQUEST['c_id'],null)>0){
+    if(updateLastSackanDate($link,$_REQUEST['c_id'],$_REQUEST['date']??null)>0){
         echo '<script>alert("Successfully Updated!")</script>';
     }else{
         echo '<script>alert("Something Wrong! Please Try Again")</script>';
@@ -474,18 +473,10 @@ if(isset($queries) && !empty($queries)){
                             <td><?php echo $value->getContact_num2(); ?></td>
                             <td><?php echo $value->getAddress(); ?></td>
                             <td>
-                                <form id="formAwesome" 
-                                    action="customer_list.php<?php echo (isset($queries['today']) && !empty($queries['today']))?"?today=true":"" ?>" 
-                                    enctype="multipart/form-data" method="post">
-                                    <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
+                                <a href="postcard_pdf.php?id=<?php echo $value->getId();?>" target="_blank">
                                     <button style="font-size: small;" Class="Bu_three" name="Action">Print Card</button>
-                                </form>
-                                <form style="margin-top: 10px;" id="formAwesome" 
-                                    action="customer_list.php<?php echo (isset($queries['today']) && !empty($queries['today']))?"?today=true":"" ?>" 
-                                    enctype="multipart/form-data" method="post">
-                                    <input type="hidden" id="c_id" name="c_id" value="<?php echo $value->getId();?>">
-                                    <button style="font-size: small;" Class="Bu_two" name="SetDate">Set New Sakan</button>
-                                </form>
+                                </a>
+                                <button style="font-size: small;" onclick="itemButtonClick(<?php echo $value->getId();?>)" Class="Bu_two" name="SetDate">Set New Sakan</button>
                             </td>
                         </tr>
                     <?php
@@ -509,7 +500,21 @@ if(isset($queries) && !empty($queries)){
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
+        <div class="heading_container heading_center">
+        <p style="margin-bottom: 50px; font-weight: bold; font-size: larger;">Please Set Sakan Renew Date</p>
+            <div class="col-center">
+                <div class="form-group">
+                    <div class="form-inline">
+                        <form class="form-inline" action="customer_list.php<?php echo (isset($queries['today']) && !empty($queries['today']))?"?today=true":"" ?>" 
+                                    enctype="multipart/form-data" method="post">
+                            <input class="bttn Bu_one" id="date" name="date" style="margin-right: 10px;" type="date" value="<?php echo date("Y-m-d");?>">
+                            <input type="hidden" id="c_id2" name="c_id" value="33">
+                            <button style="font-size: small;" Class="Bu_two" name="SetDate">Update New Sakan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -520,15 +525,21 @@ if(isset($queries) && !empty($queries)){
 <script>
     // Get the modal
     var modal = document.getElementById("myModal");
+    var c_id2 = document.getElementById("c_id2");
 
     // Get the button that opens the modal
-    var btn = document.getElementById("bttn");
+    // var btn = document.getElementById("bttn");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
 
     // When the user clicks the button, open the modal
-    btn.onclick = function() {
+    // btn.onclick = function() {
+    //     modal.style.display = "block";
+    // }
+
+    function itemButtonClick(id){
+        c_id2.value = id;
         modal.style.display = "block";
     }
 

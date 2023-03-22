@@ -54,23 +54,21 @@ if(isset($_REQUEST['filepath'])){
 }
 if(isset($_POST['Submit1']))
 { 
-    if(isset($_POST['m_image']) && !empty($_POST['m_image'])){
-        $folderPath = '../images/cars/';
-        $image_parts = explode(";base64,", $_POST['m_image']);
+    foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
 
-        $image_base64 = base64_decode($image_parts[1]);
-        $file = $folderPath .microtime_float() . 'mobile-image.png';
-        file_put_contents($file, $image_base64);
-        array_push($filepath,$file);
-    }else{
-        foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
-            $file_name=$_FILES["files"]["name"][$key];
-            $file_tmp=$_FILES["files"]["tmp_name"][$key];
-            $filepathTemp = "../images/cars/".microtime_float().$file_name;
-            if(move_uploaded_file($_FILES["files"]["tmp_name"][$key], $filepathTemp)) 
-            {
-                array_push($filepath,$filepathTemp);
-            } 
+        $file_name=$_FILES["files"]["name"][$key];
+        $file_tmp=$_FILES["files"]["tmp_name"][$key];
+        $filepathTemp = "../images/cars/".microtime_float().$file_name;
+
+        $image = imagecreatefromjpeg($_FILES["files"]["tmp_name"][$key]);
+        imagejpeg($image,$filepathTemp, 60);
+        imagedestroy($image);
+        
+        if(file_exists($filepathTemp)) 
+        {
+            array_push($filepath,$filepathTemp);
+        }else{
+            echo '<script>alert("Imager upload error. Try again please")</script>';
         }
     }
 } 
@@ -409,9 +407,10 @@ if(isset($_POST['Submit']))
             <div id="i91j" class="gjs-cell">
                 <h5>Vehicle Details</h5>
                 <div >
-                <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
-                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label>
-                    <div class="box" style="display: <?php echo isset($filepath) && !empty($filepath) ? "block":"none" ?>;" >
+                <!-- <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
+                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label> -->
+                    <div class="box" >
+                    <!-- style="display: <?php echo isset($filepath) && !empty($filepath) ? "block":"none" ?>;" -->
                     <form id="formAwesome" action="add_vehicle.php" enctype="multipart/form-data" method="post">
                             <div class="modal-body">
                             <input type="hidden" id="carId" name="carId" value="<?php echo $carId;?>">
@@ -423,7 +422,8 @@ if(isset($_POST['Submit']))
                                     <?php 
                                     if(isset($maker)){
                                         foreach ($maker as $key => $value) {
-                                            ?><option value="<?php echo $value->getId() ?>" <?php echo $car !== null && ($car->getMaker_id())==($value->getId())? "selected":"" ;?>><?php echo $value->getName() ?></option><?php
+                                            ?><option value="<?php echo $value->getId() ?>" <?php echo $car !== null && ($car->getMaker_id())==($value->getId())? "selected":"" ;?>>
+                                            <?php echo $value->getId()==1?"Select":$value->getName() ?></option><?php
                                         }
                                     }
                                     ?>
@@ -555,11 +555,11 @@ if(isset($_POST['Submit']))
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="firstName" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                <label for="firstName" style="font-size:0.9em; font-weight: bold;" class="col-sm-6 col-form-label">
                                 Vehicle Name
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="text" name="name" value= "<?php echo $car !== null ? $car->getName():"" ;?>" style="font-size:0.8em" class="form-control" id="firstName" placeholder="John" <?php if($type!=1){echo 'required';}?>>
+                                <input type="text" name="name" value= "<?php echo $car !== null ? $car->getName():"" ;?>" style="font-size:0.9em; font-weight: bold;" class="form-control" id="firstName" placeholder="John" <?php if($type!=1){echo 'required';}?>>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -812,11 +812,11 @@ if(isset($_POST['Submit']))
                             </div>
                                 <?php } ?>
                             <div class="form-group row">
-                                <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
+                                <label for="text" name="name" style="font-size:0.9em; font-weight: bold;" class="col-sm-6 col-form-label">
                                 Total Cost
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="number" name="sell" value= "<?php echo $car !== null && $car->getPriceObject() !== null ? $car->getPriceObject()->getSelling():"" ;?>" style="font-size:0.8em" class="form-control" id="sell" placeholder="john" required <?php if($type!=1){echo 'readonly';}?>>
+                                <input type="number" name="sell" value= "<?php echo $car !== null && $car->getPriceObject() !== null ? $car->getPriceObject()->getSelling():"" ;?>" style="font-size:0.9em; font-weight: bold;" class="form-control" id="sell" placeholder="john" required <?php if($type!=1){echo 'readonly';}?>>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -842,10 +842,10 @@ if(isset($_POST['Submit']))
                                     }
                                 }
                                 ?>
-                                <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
-                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label>
-                                <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Submit" name="Submit" 
-                                <?php echo isset($filepath) && !empty($filepath) ? "":"disabled" ?>>Submit</button>
+                                <!-- <label for="awesomeness" style="font-size:0.8em; color:#f44336" class="col-sm-6 col-form-label">
+                                <?php echo isset($filepath) && !empty($filepath) ? "":"Please Upload Images First" ?></label> -->
+                                <button type="submit" style="font-size:0.8em; " class=" bttn2" value="Submit" name="Submit" >Submit</button>
+                                <!-- <?php echo isset($filepath) && !empty($filepath) ? "":"disabled" ?> -->
                             </div>
                             </div>
                         </form>
@@ -871,11 +871,11 @@ if(isset($_POST['Submit']))
                             <input type="hidden" id="carId" name="carId" value="<?php echo $carId;?>">
                             <input type="hidden" id="m_image" name="m_image">
                             <input type="file" style="margin-left: 20px; font-size:0.8em" name="files[]" multiple>
-                            <hr/>
+                            <!-- <hr/>
                             <h6 > Capcher Your Vehicle Image from Camera</h6>
                             <div Class="bttn2" style="max-width: 130px;" onClick="openCanera()" value="10">Capcher</div><br/><br/>
                             <div id="results"></div>
-                            <hr/>
+                            <hr/> -->
                             <input type="submit" class="bttn2" style="font-size:0.8em;" value="Upload" name="Submit1"> <br/>
                             </form>
                         <div class="box">
@@ -909,10 +909,8 @@ if(isset($_POST['Submit']))
     </div>
 </section>
 
-
+<!-- 
 <div id="myModal" class="modal">
-
-    <!-- Modal content -->
     <div class="modal-content">
         <div class="container">
         <div class="box">
@@ -928,11 +926,11 @@ if(isset($_POST['Submit']))
     </div>
     </div>
 
-</div>
+</div> -->
 
 </body>
 <!-- end box with filter section -->
-
+<!-- 
 <script language="JavaScript">
     var modal = document.getElementById("myModal");
         Webcam.reset();
@@ -978,7 +976,7 @@ if(isset($_POST['Submit']))
 			}
 		});
 	}
-</script>
+</script> -->
 
 <script>
 function myFunction() {
