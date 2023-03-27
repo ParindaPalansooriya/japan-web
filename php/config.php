@@ -4,8 +4,8 @@ server with default setting (user 'root' with no password) */
  
 /* Attempt to connect to MySQL database */
 // $link = mysqli_connect('sql.freedb.tech', 'freedb_paridb', 'ywfY@N6B96hVbGw', 'freedb_japan_web');
-$link = mysqli_connect('localhost', 'root', '', 'japan_web');
-// $link = mysqli_connect('sql303.epizy.com', 'epiz_33557197', 'zspoqJEknmtJb', 'epiz_33557197_japan_web');
+// $link = mysqli_connect('localhost', 'root', '', 'japan_web');
+$link = mysqli_connect('sql303.epizy.com', 'epiz_33557197', 'zspoqJEknmtJb', 'epiz_33557197_japan_web');
  
 // Check connection
 if($link === false){

@@ -20,7 +20,7 @@ require_once "../php/car_deduction_dao.php";
 require_once "../php/car_additinal_dao.php";
 require_once "../php/car_price_dao.php";
 
-print_r($_POST);
+// print_r($_POST);
 
 if(isset($_POST['delete-car']) && isset($_POST['carId']) && !empty($_POST['carId'])){
     delete($link,$_POST['carId']);

@@ -58,7 +58,7 @@ if(isset($_POST['Submit1']))
 
         $file_name=$_FILES["files"]["name"][$key];
         // $file_tmp=$_FILES["files"]["tmp_name"][$key];
-        str_replace(' ', '_', $file_name);
+        $file_name=str_replace(' ', '_', $file_name);
         $filepathTemp = "../images/cars/".microtime_float().$file_name;
 
         $image = imagecreatefromjpeg($_FILES["files"]["tmp_name"][$key]);
@@ -96,7 +96,6 @@ if(isset($_POST['Delete']))
         array_splice($filepath,$pos,1);
     }
 }
-print_r($filepath);
 if(isset($_POST['Submit']))
 { 
     require_once('../php/car_dao.php');
@@ -160,12 +159,12 @@ if(isset($_POST['Submit']))
         $carId,$_REQUEST['supplier'],$_REQUEST['per'],$_REQUEST['bank']
     ));
 
-    if(addVehicle($link,$carId)==1 && !isset($carId)){
+    if(addVehicle($link,$carId,$filepath)==1 && !isset($carId)){
         $car = null;
     }
 }
 
-function addVehicle($link,$carId){
+function addVehicle($link,$carId,$filepath){
     $type = $_SESSION['type'];
     require_once('../php/car_dao.php');
     require_once('../php/car_image_dao.php');
@@ -253,7 +252,12 @@ function addVehicle($link,$carId){
     if($maxId>0){
         if(isset($filepath)){
             foreach ($filepath as $key2 => $value1) {
-                insertCarImagers($link,$value1,$key2!=0?0:1,$maxId);
+                if($type==1){
+                    $ISMAIN = 3;
+                }else{
+                    $ISMAIN =$key2!=0?0:1;
+                }
+                insertCarImagers($link,$value1,$ISMAIN,$maxId);
             }
         }
         insertCarPrice($link,$maxId,$_REQUEST['buy']??0,$_REQUEST['sell']??0,$_REQUEST['public']??0,0,0);

@@ -88,7 +88,7 @@ if(isset($_POST['Submit']))
     );
     if(isset($filepath)){
         foreach ($filepath as $key2 => $value1) {
-            insertCarImagers($link,$value1,$key2!=0?0:1,$maxId);
+            insertCarImagers($link,$value1,$key2!=0?0:1,$maxId,0);
         }
     }
     insertCarPrice($link,$maxId,0,0,0,0,0);

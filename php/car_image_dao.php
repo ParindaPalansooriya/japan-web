@@ -14,10 +14,6 @@ function insertCarImagers($link,
         console_log($th);
     }
 
-    if(isset($type) && $type==1){
-        $is_main=3;
-    }
-
     $sql = "INSERT INTO car_imagers (car_id, image, is_main) VALUES ($car_id,'".end($myArray)."',$is_main)";
 
     mysqli_query($link, $sql);
