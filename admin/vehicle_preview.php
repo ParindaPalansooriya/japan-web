@@ -45,7 +45,7 @@ if(isset($carId)){
                 echo "<script>window.close();</script>";
             }
         }else if($_POST['Action']==0){
-            moveCarToSoledList($link,$carId,-3);
+            moveCarToSoledList($link,$carId,-3,date("Y-m-d"));
             echo "<script>window.close();</script>";
         }
     }
@@ -492,19 +492,20 @@ print_r($_POST);
                     <div class="box">
                         <div class="container-fluid" style="padding: 20px;">
                         <div class="table-responsive">
-
                             <table class="table custom-table">
-                        <thead>
-                            <tr>
-                                <th scope="col" style="width:70%"><h4><?php echo $car->getName(); ?></h4></th>
-                                <th scope="col"><h4>FOB <?php echo $car->getPrice(); ?>¥</h4></th>
-                            </tr>
-                        </thead>
-                            </table></div>
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width:70%"><h4><?php echo $car->getTopic()??"..."; ?></h4></th>
+                                        <th scope="col"><h4>FOB <?php echo $car->getPrice(); ?>¥</h4></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                             <div class="row">
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
-                                    <p style="padding-bottom: 5px; margin-top: 10px;">Make : <?php echo $car->getMaker(); ?></p>
+                                    <p style="padding-bottom: 5px;">Name : <?php echo $car->getName(); ?></p>
+                                    <p style="padding-bottom: 5px;">Make : <?php echo $car->getMaker(); ?></p>
                                     <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>
                                     <p style="padding-bottom: 5px;">Interior Color : <?php echo $car->getIn_color(); ?></p>
                                     <p style="padding-bottom: 5px;">Exterior Color : <?php echo $car->getEx_color(); ?></p>
@@ -520,16 +521,18 @@ print_r($_POST);
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Fuel : <?php echo $car->getFuel(); ?></p>
                                     <p style="padding-bottom: 5px;">Year : <?php echo $car->getModel_year(); ?></p>
                                     <p style="padding-bottom: 5px;">Chassis : <?php echo $car->getChassis(); ?></p>
+                                    <p style="padding-bottom: 5px;">Country : <?php echo $car->getCountry(); ?></p>
                                     <p style="padding-bottom: 5px;">Cooling : <?php echo $car->getCooling(); ?></p>
                                     <p style="padding-bottom: 5px;">Lenght : <?php echo $car->getDimensions_L(); ?></p>
                                     <p style="padding-bottom: 5px;">Width : <?php echo $car->getDimensions_W(); ?></p>
                                     <p style="padding-bottom: 5px;">Hight : <?php echo $car->getDimensions_H(); ?></p>
                                     <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></p>
-                                    <p style="padding-bottom: 5px;">Weel : <?php echo $car->getIs_two_weel()==0?"4 Weel":"2 Weel"; ?></p>
+                                    <p style="padding-bottom: 5px;">Wheel : <?php echo $car->getIs_two_weel()==0?"4 Wheel":"2 Wheel"; ?></p>
                                     <p style="padding-bottom: 5px;">Steering : <?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></p>
                                     </br>
                                 </div>
                             </div>
+                                <p style="padding-bottom: 15px; font-weight: bold;">Options : <?php echo $car->getOptions(); ?></p>
                             <?php if( null !== $car->getNote() && !empty($car->getNote())){?>
                                 <p style="padding-bottom: 15px; margin-top: 10px;">note : <?php echo $car->getNote(); ?></p>
                             <?php } ?>
@@ -581,9 +584,9 @@ print_r($_POST);
                                 <th scope="col">
                                         <button id="Bttn8" Class="bttn2" name="Action" value="7">Miho Kojo</button>
                                 </th>
-                                <!-- <th scope="col">
+                                <th scope="col">
                                         <button id="Bttn9" Class="bttn2" name="Action" value="-1">Export</button>
-                                </th> -->
+                                </th>
                             </tr>
                         </thead>
                         <thead>

@@ -51,7 +51,7 @@ if(isset($carId) && isset($inqId)){
             }
         }
         if($_POST['Action']==1){
-            moveCarToSoledList($link,$carId,$inqId);
+            moveCarToSoledList($link,$carId,$inqId,$_POST['date']);
             echo '<script>alert("Successfully submited")</script>';
             echo "<script>window.close();</script>";
         }
@@ -522,7 +522,7 @@ if(isset($carId) && isset($inqId)){
                                     <p style="padding-bottom: 5px;">Width : <?php echo $car->getDimensions_W(); ?></p>
                                     <p style="padding-bottom: 5px;">Hight : <?php echo $car->getDimensions_H(); ?></p>
                                     <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></p>
-                                    <p style="padding-bottom: 5px;">Weel : <?php echo $car->getIs_two_weel()==0?"4 Weel":"2 Weel"; ?></p>
+                                    <p style="padding-bottom: 5px;">Wheel : <?php echo $car->getIs_two_weel()==0?"4 Wheel":"2 Wheel"; ?></p>
                                     <p style="padding-bottom: 5px;">Steering : <?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></p>
                                     </br>
                                 </div>
@@ -576,6 +576,7 @@ if(isset($carId) && isset($inqId)){
             <form action="vehicle_preview_buying.php?id=<?php echo $carId;?>&inqid=<?php echo $inqId;?>" method="post">
             <div class="heading_container heading_center" >
                 <h4 id="title" style="padding-bottom: 15px; margin-top: 10px;">Please Conform</h4>
+                <input class="bttn Bu_one" id="date" name="date" style="margin-bottom: 10px;" type="date" value="<?php echo date("Y-m-d");?>">
                 <button id="Bttn21" Class="swal-button" name="Action" value="0">Remove</button>
                 <button id="Bttn22" Class="bttn2" name="Action" value="1">Soled</button>
             </div>
@@ -593,6 +594,9 @@ if(isset($carId) && isset($inqId)){
     // Get the modal
     var modal = document.getElementById("myModal");
 
+    
+    var date = document.getElementById("date");
+
     // Get the button that opens the modal
     var btn1 = document.getElementById("Bttn1");
     var btn2 = document.getElementById("Bttn2");
@@ -606,6 +610,7 @@ if(isset($carId) && isset($inqId)){
     btn1.onclick = function() {
         modal.style.display = "block";
         btn22.style.display = "none";
+        date.style.display = "none";
         btn21.style.display = "block";
         title.innerHTML = "Please conform to remove this Request";
     }
@@ -614,6 +619,7 @@ if(isset($carId) && isset($inqId)){
         modal.style.display = "block";
         btn21.style.display = "none";
         btn22.style.display = "block";
+        date.style.display = "block";
         title.innerHTML = "Please conform to Add this Item to Saled List";
     }
 

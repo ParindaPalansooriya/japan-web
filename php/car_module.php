@@ -33,11 +33,17 @@ class Cars{
     public $ex_color;
     public $in_color;
 
+    
+    public $bank_date;
+    public $country;
+    public $topic;
+    public $options;
+
     public function __construct($maker_id, $model_id, $interior_color_id, $exterior_color_id, $current_action_id, $body_style_id,$passengers, 
     $doors, $name, $grade, $power, $model_year, $evaluation, $running, $cooling, $note, $fuel, $chassis, $dimensions_L, $dimensions_W, $dimensions_H, 
     $transmission_shift, $id, $is_public, $is_used, $is_two_weel, $is_steering_right,
     $interior_color,
-    $exterior_color)
+    $exterior_color,$bank_date,$country,$topic,$options)
     {
         $this->maker_id = $maker_id;
         $this->model_id = $model_id;
@@ -68,6 +74,10 @@ class Cars{
         $this->is_steering_right = $is_steering_right;
         $this->in_color = $interior_color;
         $this->ex_color = $exterior_color;
+        $this->bank_date = $bank_date;
+        $this->country = $country;
+        $this->topic = $topic;
+        $this->options = $options;
     }
 
     
@@ -295,46 +305,49 @@ class Cars{
 
     public function getCurrent_action_text()
     {
+
+        $exportText = $this->is_public==1?" - Export":"";
+
         if($this->current_action_id==0){
-            return "No Block";
+            return "No Block".$exportText;
         }
         if($this->current_action_id==1){
-            return "1 Kojo";
+            return "1 Kojo".$exportText;
         }
         if($this->current_action_id==2){
-            return "1 Sale";
+            return "1 Sale".$exportText;
         }
         if($this->current_action_id==3){
-            return "2 Kojo";
+            return "2 Kojo".$exportText;
         }
         if($this->current_action_id==4){
-            return "2 Sale";
+            return "2 Sale".$exportText;
         }
         if($this->current_action_id==5){
-            return "3 Kojo";
+            return "3 Kojo".$exportText;
         }
         if($this->current_action_id==6){
-            return "3 Sale";
+            return "3 Sale".$exportText;
         }
         if($this->current_action_id==7){
-            return "Miho Kojo";
+            return "Miho Kojo".$exportText;
         }
         if($this->current_action_id==-1){
-            return "Export";
+            return "Export".$exportText;
         }
         if($this->current_action_id==8){
-            return "USS";
+            return "USS".$exportText;
         }
         if($this->current_action_id==9){
-            return "CAA";
+            return "CAA".$exportText;
         }
         if($this->current_action_id==10){
-            return "Other Option";
+            return "Other Option".$exportText;
         }
         if($this->current_action_id==11){
-            return "Parts";
+            return "Parts".$exportText;
         }
-        return $this->current_action_id;
+        return $this->current_action_id.$exportText;
     }
 
     /**
@@ -893,6 +906,86 @@ class Cars{
     public function setDate($date)
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of bank_date
+     */ 
+    public function getBank_date()
+    {
+        return $this->bank_date;
+    }
+
+    /**
+     * Set the value of bank_date
+     *
+     * @return  self
+     */ 
+    public function setBank_date($bank_date)
+    {
+        $this->bank_date = $bank_date;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of country
+     */ 
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set the value of country
+     *
+     * @return  self
+     */ 
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of topic
+     */ 
+    public function getTopic()
+    {
+        return $this->topic;
+    }
+
+    /**
+     * Set the value of topic
+     *
+     * @return  self
+     */ 
+    public function setTopic($topic)
+    {
+        $this->topic = $topic;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of options
+     */ 
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set the value of options
+     *
+     * @return  self
+     */ 
+    public function setOptions($options)
+    {
+        $this->options = $options;
 
         return $this;
     }

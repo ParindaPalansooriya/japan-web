@@ -27,12 +27,12 @@ function insertCarFull($link,
     $is_two_weel,
     $is_steering_right,
     $interior_color,
-    $exterior_color
+    $exterior_color,$bank_date,$country,$topic,$options
 )
 {
     $sql = "INSERT INTO cars (maker_id, model_id, interior_color_id, exterior_color_id, current_action_id, body_style_id, 
     passengers, doors, name, grade, power, model_year, evaluation, running, cooling, note, fuel, chassis, dimensions_L, dimensions_W, dimensions_H,
-    transmission_shift, is_used, is_two_weel, is_steering_right,is_public,interior_color,exterior_color) VALUES ($maker_id,
+    transmission_shift, is_used, is_two_weel, is_steering_right,is_public,interior_color,exterior_color,bank_date,country,topic,options) VALUES ($maker_id,
     $model_id,
     $interior_color_id,
     $exterior_color_id,
@@ -59,7 +59,11 @@ function insertCarFull($link,
     $is_steering_right,
     0,
     '$interior_color',
-    '$exterior_color'
+    '$exterior_color',
+    '$bank_date',
+    '$country',
+    '$topic',
+    '$options'
     )";
 
     mysqli_query($link, $sql);
@@ -104,7 +108,11 @@ function insertCarFullWithId($link, $car_id,
     $is_two_weel,
     $is_steering_right,
     $interior_color,
-    $exterior_color
+    $exterior_color,
+    $bank_date,
+    $country,
+    $topic,
+    $options
 )
 {
 
@@ -117,7 +125,7 @@ function insertCarFullWithId($link, $car_id,
 
     $sql = "INSERT INTO cars (id, maker_id, model_id, interior_color_id, exterior_color_id, current_action_id, body_style_id, 
     passengers, doors, name, grade, power, model_year, evaluation, running, cooling, note, fuel, chassis, dimensions_L, dimensions_W, dimensions_H,
-    transmission_shift, is_used, is_two_weel, is_steering_right,is_public,interior_color,exterior_color) VALUES ($car_id,$maker_id,
+    transmission_shift, is_used, is_two_weel, is_steering_right,is_public,interior_color,exterior_color,bank_date,country,topic,options) VALUES ($car_id,$maker_id,
     $model_id,
     $interior_color_id,
     $exterior_color_id,
@@ -144,14 +152,18 @@ function insertCarFullWithId($link, $car_id,
     $is_steering_right,
     0,
     '$interior_color',
-    '$exterior_color'
+    '$exterior_color',
+    '$bank_date',
+    '$country',
+    '$topic',
+    '$options'
     )";
 
     mysqli_query($link, $sql);
     return $car_id;
 }
 
-function moveCarToSoledList($link,$carId,$inquaryId)
+function moveCarToSoledList($link,$carId,$inquaryId,$date)
 {
     require_once "car_module.php";
     $sql2 = "SELECT * FROM cars where id = $carId;";
@@ -187,11 +199,15 @@ function moveCarToSoledList($link,$carId,$inquaryId)
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $sql = "INSERT INTO soled_cars (id,inquary_id,maker_id, model_id, interior_color_id, exterior_color_id, current_action_id, body_style_id, 
             passengers, doors, name, grade, power, model_year, evaluation, running, cooling, note, fuel, chassis, dimensions_L, dimensions_W, dimensions_H,
-            transmission_shift, is_used, is_two_weel, is_steering_right,is_public,interior_color,exterior_color) VALUES ({$car->getId()},$inquaryId,{$car->getMaker_id()},
+            transmission_shift, is_used, is_two_weel, is_steering_right,is_public,interior_color,exterior_color,options,topic,country,bank_date,date) VALUES ({$car->getId()},$inquaryId,{$car->getMaker_id()},
             {$car->getModel_id()},
             {$car->getInterior_color_id()},
             {$car->getExterior_color_id()},
@@ -218,7 +234,12 @@ function moveCarToSoledList($link,$carId,$inquaryId)
             {$car->getIs_steering_right()},
             {$car->getIs_public()},
             '{$car->getIn_color()}',
-            '{$car->getEx_color()}'
+            '{$car->getEx_color()}',
+            '{$car->getOptions()}',
+            '{$car->getTopic()}',
+            '{$car->getCountry()}',
+            '{$car->getBank_date()}',
+            '$date'
             )";
 
             $count = mysqli_query($link, $sql);
@@ -268,7 +289,60 @@ function getAllCars($link){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
+            );
+            array_push($retuen_val,$car);
+        }
+        mysqli_free_result($result);
+    }
+    return $retuen_val;
+}
+
+function getCarsFromChesse($link,$chasse){
+    $retuen_val = [];
+    require_once "car_module.php";
+    $sql2 = "SELECT * FROM cars where chassis = '".$chasse."'";
+
+    if($result = mysqli_query($link, $sql2)){
+        while($row = mysqli_fetch_array($result)){
+            $car = new Cars(
+                $row['maker_id'],
+                $row['model_id'],
+                $row['interior_color_id'],
+                $row['exterior_color_id'],
+                $row['current_action_id'],
+                $row['body_style_id'],
+                $row['passengers'],
+                $row['doors'],
+                $row['name'],
+                $row['grade'],
+                $row['power'],
+                $row['model_year'],
+                $row['evaluation'],
+                $row['running'],
+                $row['cooling'],
+                $row['note'],
+                $row['fuel'],
+                $row['chassis'],
+                $row['dimensions_L'],
+                $row['dimensions_W'],
+                $row['dimensions_H'],
+                $row['transmission_shift'],
+                $row['id'],
+                $row['is_public'],
+                $row['is_used'],
+                $row['is_two_weel'],
+                $row['is_steering_right'],
+                $row['interior_color'],
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             array_push($retuen_val,$car);
         }
@@ -317,7 +391,11 @@ function getAllCarsForReport($link){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -382,7 +460,11 @@ function getAllSoledCarsForReport($link,$date1,$date2){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -448,7 +530,11 @@ function getAllSoledCarsForReportWithDate($link,$date){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -516,7 +602,11 @@ function getCarsForReport($link,$car_id){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -579,7 +669,11 @@ function getAllCarsForLists($link){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -637,7 +731,11 @@ function getAllUserSellingCarsForAdminLists($link){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -699,7 +797,11 @@ function getAllUserBuyingCarsForAdminLists($link){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -759,7 +861,11 @@ function getAllCarsForAdminLists($link){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -789,7 +895,7 @@ function getAllFirld10Cars($link){
     (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
     (select public from car_price where cars.id=car_price.car_id) as price ,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
-    FROM cars where current_action_id = -1 LIMIT 10;";
+    FROM cars where is_public = 1 LIMIT 10;";
 
     if($result = mysqli_query($link, $sql2)){
         while($row = mysqli_fetch_array($result)){
@@ -822,7 +928,11 @@ function getAllFirld10Cars($link){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -878,7 +988,11 @@ function getCarsById($link,$car_id){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -907,7 +1021,7 @@ function getCarsByIdWithbidPrice($link,$car_id){
             $car = new Cars(
                 $row['maker_id'],
                 $row['model_id'],
-                $row['interior_color_id'],
+                $row['interior_color_id'], 
                 $row['exterior_color_id'],
                 $row['current_action_id'],
                 $row['body_style_id'],
@@ -933,7 +1047,11 @@ function getCarsByIdWithbidPrice($link,$car_id){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);
@@ -952,8 +1070,18 @@ function updateAction($link,$carId,$action){
     return mysqli_query($link, $sql2);
 }
 
-function updatePublic($link,$carId,$action){
+function updatePublicWithAction($link,$carId,$action){
     $sql2 = "UPDATE cars SET is_public = $action WHERE id = $carId ;";
+    return mysqli_query($link, $sql2);
+}
+
+function updatePublic($link,$carId){
+    $sql2 = "UPDATE cars SET is_public = IF(is_public=1,0,1) WHERE id = $carId ;";
+    return mysqli_query($link, $sql2);
+}
+
+function delete($link,$carId){
+    $sql2 = "DELETE FROM cars WHERE id = $carId;";
     return mysqli_query($link, $sql2);
 }
 
@@ -970,10 +1098,11 @@ function getMaxId($link){
     return $retuen_val;
 }
 
-function searchStringArray($link,$val,$modulId,$makerId){
+function searchStringArray($link,$val,$modulId,$makerId,$country){
     $retuen_val = [];
     $modulIdString=null;
     $makerIdString=null;
+    $countryQur = $country!=null && $country!="All Country"?"'".$country."' and ":"";
     if(isset($modulId) && !empty($modulId)){
         $modulIdString = implode(',', $modulId);
     }
@@ -988,28 +1117,28 @@ function searchStringArray($link,$val,$modulId,$makerId){
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
-             FROM cars where current_action_id=-1 and model_id in ($modulIdString)";
+             FROM cars where $countryQur is_public=1 and model_id in ($modulIdString)";
         }else if(!isset($modulIdString) && isset($makerIdString)){
             $sql2 = "SELECT *,
             (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
-             FROM cars where current_action_id=-1 and maker_id in ($makerIdString)";
+             FROM cars where $countryQur is_public=1 and maker_id in ($makerIdString)";
         }else if(isset($modulIdString) && isset($makerIdString)){
             $sql2 = "SELECT *,
             (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker , 
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
-             FROM cars where current_action_id=-1 and model_id in ($modulIdString) and maker_id in ($makerIdString)";
+             FROM cars where $countryQur is_public=1 and model_id in ($modulIdString) and maker_id in ($makerIdString)";
         }else{
             $sql2 = "SELECT *,
             (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
-             FROM cars where current_action_id=-1";
+             FROM cars where $countryQur is_public=1";
         }
     }else{
         if(isset($modulIdString) && !isset($makerIdString)){
@@ -1018,28 +1147,28 @@ function searchStringArray($link,$val,$modulId,$makerId){
             (select name from car_makers where cars.maker_id=car_makers.id) as maker , 
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
-             FROM cars where current_action_id=-1 and model_id in ($modulIdString) and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
+             FROM cars where $countryQur is_public=1 and model_id in ($modulIdString) and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
         }else if(!isset($modulIdString) && isset($makerIdString)){
             $sql2 = "SELECT *,
             (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
-             FROM cars where current_action_id=-1 and maker_id in ($makerIdString) and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
+             FROM cars where $countryQur is_public=1 and maker_id in ($makerIdString) and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
         }else if(isset($modulIdString) && isset($makerIdString)){
             $sql2 = "SELECT *,
             (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
-             FROM cars where current_action_id=-1 and model_id in ($modulIdString) and maker_id in ($makerIdString) and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
+             FROM cars where $countryQur is_public=1 and model_id in ($modulIdString) and maker_id in ($makerIdString) and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
         }else{
             $sql2 = "SELECT *,
             (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
-             FROM cars where current_action_id=-1 and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
+             FROM cars where $countryQur is_public=1 and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
         }
     }
     if($result = mysqli_query($link, $sql2)){
@@ -1073,7 +1202,11 @@ function searchStringArray($link,$val,$modulId,$makerId){
                 $row['is_two_weel'],
                 $row['is_steering_right'],
                 $row['interior_color'],
-                $row['exterior_color']
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
             );
             $car->setImage($row['image']);
             $car->setStyle($row['body_style']);

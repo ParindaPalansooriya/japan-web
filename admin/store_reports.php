@@ -505,6 +505,7 @@ $summery = getAllCarsForReport($link);
                     <tr>
                         <th scope="col">Code</th>
                         <th scope="col">Store</th>
+                        <th scope="col">country</th>
                         <th scope="col">Supplier</th>
                         <th scope="col">Perfecture</th>
                         <th scope="col">Bank</th>
@@ -515,6 +516,7 @@ $summery = getAllCarsForReport($link);
                         <?php if($type==1){
                             ?>
                         <th scope="col">Bank</th>
+                        <th scope="col">Bank Date</th>
                         <th scope="col">Bid</th>
                         <th scope="col">Buying</th>
                         <th scope="col">R TAX</th>
@@ -540,6 +542,7 @@ $summery = getAllCarsForReport($link);
                         <tr>
                             <td><?php echo sprintf("(VEH_%05d)", $value->getId()??0); ?></td>
                             <td><?php echo $value->getCurrent_action_text()??"--"; ?></td>
+                            <td><?php echo $value->getCountry()??"--"; ?></td>
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getSupplier()??"--":"--"; ?></td>
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture()??"--":"--"; ?></td>
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank()??"--":"--"; ?></td>
@@ -550,6 +553,7 @@ $summery = getAllCarsForReport($link);
                                 <?php if($type==1){
                                     ?>
                                         <td><?php echo $value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--"; ?></td>
+                                        <td><?php echo $value->getBank_date()??"--"; ?></td>
                                         <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--"; ?></td>
                                         <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--"; ?></td>
                                         <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getRtax()??"--":"--"; ?></td>
@@ -564,30 +568,24 @@ $summery = getAllCarsForReport($link);
                                     <?php
                                 } ?>
                             <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--"; ?></td>
-                            <td><form class="form-inline" action="add_vehicle.php" method="post"  target="_blank">
+                            <td>
+                                <form class="form-inline" action="add_vehicle.php" method="post"  target="_blank">
                                 <div class="form-group">
                                     <input type="hidden" id="carId" name="carId" value="<?php echo $value->getId();?>">
                                     <button class="bttn Bu_one" class="form-control" name="download" >Edit</button>
                                 </div>
-                            </form></td>
+                            </form>
+                        </td>
                         </tr>
                     <?php
                         }
                     ?>
-<!--  End of 1st details row-->
-<!--  2nd details row    Samples    -->
-
-<!--  End of 2nd details row-->
-<!--  3rd details row Samples -->
-
-<!--  end of 3rd details row-->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </section>
-<!-- End Attendance list section -->
 
 </div>
 

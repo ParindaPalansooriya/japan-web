@@ -15,6 +15,20 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
 require_once '../php/config.php';
 require_once "../php/car_module.php";
 require_once "../php/car_dao.php";
+require_once "../php/car_image_dao.php";
+require_once "../php/car_deduction_dao.php";
+require_once "../php/car_additinal_dao.php";
+require_once "../php/car_price_dao.php";
+
+print_r($_POST);
+
+if(isset($_POST['delete-car']) && isset($_POST['carId']) && !empty($_POST['carId'])){
+    delete($link,$_POST['carId']);
+    deleteAllImage($link,$_POST['carId']);
+    deleteAddition($link,$_POST['carId']);
+    deleteDeduction($link,$_POST['carId']);
+    deleteCarPrice($link, $_POST['carId']);
+}
 
 $sellingRequest = getAllCarsForAdminLists($link);
 
@@ -416,9 +430,11 @@ $sellingRequest = getAllCarsForAdminLists($link);
                                 <div Class="bttn Bu_one"><?php echo $value->getCurrent_action_text();?></div><br>
                                 <a href="vehicle_preview_full.php?id=<?php echo $value->getId();?>" target="_blank">
                                     <button Class="swal-button" name="Action">Change Store</button>
-                                </a>
-                                <a href="add_vehicle.php?carId=<?php echo $value->getId();?>" target="_blank">
+                                <a  style="margin-top: 5px;" href="add_vehicle.php?carId=<?php echo $value->getId();?>" target="_blank">
                                     <button Class="Bu_two" name="Action">Edit</button>
+                                </a>
+                                <a>
+                                <button class="Bu_two" style="margin-top: 5px;" onclick="viewDelete(<?php echo $value->getId();?>)" id="delete" >Delete</button>
                                 </a>
                             </td>
                         </tr>
@@ -441,12 +457,28 @@ $sellingRequest = getAllCarsForAdminLists($link);
 
 <!-- Trigger/Open The Modal -->
 <!-- The Modal -->
+
+
 <div id="myModal" class="modal">
 
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
+        <p>Please conform to delete</p>
+        <div class="container-width">
+        <div class="box">
+                        <form id="formAwesome" enctype="multipart/form-data" method="post">
+                            <div class="modal-body">
+                            <div class="gjs-cell">
+                                <div class="heading_container heading_center">
+                                    <input type="hidden" id="carId" name="carId">
+                                    <button id="Bttn" Class="swal-button" name="delete-car">Delete</button>
+                                </div>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+    </div>
     </div>
 
 </div>
@@ -459,14 +491,19 @@ $sellingRequest = getAllCarsForAdminLists($link);
     var modal = document.getElementById("myModal");
 
     // Get the button that opens the modal
-    var btn = document.getElementById("bttn");
+    // var delete1 = document.getElementById("delete");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
 
     // When the user clicks the button, open the modal
-    btn.onclick = function() {
+    // delete1.onclick = function() {
+    //     modal.style.display = "block";
+    // }
+
+    function viewDelete(id){
         modal.style.display = "block";
+        document.getElementById("carId").value = id;
     }
 
     // When the user clicks on <span> (x), close the modal

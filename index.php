@@ -716,7 +716,7 @@ require_once "./php/backup_service.php";
                         <div class="card-body" style="min-width: 400px;">
                            <div class="row d-flex  justify-content-between align-items-center px-0">
                               <div class="col-7 text-left">
-                                 <p class="card-text car_manufacturer float-start"><?php echo $value1->maker; ?></p>
+                                 <p class="card-text car_manufacturer float-start" style="color: black;"><?php echo $value1->maker; ?></p>
                               </div>
                               <div class="col-5 text-right">
                                  <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
@@ -727,10 +727,17 @@ require_once "./php/backup_service.php";
                               </div>
                            </div>
                            <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center " style="margin-left: -6px;">
-                              <h5 class="card-title itemtitle"><?php echo $value1->name; ?></h5>
-                              <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?>¥</p>
-                              <p class="card-text car_manufacturer float-end" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
+                              <a style="font-size: xx-large;"><?php echo $value1->name; ?><span style="font-size: medium;"><?php echo $value1->grade; ?></span></a>
                             </div>
+                            <div class="row d-flex  justify-content-between align-items-center px-0">
+                              <div class="col-4 text-left">
+                                 <p class="card-text car_manufacturer float-start" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
+                              </div>
+                              <div class="col-7 text-right">
+                                 <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?>¥</p>
+                              </div>
+                           </div>
+
                            <div class="row mt-4  px-0">
                               
                               <div class="col-12  px-0">
@@ -818,7 +825,7 @@ require_once "./php/backup_service.php";
                         <div class="card-body" style="min-width: 400px;">
                            <div class="row d-flex  justify-content-between align-items-center px-0">
                               <div class="col-7 text-left">
-                                 <p class="card-text car_manufacturer float-start"><?php echo $value1->maker; ?></p>
+                                 <p class="card-text car_manufacturer float-start" style="color: black;"><?php echo $value1->maker; ?></p>
                               </div>
                               <div class="col-5 text-right">
                                  <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
@@ -829,10 +836,17 @@ require_once "./php/backup_service.php";
                               </div>
                            </div>
                            <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center " style="margin-left: -6px;">
-                              <h5 class="card-title itemtitle"><?php echo $value1->name; ?></h5>
-                              <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?>¥</p>
-                              <p class="card-text car_manufacturer float-end" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
+                              <a style="font-size: xx-large;"><?php echo $value1->name; ?><span style="font-size: medium;"><?php echo $value1->grade; ?></span></a>
                             </div>
+                            <div class="row d-flex  justify-content-between align-items-center px-0">
+                              <div class="col-4 text-left">
+                                 <p class="card-text car_manufacturer float-start" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
+                              </div>
+                              <div class="col-7 text-right">
+                                 <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?>¥</p>
+                              </div>
+                           </div>
+
                            <div class="row mt-4  px-0">
                               
                               <div class="col-12  px-0">

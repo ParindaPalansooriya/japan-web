@@ -80,7 +80,11 @@ if(isset($_POST['Submit']))
     getData('is_two_weel',0),
     getData('is_steering_right',0),
     getData('in_col',"No Data"),
-    getData('ex_col',"No Data")
+    getData('ex_col',"No Data"),
+    null,
+    null,
+    null,
+    null
     );
     if(isset($filepath)){
         foreach ($filepath as $key2 => $value1) {
@@ -348,9 +352,31 @@ function getData($key,$defualt){
   text-align: center;
   display: none;
 }
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:#25d366;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+  font-size:30px;
+	box-shadow: 2px 2px 3px #999;
+  z-index:100;
+}
+
+.my-float{
+	margin-top:16px;
+}
 </style>
 
 <body class="sub_page">
+
+<a href="https://api.whatsapp.com/send?phone=0716625919&text=hi,%20This%20massage%20from%20web.%20If%20you%20have%20a%20free%20time%20please%20let%20me%20know." class="float" target="_blank">
+<i class="fa fa-whatsapp my-float"></i>
+</a>
 
 <!-- Button section -->
 <!-- <header class="header_section">

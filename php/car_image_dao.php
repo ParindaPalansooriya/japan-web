@@ -30,6 +30,12 @@ function deleteImage($link,$car_id,$image)
     return mysqli_query($link, $sql);
 }
 
+function deleteAllImage($link,$car_id)
+{
+    $sql = "DELETE FROM car_imagers WHERE car_id = $car_id";
+    return mysqli_query($link, $sql);
+}
+
 function getAllCarImagers($link,$car_id,$type){
     $retuen_val = [];
     require_once "car_image_module.php";

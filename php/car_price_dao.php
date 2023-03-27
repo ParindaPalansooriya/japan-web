@@ -68,4 +68,13 @@ function getCarPriceUpdate($link,$carId,$sell,$pub,$buy,$ub){
     return mysqli_query($link, $sql2);
 }
 
+function deleteCarPrice($link, $car_id){
+    try{
+        $sql0 = "DELETE FROM car_price WHERE car_id = $car_id";
+        mysqli_query($link, $sql0);
+    }catch (Throwable $th) {
+        console_log($th);
+    }
+}
+
 ?>

@@ -45,9 +45,9 @@ if(isset($carId)){
     session_start();
     $type = $_SESSION['type']??0;
     $imagers = getAllCarImagers($link,$carId,$type);
-    if(!isset($imagers) || empty($imagers)){
-        array_push($imagers,"images/noimage.jpg");
-    }
+    // if(!isset($imagers) || empty($imagers)){
+    //     array_push($imagers,"images/noimage.jpg");
+    // }
     // print_r($imagers);
 }
 ?>
@@ -407,39 +407,7 @@ if(isset($carId)){
 </style>
 
 <body>
-<!-- Button section -->
-<!-- <header class="header_section">
-    <div class="gjso-row" id="i7xa">
-        <div class="gjs-cell">
-            <div class="gjs-row" id="ivs4">
-                <div class="gjs-cell" id="injr">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="gjs-cell" id="ijl1">
-                    <div class="heading_container heading_center">
-                        <div class="col-center">
-                            <a href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
-                                <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: green"><span>Sale 1</span></button>
-                            </a>
-                            <a href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
-                                <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: orange"><span>Sale 2</span></button>
-                            </a>
-                            <a href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
-                                <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: red"><span>Sale 3</span></button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header> -->
-<!-- End color buttons -3  section -->
-<body class="">
+    <body class="">
     <?php 
     if(isset($car)){
     ?>
@@ -495,7 +463,7 @@ if(isset($carId)){
                             <table class="table custom-table">
                                 <thead>
                                     <tr>
-                                        <th scope="col" style="width:70%"><h4><?php echo $car->getName(); ?></h4></th>
+                                        <th scope="col" style="width:70%"><h4><?php echo $car->getTopic()??"..."; ?></h4></th>
                                         <th scope="col"><h4>FOB <?php echo $car->getPrice(); ?>¥</h4></th>
                                     </tr>
                                 </thead>
@@ -503,7 +471,8 @@ if(isset($carId)){
                             <div class="row">
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
-                                    <p style="padding-bottom: 5px; margin-top: 10px;">Make : <?php echo $car->getMaker(); ?></p>
+                                    <p style="padding-bottom: 5px;">Name : <?php echo $car->getName(); ?></p>
+                                    <p style="padding-bottom: 5px;">Make : <?php echo $car->getMaker(); ?></p>
                                     <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>
                                     <p style="padding-bottom: 5px;">Interior Color : <?php echo $car->getIn_color(); ?></p>
                                     <p style="padding-bottom: 5px;">Exterior Color : <?php echo $car->getEx_color(); ?></p>
@@ -518,17 +487,19 @@ if(isset($carId)){
                                 <div class="col-sm-6" style="background-color:#ffffff;">
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Fuel : <?php echo $car->getFuel(); ?></p>
                                     <p style="padding-bottom: 5px;">Year : <?php echo $car->getModel_year(); ?></p>
+                                    <p style="padding-bottom: 5px;">Country : <?php echo $car->getCountry(); ?></p>
                                     <p style="padding-bottom: 5px;">Chassis : <?php echo $car->getChassis(); ?></p>
                                     <p style="padding-bottom: 5px;">Cooling : <?php echo $car->getCooling(); ?></p>
                                     <p style="padding-bottom: 5px;">Lenght : <?php echo $car->getDimensions_L(); ?></p>
                                     <p style="padding-bottom: 5px;">Width : <?php echo $car->getDimensions_W(); ?></p>
                                     <p style="padding-bottom: 5px;">Hight : <?php echo $car->getDimensions_H(); ?></p>
                                     <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></p>
-                                    <p style="padding-bottom: 5px;">Weel : <?php echo $car->getIs_two_weel()==0?"4 Weel":"2 Weel"; ?></p>
+                                    <p style="padding-bottom: 5px;">Wheel : <?php echo $car->getIs_two_weel()==0?"4 Wheel":"2 Wheel"; ?></p>
                                     <p style="padding-bottom: 5px;">Steering : <?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></p>
                                     </br>
                                 </div>
                             </div>
+                                <p style="padding-bottom: 15px; font-weight: bold;">Options : <?php echo $car->getOptions(); ?></p>
                             <?php if( null !== $car->getNote() && !empty($car->getNote())){?>
                                 <p style="padding-bottom: 15px; margin-top: 10px;">note : <?php echo $car->getNote(); ?></p>
                             <?php } ?>
@@ -544,6 +515,84 @@ if(isset($carId)){
         </div>
     </div>
     <?php }?>
+
+    
+
+<div class="heading_container heading_center"  style="margin-top: 50px; margin-bottom: 80px; padding-left: 100px; padding-right: 100px;">
+                  <div class="col-center">
+                     <div class="row">
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/1sale.jpg" style="width: 100%; aspect-ratio: 16/7; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">号川原城町店</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（柳澤店長）</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/2sale.jpg" style="width: 100%; aspect-ratio: 16/7; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">号中根台店</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（菊池店長）</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/3sale.jpg" style="width: 100%; aspect-ratio: 16/7; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">号長沖店</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（藤本店長）</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235004/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/4sale.jpg" style="width: 100%; aspect-ratio: 16/7; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">号店</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（豊島店長）</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
+                              <div class="shadow p-3 mb-5 bg-white rounded" style=" max-width: 300px; min-width: 200px;">
+                              <div class="card"  style="max-width: 300px; min-width: 200px;">
+                                 <img class="card-img-top" src="./images/parts.jpg" style="width: 100%; aspect-ratio: 16/7; object-fit: cover;" alt="Card image cap">
+                                 <div class="card-body">
+                                    <p class="card-text" style="color: #888; font-weight: bold;">PARTS FOR EXPORT</p>
+                                    <p class="card-text" style="color: #888; font-weight: bold;">（自動車部品）</p>
+                                 </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                     </div>
+               </div>
+            <!-- End color buttons -3  section -->
+         </div>
+
+
+
 </body>
 <!-- end box with filter section -->
 

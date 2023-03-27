@@ -42,11 +42,17 @@ if(isset($carId)){
     }
     if(isset($_POST['Action'])){
         if($_POST['Action']!=0){
-            if(updateAction($link,$carId,$_POST['Action'])>0){
-                echo '<script>alert("Block Updated success")</script>';
+            if($_POST['Action'] == -1){
+                if(updatePublic($link,$carId)>0){
+                    echo '<script>alert("Block Updated success")</script>';
+                }
+            }else{
+                if(updateAction($link,$carId,$_POST['Action'])>0){
+                    echo '<script>alert("Block Updated success")</script>';
+                }
             }
         }else if($_POST['Action']==0){
-            moveCarToSoledList($link,$carId,-2);
+            moveCarToSoledList($link,$carId,-2,$_POST['date']);
             echo '<script>alert("Successfully submited")</script>';
             echo "<script>window.close();</script>";
         }
@@ -54,9 +60,9 @@ if(isset($carId)){
     $car = getCarsByIdWithbidPrice($link,$carId);
     $imagers = getAllCarImagers($link,$carId,$type);
     $prices = getCarPrice($link,$carId);
-    if(!isset($imagers) || empty($imagers)){
-        array_push($imagers,"images/noimage.jpg");
-    }
+    // if(!isset($imagers) || empty($imagers)){
+    //     array_push($imagers,"images/noimage.jpg");
+    // }
 }
 ?>
 
@@ -491,7 +497,7 @@ if(isset($carId)){
                             <table class="table custom-table">
                         <thead>
                             <tr>
-                                <th scope="col" style="width:70%"><h4><?php echo $car->getName(); ?></h4></th>
+                                <th scope="col" style="width:70%"><h4><?php echo $car->getTopic()??"..."; ?></h4></th>
                                 <th scope="col"><h4><?php echo $car->getCurrent_action_text(); ?></h4></th>
                             </tr>
                         </thead>
@@ -499,7 +505,8 @@ if(isset($carId)){
                             <div class="row">
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
                                     <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
-                                    <p style="padding-bottom: 5px; margin-top: 10px;">Make : <?php echo $car->getMaker(); ?></p>
+                                    <p style="padding-bottom: 5px;">Name : <?php echo $car->getName(); ?></p>
+                                    <p style="padding-bottom: 5px;">Make : <?php echo $car->getMaker(); ?></p>
                                     <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>
                                     <p style="padding-bottom: 5px;">Interior Color : <?php echo $car->getIn_color(); ?></p>
                                     <p style="padding-bottom: 5px;">Exterior Color : <?php echo $car->getEx_color(); ?></p>
@@ -516,15 +523,17 @@ if(isset($carId)){
                                     <p style="padding-bottom: 5px;">Year : <?php echo $car->getModel_year(); ?></p>
                                     <p style="padding-bottom: 5px;">Chassis : <?php echo $car->getChassis(); ?></p>
                                     <p style="padding-bottom: 5px;">Cooling : <?php echo $car->getCooling(); ?></p>
+                                    <p style="padding-bottom: 5px;">Country : <?php echo $car->getCountry(); ?></p>
                                     <p style="padding-bottom: 5px;">Lenght : <?php echo $car->getDimensions_L(); ?></p>
                                     <p style="padding-bottom: 5px;">Width : <?php echo $car->getDimensions_W(); ?></p>
                                     <p style="padding-bottom: 5px;">Hight : <?php echo $car->getDimensions_H(); ?></p>
                                     <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></p>
-                                    <p style="padding-bottom: 5px;">Weel : <?php echo $car->getIs_two_weel()==0?"4 Weel":"2 Weel"; ?></p>
+                                    <p style="padding-bottom: 5px;">Wheel : <?php echo $car->getIs_two_weel()==0?"4 Wheel":"2 Wheel"; ?></p>
                                     <p style="padding-bottom: 5px;">Steering : <?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></p>
                                     </br>
                                 </div>
                             </div>
+                                <p style="padding-bottom: 15px; font-weight: bold;">Options : <?php echo $car->getOptions(); ?></p>
                             <?php if( null !== $car->getNote() && !empty($car->getNote())){?>
                                 <p style="padding-bottom: 15px; margin-top: 10px;">note : <?php echo $car->getNote(); ?></p>
                             <?php } ?>
@@ -665,6 +674,7 @@ if(isset($carId)){
             <form action="vehicle_preview_full.php?id=<?php echo $carId;?>" method="post">
             <div class="heading_container heading_center" >
                 <h4 id="title" style="padding-bottom: 15px; margin-top: 10px;">Please Conform</h4>
+                <input class="bttn Bu_one" id="date" name="date" style="margin-bottom: 10px;" type="date" value="<?php echo date("Y-m-d");?>">
                 <button id="Bttn21" Class="swal-button" name="Action" value="0">Soled</button>
                 <button id="Bttn22" Class="bttn2" name="Action" value="1">1 Kojo</button>
                 <button id="Bttn23" Class="bttn2" name="Action" value="2">1Sale</button>
@@ -724,6 +734,7 @@ if(isset($carId)){
     var btn213 = document.getElementById("Bttn213");
 
     var title = document.getElementById("title");
+    var date = document.getElementById("date");
 
     btn1.onclick = function() {
         modal.style.display = "block";
@@ -740,7 +751,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         btn21.style.display = "block";
-        title.innerHTML = "Please conform to add to Soled this Item";
+        date.style.display = "block";
+        title.innerHTML = "Please conform to add to Soled this Item and pick your soled date";
     }
 
     btn2.onclick = function() {
@@ -758,6 +770,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 1 Kojo";
     }
 
@@ -776,6 +789,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 1 Sale";
     }
 
@@ -794,6 +808,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 2 Kojo";
     }
 
@@ -812,6 +827,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 2 Sale";
     }
 
@@ -830,6 +846,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 3 Kojo";
     }
 
@@ -848,6 +865,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to 3 Sale";
     }
 
@@ -866,6 +884,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to Miho Kojo";
     }
 
@@ -884,6 +903,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to Export";
     }
 
@@ -902,6 +922,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to USS";
     }
 
@@ -920,6 +941,7 @@ if(isset($carId)){
         btn211.style.display = "block";
         btn212.style.display = "none";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to CAA";
     }
 
@@ -938,6 +960,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "block";
         btn213.style.display = "none";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to Other Option";
     }
 
@@ -956,6 +979,7 @@ if(isset($carId)){
         btn211.style.display = "none";
         btn212.style.display = "none";
         btn213.style.display = "block";
+        date.style.display = "none";
         title.innerHTML = "Please conform to Add this Item to Parts";
     }
 

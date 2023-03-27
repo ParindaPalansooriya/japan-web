@@ -405,6 +405,62 @@ if($link === false){
         console_log($th);
     }
 
+    try {
+        $cars_add_options = "ALTER TABLE `cars` ADD `options` TEXT NOT NULL default ''";
+        mysqli_query($link, $cars_add_options);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
+        $cars_add_topic = "ALTER TABLE `cars` ADD `topic` VARCHAR(150) NOT NULL default ''";
+        mysqli_query($link, $cars_add_topic);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
+        $cars_add_country = "ALTER TABLE `cars` ADD `country` VARCHAR(150) NOT NULL default 'No Country'";
+        mysqli_query($link, $cars_add_country);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
+        $cars_add_bank_date = "ALTER TABLE `cars` ADD `bank_date` VARCHAR(12)";
+        mysqli_query($link, $cars_add_bank_date);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
+        $cars_add_options = "ALTER TABLE `soled_cars` ADD `options` TEXT NOT NULL default ''";
+        mysqli_query($link, $cars_add_options);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
+        $cars_add_topic = "ALTER TABLE `soled_cars` ADD `topic` VARCHAR(150) NOT NULL default ''";
+        mysqli_query($link, $cars_add_topic);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
+        $cars_add_country = "ALTER TABLE `soled_cars` ADD `country` VARCHAR(150) NOT NULL default 'No Country'";
+        mysqli_query($link, $cars_add_country);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
+    try {
+        $cars_add_bank_date = "ALTER TABLE `soled_cars` ADD `bank_date` VARCHAR(12)";
+        mysqli_query($link, $cars_add_bank_date);
+    } catch (Throwable $th) {
+        console_log($th);
+    }
+
 }
 
 function console_log($val){

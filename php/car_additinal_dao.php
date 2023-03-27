@@ -27,6 +27,12 @@ function insertCarAdditinal($link,
     // }
 }
 
+function deleteAddition($link,$car_id)
+{
+    $sql = "DELETE FROM car_additinal WHERE car_id = $car_id";
+    return mysqli_query($link, $sql);
+}
+
 function updateCarAdditinal($link,$car_id,$supplier,$perfecture,$bank){
     $sql2 = "UPDATE car_additinal SET supplier = $supplier , perfecture = $perfecture, bank = $bank WHERE car_id = $car_id ;";
     return mysqli_query($link, $sql2);

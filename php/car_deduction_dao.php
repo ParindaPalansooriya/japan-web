@@ -94,4 +94,13 @@ function getCarDeduction($link,$carId){
     return $retuen_val;
 }
 
+function deleteDeduction($link,$car_id){
+    try{
+        $sql0 = "DELETE FROM car_deductions WHERE car_id = $car_id";
+        mysqli_query($link, $sql0);
+    }catch (Throwable $th) {
+        console_log($th);
+    }
+}
+
 ?>
