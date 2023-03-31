@@ -41,7 +41,7 @@ $summery = getAllUserSubmitsWithDate($link,$today,$userId);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>Attendance_form</title>
+    <title>Daily Attendance</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
@@ -53,7 +53,7 @@ $summery = getAllUserSubmitsWithDate($link,$today,$userId);
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
+    <!-- <link rel="icon" type="image/png" href="../images/icons/favicon.png"/> -->
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->

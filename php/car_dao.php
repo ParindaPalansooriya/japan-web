@@ -105,6 +105,7 @@ function insertCarFullWithId($link, $car_id,
     $dimensions_H,
     $transmission_shift,
     $is_used,
+    $is_public,
     $is_two_weel,
     $is_steering_right,
     $interior_color,
@@ -150,7 +151,7 @@ function insertCarFullWithId($link, $car_id,
     $is_used,
     $is_two_weel,
     $is_steering_right,
-    0,
+    $is_public,
     '$interior_color',
     '$exterior_color',
     '$bank_date',
@@ -355,7 +356,7 @@ function getAllCarsForReport($link){
     $retuen_val = [];
     require_once "car_module.php";
     $sql2 = "SELECT *,
-    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
     FROM cars;";
@@ -424,7 +425,7 @@ function getAllSoledCarsForReport($link,$date1,$date2){
     $retuen_val = [];
     require_once "car_module.php";
     $sql2 = "SELECT *,
-    (select image from car_imagers where soled_cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where soled_cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where soled_cars.maker_id=car_makers.id) as maker ,
     (select name from body_style where soled_cars.body_style_id=body_style.id) as body_style 
     FROM soled_cars where  inquary_id!=-3 ".($date1!==null && $date2!==null?(" and date between '".$date1."' and '".$date2."' "):"").";";
@@ -494,7 +495,7 @@ function getAllSoledCarsForReportWithDate($link,$date){
     $retuen_val = [];
     require_once "car_module.php";
     $sql2 = "SELECT *,
-    (select image from car_imagers where soled_cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where soled_cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where soled_cars.maker_id=car_makers.id) as maker ,
     (select name from body_style where soled_cars.body_style_id=body_style.id) as body_style 
     FROM soled_cars where inquary_id!=-3 and date like '%$date%';";
@@ -564,7 +565,7 @@ function getCarsForReport($link,$car_id){
     $car = null;
     require_once "car_module.php";
     $sql2 = "SELECT *,
-    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
     FROM cars where id = $car_id;";
@@ -633,7 +634,7 @@ function getAllCarsForLists($link){
     $retuen_val = [];
     require_once "car_module.php";
     $sql2 = "SELECT *,
-    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
     FROM cars;";
@@ -693,7 +694,7 @@ function getAllUserSellingCarsForAdminLists($link){
     require_once "user_inquary_module.php";
     $sql2 = "SELECT *,
     user_inquary.id AS inquary_id,
-    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
     (select price1 from car_price where cars.id=car_price.car_id) as price ,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
@@ -759,7 +760,7 @@ function getAllUserBuyingCarsForAdminLists($link){
     require_once "user_inquary_module.php";
     $sql2 = "SELECT *,
     user_inquary.id AS inquary_id,
-    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
     (select public from car_price where cars.id=car_price.car_id) as price ,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
@@ -825,7 +826,7 @@ function getAllCarsForAdminLists($link){
     require_once "car_price_module.php";
     require_once "user_inquary_module.php";
     $sql2 = "SELECT *,
-    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
     FROM cars INNER JOIN car_price ON cars.id=car_price.car_id;";
@@ -891,7 +892,7 @@ function getAllFirld10Cars($link){
     $retuen_val = [];
     require_once "car_module.php";
     $sql2 = "SELECT *,
-    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
     (select public from car_price where cars.id=car_price.car_id) as price ,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
@@ -951,7 +952,7 @@ function getCarsById($link,$car_id){
     require_once "car_module.php";
     $car = null; 
     $sql2 = "SELECT *,
-    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where cars.maker_id=car_makers.id) as maker , 
     (select public from car_price where cars.id=car_price.car_id) as price,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
@@ -1010,7 +1011,7 @@ function getCarsByIdWithbidPrice($link,$car_id){
     require_once "car_module.php";
     $car = null; 
     $sql2 = "SELECT *,
-    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+    (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
     (select name from car_makers where cars.maker_id=car_makers.id) as maker , 
     (select price1 from car_price where cars.id=car_price.car_id) as price,
     (select name from body_style where cars.body_style_id=body_style.id) as body_style 
@@ -1113,28 +1114,28 @@ function searchStringArray($link,$val,$modulId,$makerId,$country){
     if(empty($val)){
         if(isset($modulIdString) && !isset($makerIdString)){
             $sql2 = "SELECT *,
-            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
              FROM cars where $countryQur is_public=1 and model_id in ($modulIdString)";
         }else if(!isset($modulIdString) && isset($makerIdString)){
             $sql2 = "SELECT *,
-            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
              FROM cars where $countryQur is_public=1 and maker_id in ($makerIdString)";
         }else if(isset($modulIdString) && isset($makerIdString)){
             $sql2 = "SELECT *,
-            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker , 
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
              FROM cars where $countryQur is_public=1 and model_id in ($modulIdString) and maker_id in ($makerIdString)";
         }else{
             $sql2 = "SELECT *,
-            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
@@ -1143,28 +1144,28 @@ function searchStringArray($link,$val,$modulId,$makerId,$country){
     }else{
         if(isset($modulIdString) && !isset($makerIdString)){
             $sql2 = "SELECT *,
-            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker , 
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
              FROM cars where $countryQur is_public=1 and model_id in ($modulIdString) and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
         }else if(!isset($modulIdString) && isset($makerIdString)){
             $sql2 = "SELECT *,
-            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
              FROM cars where $countryQur is_public=1 and maker_id in ($makerIdString) and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
         }else if(isset($modulIdString) && isset($makerIdString)){
             $sql2 = "SELECT *,
-            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 
              FROM cars where $countryQur is_public=1 and model_id in ($modulIdString) and maker_id in ($makerIdString) and ( name like '%$val%' or grade like '%$val%' or note like '%$val%' ) ";
         }else{
             $sql2 = "SELECT *,
-            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1) as image ,
+            (select image from car_imagers where cars.id=car_imagers.car_id and car_imagers.is_main=1 LIMIT 1) as image ,
             (select name from car_makers where cars.maker_id=car_makers.id) as maker ,
             (select public from car_price where cars.id=car_price.car_id) as price,
             (select name from body_style where cars.body_style_id=body_style.id) as body_style 

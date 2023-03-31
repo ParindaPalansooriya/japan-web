@@ -25,7 +25,7 @@ require_once "./php/backup_service.php";
       <meta name="description" content="" />
       <meta name="author" content="" />
       <link rel="shortcut icon" href="images/logo.png" type="">
-      <title>Web title</title>
+      <title>ORIENT JAPAN</title>
       <!-- bootstrap core css -->
       <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
       <!-- font awesome style -->
@@ -361,8 +361,9 @@ require_once "./php/backup_service.php";
                                           SEARCH FOR EXPORT MARKET VEHICLES (輸出)
                                           </h2>
                                           <p style="margin-bottom: 50px;">
+                                          Welcome to our OrientJapan website! We are passionate about cars and committed to helping you find the perfect vehicle to meet your needs. Our selection of cars is carefully diversified to offer you the best quality and value.
                                              Passenger cars, vans, light trucks and even margin cars or damaged vehicles,
-                                             you’re sure to find what you’re looking for.  </p>
+                                             you’re sure to find what you’re looking for. </p>
 
                                              <div class="search">
                                                 <form  action="buy_new_car.php" enctype="multipart/form-data" method="post">
@@ -748,15 +749,12 @@ require_once "./php/backup_service.php";
                               <div class="col-md-12">
                                  <div class=" p-2 featuremain">
                                     <h4><?php echo $value1->power; ?> cc</h4>
-                                    <small  class="featuremain_tag">Capacity</small>
                                  </div>
                                  <div class=" p-2 featuremain">
                                     <h4><?php echo $value1->model_year; ?></h4>
-                                    <small class="featuremain_tag">Registered Year</small>
                                  </div>
                                  <div class=" p-2 featuremain">
                                     <h4><?php echo $value1->running; ?><small> KM</small></h4>
-                                    <small class="featuremain_tag">Kilometers Span</small>
                                  </div>
                               </div>
 
@@ -783,10 +781,14 @@ require_once "./php/backup_service.php";
                   <div class="box">
                      <div class="subscribe_form ">
                         <div class="heading_container heading_center">
-                           <p style="font-weight: 300; color: #f6f6f6; font-size: x-large;" >We are the largest website that deals with buying & selling cars in the world, Lorem ipsum dolor sit amet, consectetur  adipiscing
-                           elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </p>
-                           <br/>
-                           <h7 style="font-weight: bold; color: #f6f6f6;">DAVID S, MARVIN OWNER</h7>
+                           <p style="font-weight: 600; color: #f6f6f6; font-size: xx-large;">
+As Ola Källenius, CEO of Daimler AG, once said, "Cars are not just machines that take us from A to B - they are part of our lives." We believe that cars are more than just a means of transportation, they are an expression of individuality and a reflection of our personalities.
+</p></br></br><p style="font-weight: 300; color: #f6f6f6; font-size: large;">
+That's why we offer a wide variety of cars to suit every taste and budget, from sporty coupes to family-friendly SUVs. Whether you're looking for something practical or luxurious, we've got you covered.
+<!-- </p></br><p style="font-weight: 300; color: #f6f6f6; font-size: x-large;"> -->
+At our OrientJapan website, we are committed to providing you with a seamless and hassle-free car-buying experience. We understand that buying a car can be overwhelming, which is why we have a team of experts to guide you through the process and help you make an informed decision.
+</p></br><p style="font-weight: 300; color: #f6f6f6; font-size: large;">
+If you're searching for a new or used car, we are here to help. Explore our selection of cars and find the one that's right for you. As Ola Källenius said, "The car of the future is already here - it's just not evenly distributed yet." Be part of the future of cars today with our OrientJapan website. </p>
                         </div>
                      </div>
                   </div>

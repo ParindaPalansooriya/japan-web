@@ -33,7 +33,7 @@ $summery = getAllCarsForReport($link);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>Attendance_form</title>
+    <title>Available Stock</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
@@ -45,7 +45,7 @@ $summery = getAllCarsForReport($link);
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
+    <!-- <link rel="icon" type="image/png" href="../images/icons/favicon.png"/> -->
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
@@ -713,8 +713,8 @@ $(document).ready(function(){
         term = $(this).val().toLowerCase();
         $("table tbody tr").each(function(){
             $row = $(this);
-            var name = $row.find("td:nth-child(9)").text().toLowerCase();
-            var block = $row.find("td:nth-child(2)").text().toLowerCase();
+            var name = $row.find("td:nth-child(10)").text().toLowerCase();
+            var block = $row.find("td:nth-child(1)").text().toLowerCase();
             const index = array.indexOf(block);
             if(name.search(term) < 0){                
                 $row.hide();

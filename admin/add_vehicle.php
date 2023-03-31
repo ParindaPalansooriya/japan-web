@@ -109,6 +109,13 @@ if(isset($_POST['Submit']))
     require_once('../php/car_deduction_module.php');
     require_once('../php/car_price_module.php');
 
+    $action = 0;
+    $ispublic = 0;
+    if(isset($car)){
+        $action = $car->getCurrent_action_id();
+        $ispublic = $car->getIs_public();
+    }
+
     $car = new Cars(
         $_REQUEST['maker_id'],
         1,
@@ -159,12 +166,12 @@ if(isset($_POST['Submit']))
         $carId,$_REQUEST['supplier'],$_REQUEST['per'],$_REQUEST['bank']
     ));
 
-    if(addVehicle($link,$carId,$filepath)==1 && !isset($carId)){
+    if(addVehicle($link,$carId,$filepath,$action,$ispublic)==1 && !isset($carId)){
         $car = null;
     }
 }
 
-function addVehicle($link,$carId,$filepath){
+function addVehicle($link,$carId,$filepath,$action,$ispublic){
     $type = $_SESSION['type'];
     require_once('../php/car_dao.php');
     require_once('../php/car_image_dao.php');
@@ -186,7 +193,7 @@ function addVehicle($link,$carId,$filepath){
             1,
             1,
             1,
-            0,
+            $action??0,
             $_REQUEST['body_style_id'],
             $_REQUEST['passengers'],
             $_REQUEST['doors'],
@@ -205,6 +212,7 @@ function addVehicle($link,$carId,$filepath){
             $_REQUEST['dimensions_H'],
             $_REQUEST['transmission_shift'],
             $_REQUEST['is_used'],
+            $ispublic??0,
             $_REQUEST['is_two_weel'],
             $_REQUEST['is_steering_right'],
             $_REQUEST['in_col'],
@@ -290,7 +298,7 @@ function addVehicle($link,$carId,$filepath){
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>Vehicle seller page</title>
+    <title>Add Vehicle</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->

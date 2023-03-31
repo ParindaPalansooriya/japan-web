@@ -53,7 +53,7 @@ if(isset($_POST['Submit']))
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>Vehicle seller page</title>
+    <title>Add Loyalty Customer</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->

@@ -21,10 +21,15 @@ if(isset($_POST['Submit']))
 <html>
    <head>
       <title>Contact Us</title>
+      <meta name="keywords" content="" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <!-- <link rel="shortcut icon" href="images/logo.png" type=""> -->
+      <link rel="icon" href="images/logo.png">
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
    <!--===============================================================================================-->	
-      <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+      <!-- <link rel="icon" type="image/png" href="images/icons/favicon.png"/> -->
    <!--===============================================================================================-->
       <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
    <!--===============================================================================================-->

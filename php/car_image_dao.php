@@ -7,16 +7,35 @@ function insertCarImagers($link,
 )
 {
     $myArray = explode('/', $image);
-    try{
-        $sql0 = "DELETE FROM car_imagers WHERE car_id = $car_id && image = '".end($myArray)."'";
-        mysqli_query($link, $sql0);
-    }catch (Throwable $th) {
-        console_log($th);
+
+    if($is_main!=3){
+        $sql3="SELECT * FROM car_imagers WHERE car_id = $car_id && is_main = 1";
+        if ($result=mysqli_query($link,$sql3)){
+            $rowcount=mysqli_num_rows($result);
+            mysqli_free_result($result);
+            if($rowcount<=0){
+                $is_main = 1;
+            }
+        }
     }
 
-    $sql = "INSERT INTO car_imagers (car_id, image, is_main) VALUES ($car_id,'".end($myArray)."',$is_main)";
+    $sql="SELECT * FROM car_imagers WHERE car_id = $car_id && image = '".end($myArray)."'";
 
-    mysqli_query($link, $sql);
+    if ($result=mysqli_query($link,$sql)){
+        $rowcount=mysqli_num_rows($result);
+        mysqli_free_result($result);
+        if($rowcount<=0){
+            try{
+                $sql = "INSERT INTO car_imagers (car_id, image, is_main) VALUES ($car_id,'".end($myArray)."',$is_main)";
+                mysqli_query($link, $sql);
+            }catch (Throwable $th) {
+                console_log($th);
+            }
+        }
+    }else{
+        $sql = "INSERT INTO car_imagers (car_id, image, is_main) VALUES ($car_id,'".end($myArray)."',$is_main)";
+        mysqli_query($link, $sql);
+    }
 }
 
 function deleteImage($link,$car_id,$image)

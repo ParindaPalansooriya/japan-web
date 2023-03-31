@@ -69,7 +69,7 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers,$country)
       <meta name="keywords" content="" />
       <meta name="description" content="" />
       <meta name="author" content="" />
-      <link rel="shortcut icon" href="images/logo.png" type="">
+      <link rel="shortcut icon" href="./images/logo.png" type="">
       <title>Buy New Car</title>
       <!-- bootstrap core css -->
       <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
@@ -85,7 +85,7 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers,$country)
 
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <!--===============================================================================================-->
-      <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+      <!-- <link rel="icon" type="image/png" href="images/icons/favicon.png"/> -->
       <!--===============================================================================================-->
       <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
       <!--===============================================================================================-->
@@ -346,9 +346,9 @@ $new_cars = searchStringArray($link,$searchString,null,$selectedMakers,$country)
                      OUR LISTED VEHICLES
                   </h3>
                </div>
-               <p style="margin-top: 20px;margin-bottom: 30px;">
-                  Vitae fugiat laboriosam officia perferendis provident aliquid voluptatibus dolorem, fugit ullam sit earum id eaque nisi hic? Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique ex unde!
-               </p>
+               <p style="margin-top: 20px;margin-bottom: 30px;">At OrientJapan, we pride ourselves on being the best sellers of high-quality vehicles in the area. But our commitment to excellence doesn't stop there, we're also dedicated to providing our customers with the best possible experience when it comes to selling their own vehicles. 
+
+So if you're looking to sell a vehicle, look no further than OrientJapan. With our commitment to excellence and dedication to customer service, we're the best choice for all your buying and selling needs. Contact us for more!</p>
             </div>
          </div>
       </section>

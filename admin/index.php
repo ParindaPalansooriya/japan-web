@@ -48,7 +48,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>Attendance_form</title>
+    <title>Admin Home</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
@@ -60,7 +60,7 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
+    <!-- <link rel="icon" type="image/png" href="../images/icons/favicon.png"/> -->
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->

@@ -121,7 +121,7 @@ function getData($key,$defualt){
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="images/logo.png" type="">
-    <title>Vehicle seller page</title>
+    <title>Vehicle seller</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
     <!-- font awesome style -->
@@ -421,9 +421,7 @@ function getData($key,$defualt){
                     WE ARE THE BEST SELLERS
                 </h3>
             </div>
-            <p style="margin-top: 20px;margin-bottom: 30px;">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud             </p>
+            <p style="margin-top: 20px;margin-bottom: 30px;">At OrientJapan, we pride ourselves on being the best sellers of high-quality vehicles in the area. But our commitment to excellence doesn't stop there, we're also dedicated to providing our customers with the best possible experience when it comes to selling their own vehicles. So if you're looking to sell a vehicle, look no further than OrientJapan. With our commitment to excellence and dedication to customer service, we're the best choice for all your buying and selling needs. Contact us for more!</p>
         </div>
     </div>
 </section>

@@ -32,7 +32,7 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/logo.png" type="">
-    <title>User_Selling_Requests</title>
+    <title>User Selling Requests</title>
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
     <!-- font awesome style -->
@@ -44,7 +44,7 @@ $sellingRequest = getAllUserBuyingCarsForAdminLists($link);
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
+    <!-- <link rel="icon" type="image/png" href="../images/icons/favicon.png"/> -->
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
     <!--===============================================================================================-->
