@@ -404,7 +404,7 @@ $sellingRequest = getAllCarsForAdminLists($link);
                         <th scope="col">Power / Chassis</th>
                         <th scope="col">Model Year<br>Running</th>
                         <th scope="col">Color / Color Code<br>Shift / Cooling</th>
-                        <th scope="col">Public<br>User Bid<br>Bougth</th>
+                        <th scope="col">Public<br>User Bid<br><?php $type==1?"Total":"" ?></th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
@@ -425,7 +425,7 @@ $sellingRequest = getAllCarsForAdminLists($link);
                             <?php echo $value->getTransmission_shift();?> / <?php echo $value->getCooling();?></td>
                             <td><?php echo $value->getPrice()->getPublic();?><br>
                             <?php echo $value->getPrice()->getPrice1();?><br>
-                            <?php echo $value->getPrice()->getBuying();?></td>
+                            <?php echo $type==1?$value->getPrice()->getSelling():"";?></td>
                             <td>
                                 <div Class="bttn Bu_one"><?php echo $value->getCurrent_action_text();?></div><br>
                                 <a href="vehicle_preview_full.php?id=<?php echo $value->getId();?>" target="_blank">

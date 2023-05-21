@@ -6,7 +6,7 @@ session_start();
 $id = $_SESSION['id'];
 $type = $_SESSION['type'];
 
-if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
     header("Location: login.php"); 
 }else{
     $_SESSION['timeout'] = time();
@@ -438,7 +438,7 @@ if(isset($queries) && !empty($queries)){
                         </div>
                         <div class="col-sm-6">
                             <div class="search-box">
-                                <input type="text" id="search" class="form-control" placeholder="Search by Chassis Or Name">
+                                <input type="text" id="search" class="form-control" placeholder="Search by Name or Contact">
                             </div>
                         </div>
                     </div>
@@ -674,16 +674,20 @@ $(document).ready(function(){
         var term = $(this).val().toLowerCase();
         $("table tbody tr").each(function(){
             $row = $(this);
-            var name = $row.find("td:nth-child(5)").text().toLowerCase();
-            console.log(name);
+            var name = $row.find("td:nth-child(1)").text().toLowerCase();
             if(name.search(term) < 0){                
                 $row.hide();
             } else{
                 $row.show();
             }
 
-            var code = $row.find("td:nth-child(1)").text().toLowerCase();
+            var code = $row.find("td:nth-child(6)").text().toLowerCase();
             if(code.search(term) >= 0){                
+                $row.show();
+            }
+
+            var code1 = $row.find("td:nth-child(7)").text().toLowerCase();
+            if(code1.search(term) >= 0){                
                 $row.show();
             }
         });

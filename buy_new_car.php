@@ -715,7 +715,7 @@ So if you're looking to sell a vehicle, look no further than OrientJapan. With o
                                                       <p class="card-text car_manufacturer float-start" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
                                                    </div>
                                                    <div class="col-7 text-right">
-                                                      <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?>¥</p>
+                                                      <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo number_format($value1->getPrice()); ?> ¥</p>
                                                    </div>
                                                 </div>
 

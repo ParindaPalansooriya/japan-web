@@ -807,7 +807,7 @@ class Cars{
      */ 
     public function getPrice()
     {
-        if(!isset($this->price)){
+        if(!isset($this->price) || empty($this->price)){
             return 0;
         }
         return $this->price;

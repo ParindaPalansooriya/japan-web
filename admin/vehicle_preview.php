@@ -496,7 +496,7 @@ print_r($_POST);
                                 <thead>
                                     <tr>
                                         <th scope="col" style="width:70%"><h4><?php echo $car->getTopic()??"..."; ?></h4></th>
-                                        <th scope="col"><h4>FOB <?php echo $car->getPrice(); ?>¥</h4></th>
+                                        <th scope="col"><h4>FOB <?php echo number_format($car->getPrice()); ?> ¥</h4></th>
                                     </tr>
                                 </thead>
                             </table>

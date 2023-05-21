@@ -1114,7 +1114,7 @@ function addVehicle($link,$carId,$filepath,$action,$ispublic){
                             </div>
                             <div class="form-group row">
                                 <label for="text" name="name" style="font-size:0.8em" class="col-sm-6 col-form-label">
-                                Rice With Tax
+                                Price With Tax
                                 </label>
                                 <div class="col-sm-6">
                                 <input  onchange="myFunction()" type="number" value= "<?php echo $car !== null && $car->getDeductions() !== null ? $car->getDeductions()->getWith_tax():"" ;?>" name="with_tax" style="font-size:0.8em" class="form-control" id="with_tax" placeholder="john." required>
@@ -1205,11 +1205,11 @@ function addVehicle($link,$carId,$filepath,$action,$ispublic){
                             </div>
                                 <?php } ?>
                             <div class="form-group row">
-                                <label for="text" name="name" style="font-size:0.9em; font-weight: bold;" class="col-sm-6 col-form-label">
+                                <label for="text" name="name" style="font-size:0.9em; font-weight: bold; <?php echo $type==1?'':'display: none;'; ?>" class="col-sm-6 col-form-label">
                                 Total Cost
                                 </label>
                                 <div class="col-sm-6">
-                                <input type="number" name="sell" value= "<?php echo $car !== null && $car->getPriceObject() !== null ? $car->getPriceObject()->getSelling():"" ;?>" style="font-size:0.9em; font-weight: bold;" class="form-control" id="sell" placeholder="john" required <?php if($type!=1){echo 'readonly';}?>>
+                                <input type="<?php echo $type==1?'number':'hidden'; ?>" name="sell" value= "<?php echo $car !== null && $car->getPriceObject() !== null ? $car->getPriceObject()->getSelling():"" ;?>" style="font-size:0.9em; font-weight: bold; " class="form-control" id="sell" placeholder="john" required <?php if($type!=1){echo 'readonly';}?>>
                                 </div>
                             </div>
                             <div class="form-group row">

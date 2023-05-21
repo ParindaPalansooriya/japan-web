@@ -18,6 +18,11 @@ require_once('../php/config.php');
 require_once('../php/car_dao.php');
 
 $summery = [];
+
+if(isset($_POST['delete-car']) && isset($_POST['carId']) && !empty($_POST['carId'])){
+    moveCarBackToStore($link,$_POST['carId']);
+}
+
 if(isset($_POST['all'])){
     $day1 = null;
     $day2 = null;
@@ -522,11 +527,10 @@ if(isset($_POST['all'])){
                     <thead>
                     <tr>
                         <th scope="col">Code</th>
-                        <th scope="col">Date</th>
+                        <th scope="col">Sold Date</th>
                         <th scope="col">Store</th>
                         <th scope="col">Supplier</th>
                         <th scope="col">Perfecture</th>
-                        <th scope="col">Bank</th>
                         <th scope="col">Name</th>
                         <th scope="col">Maker</th>
                         <th scope="col">Model Year</th>
@@ -534,6 +538,7 @@ if(isset($_POST['all'])){
                         <?php if($type==1){
                             ?>
                         <th scope="col">Bank</th>
+                        <th scope="col">Bank Date</th>
                         <th scope="col">Bid</th>
                         <th scope="col">Buying</th>
                         <th scope="col">R TAX</th>
@@ -544,10 +549,10 @@ if(isset($_POST['all'])){
                         <th scope="col">Insurance</th>
                         <th scope="col">Repair</th>
                         <th scope="col">Other</th>
-                        <th scope="col">Selling</th>
+                        <th scope="col">Total Cost</th>
                             <?php
                         } ?>
-                        <th scope="col">Public</th>
+                        <th scope="col">Sold Price</th>
                         <!-- <th scope="col"></th> -->
                     </tr>
                     </thead>
@@ -562,7 +567,6 @@ if(isset($_POST['all'])){
                             <td><?php echo $value->getCurrent_action_text()??"--"; ?></td>
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getSupplier()??"--":"--"; ?></td>
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture()??"--":"--"; ?></td>
-                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank()??"--":"--"; ?></td>
                             <td><?php echo $value->getName()??"--"; ?></td>
                             <td><?php echo $value->getMaker()??"--"; ?></td>
                             <td><?php echo $value->getModel_year()??"--"; ?></td>
@@ -570,6 +574,7 @@ if(isset($_POST['all'])){
                                 <?php if($type==1){
                                     ?>
                                         <td><?php echo $value->getAdditional()!==null?($value->getAdditional()->getBank()??"--"):"--"; ?></td>
+                                        <td><?php echo $value->getBank_date()??"--"; ?></td>
                                         <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPrice1()??"--":"--"; ?></td>
                                         <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getBuying()??"--":"--"; ?></td>
                                         <td><?php echo $value->getDeductions()!==null?$value->getDeductions()->getRtax()??"--":"--"; ?></td>
@@ -583,13 +588,11 @@ if(isset($_POST['all'])){
                                         <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getSelling()??"--":"--"; ?></td>
                                     <?php
                                 } ?>
-                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--"; ?></td>
-                            <!-- <td><form class="form-inline" action="add_vehicle.php" method="post">
-                                <div class="form-group">
-                                    <input type="hidden" id="carId" name="carId" value="<?php echo $value->getId();?>">
-                                    <button class="bttn Bu_one" class="form-control" name="download" >Edit</button>
-                                </div>
-                            </form></td> -->
+                            <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPrice2()??"--":"--"; ?></td>
+                            <td>
+                                <a>
+                                <button class="bttn Bu_one" style="margin-top: 5px;" onclick="viewDelete(<?php echo $value->getId();?>)" id="delete" >RESTOCK</button>
+                                </a></td>
                         </tr>
                     <?php
                         }
@@ -609,7 +612,66 @@ if(isset($_POST['all'])){
 </section>
 <!-- End Attendance list section -->
 
+<!-- Trigger/Open The Modal -->
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Please conform to Re-Stock</p>
+        <div class="container-width">
+        <div class="box">
+                        <form id="formAwesome" enctype="multipart/form-data" method="post">
+                            <div class="modal-body">
+                            <div class="gjs-cell">
+                                <div class="heading_container heading_center">
+                                    <input type="hidden" id="carId" name="carId">
+                                    <button id="Bttn" Class="swal-button" name="delete-car">RESTOCK</button>
+                                </div>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+    </div>
+    </div>
+
 </div>
+
+</div>
+<!-- Popup box-->
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    // var delete1 = document.getElementById("delete");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    // delete1.onclick = function() {
+    //     modal.style.display = "block";
+    // }
+
+    function viewDelete(id){
+        modal.style.display = "block";
+        document.getElementById("carId").value = id;
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 <!-- jQery -->
 <script src="../js/jquery-3.4.1.min.js"></script>
@@ -939,16 +1001,28 @@ $(document).ready(function(){
         document.getElementById('search').value = ''
         $("table tbody tr").each(function(){
             $row = $(this);
-            var name = $row.find("td:nth-child(3)").text().toLowerCase();
-            console.log(name);
             if(array.length === 0){
                 $row.show();
             }else{
-                const index = array.indexOf(name);
-                if(index < 0){                
-                    $row.hide();
-                } else{
-                    $row.show();
+                const exportIndex = array.indexOf("export");
+                var name = $row.find("td:nth-child(3)").text().toLowerCase();
+                console.log(name);
+                const index = array.indexOf(name.replace(" - export", ""));
+
+                if(exportIndex>=0 ){
+                    if(array.length==1 && name.endsWith("export")){
+                        $row.show();
+                    }else if(index >= 0 && name.endsWith("export")){
+                        $row.show();
+                    }else{
+                        $row.hide();
+                    }
+                }else{
+                    if(index >= 0){
+                        $row.show();
+                    }else{
+                        $row.hide();
+                    }
                 }
             }
         });

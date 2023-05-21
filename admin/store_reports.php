@@ -14,6 +14,16 @@ if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($
 $today = date("Y-m-d");
 require_once('../php/config.php');
 require_once('../php/car_dao.php');
+require_once('../php/car_price_dao.php');
+
+if(isset($_POST['Action'])){
+    if($_POST['Action']==0){
+        setCarSoledPrice($link,$_POST['carId']??0,$_POST['price']??0);
+        moveCarToSoledList($link,$_POST['carId']??0,-2,$_POST['date']);
+        echo '<script>alert("Successfully submited")</script>';
+    }
+}
+
 
 $summery = getAllCarsForReport($link);
 
@@ -508,7 +518,6 @@ $summery = getAllCarsForReport($link);
                         <th scope="col">country</th>
                         <th scope="col">Supplier</th>
                         <th scope="col">Perfecture</th>
-                        <th scope="col">Bank</th>
                         <th scope="col">Name</th>
                         <th scope="col">Maker</th>
                         <th scope="col">Model Year</th>
@@ -545,7 +554,6 @@ $summery = getAllCarsForReport($link);
                             <td><?php echo $value->getCountry()??"--"; ?></td>
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getSupplier()??"--":"--"; ?></td>
                             <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getPerfecture()??"--":"--"; ?></td>
-                            <td><?php echo $value->getAdditional()!==null?$value->getAdditional()->getBank()??"--":"--"; ?></td>
                             <td><?php echo $value->getName()??"--"; ?></td>
                             <td><?php echo $value->getMaker()??"--"; ?></td>
                             <td><?php echo $value->getModel_year()??"--"; ?></td>
@@ -569,13 +577,14 @@ $summery = getAllCarsForReport($link);
                                 } ?>
                             <td><?php echo $value->getPriceObject()!==null?$value->getPriceObject()->getPublic()??"--":"--"; ?></td>
                             <td>
-                                <form class="form-inline" action="add_vehicle.php" method="post"  target="_blank">
-                                <div class="form-group">
+                                <form action="add_vehicle.php" method="post"  target="_blank">
                                     <input type="hidden" id="carId" name="carId" value="<?php echo $value->getId();?>">
                                     <button class="bttn Bu_one" class="form-control" name="download" >Edit</button>
-                                </div>
-                            </form>
-                        </td>
+                                </form>
+                            </td>
+                            <td>
+                                <button class="bttn Bu_three" onclick="viewDelete(<?php echo $value->getId()??0;?>)" id="sold" >SOLD</button>
+                            </td>
                         </tr>
                     <?php
                         }
@@ -586,8 +595,61 @@ $summery = getAllCarsForReport($link);
         </div>
     </div>
 </section>
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="container-width">
+        <div class="box">
+            <form enctype="multipart/form-data" method="post">
+            <div class="heading_container heading_center" >
+                <h4 id="title" style="padding-bottom: 15px; margin-top: 10px;">Please Conform</h4>
+                <input type="hidden" id="carId2" name="carId">
+                <input class="bttn Bu_one" id="date" name="date" style="margin-bottom: 10px;" type="date" value="<?php echo date("Y-m-d");?>">
+                <input class="bttn Bu_one" id="price" name="price" style="margin-bottom: 10px;" type="number" required>
+                <button id="Bttn21" Class="swal-button" name="Action" value="0">Soled</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
 
 </div>
+
+</div>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    // var delete1 = document.getElementById("delete");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    // delete1.onclick = function() {
+    //     modal.style.display = "block";
+    // }
+
+    function viewDelete(id){
+        modal.style.display = "block";
+        alert(id);
+        document.getElementById("carId2").value = id;
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 <!-- jQery -->
 <script src="../js/jquery-3.4.1.min.js"></script>
@@ -713,7 +775,7 @@ $(document).ready(function(){
         term = $(this).val().toLowerCase();
         $("table tbody tr").each(function(){
             $row = $(this);
-            var name = $row.find("td:nth-child(10)").text().toLowerCase();
+            var name = $row.find("td:nth-child(9)").text().toLowerCase();
             var block = $row.find("td:nth-child(1)").text().toLowerCase();
             const index = array.indexOf(block);
             if(name.search(term) < 0){                
@@ -918,16 +980,28 @@ $(document).ready(function(){
         document.getElementById('search').value = ''
         $("table tbody tr").each(function(){
             $row = $(this);
-            var name = $row.find("td:nth-child(2)").text().toLowerCase();
-            console.log(name);
             if(array.length === 0){
                 $row.show();
             }else{
-                const index = array.indexOf(name);
-                if(index < 0){                
-                    $row.hide();
-                } else{
-                    $row.show();
+                const exportIndex = array.indexOf("export");
+                var name = $row.find("td:nth-child(2)").text().toLowerCase();
+                console.log(name);
+                const index = array.indexOf(name.replace(" - export", ""));
+
+                if(exportIndex>=0 ){
+                    if(array.length==1 && name.endsWith("export")){
+                        $row.show();
+                    }else if(index >= 0 && name.endsWith("export")){
+                        $row.show();
+                    }else{
+                        $row.hide();
+                    }
+                }else{
+                    if(index >= 0){
+                        $row.show();
+                    }else{
+                        $row.hide();
+                    }
                 }
             }
         });

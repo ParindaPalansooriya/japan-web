@@ -52,6 +52,7 @@ if(isset($carId)){
                 }
             }
         }else if($_POST['Action']==0){
+            setCarSoledPrice($link,$carId,$_POST['price']??0);
             moveCarToSoledList($link,$carId,-2,$_POST['date']);
             echo '<script>alert("Successfully submited")</script>';
             echo "<script>window.close();</script>";
@@ -650,7 +651,7 @@ if(isset($carId)){
                                         <button id="Bttn12" Class="bttn2" name="Action" value="10">Other Option</button>
                                 </th>
                                 <th scope="col">
-                                        <button id="Bttn9" Class="bttn2" name="Action" value="-1">Export</button>
+                                        <button id="Bttn9" Class="bttn2" name="Action" value="-1"><?php echo $car->getIs_public()==1?"Remove Export":"Export" ?></button>
                                 </th>
                                 <th scope="col">
                                         <button id="Bttn1" Class="swal-button" name="Action" value="0">Soled</button>
@@ -675,6 +676,7 @@ if(isset($carId)){
             <div class="heading_container heading_center" >
                 <h4 id="title" style="padding-bottom: 15px; margin-top: 10px;">Please Conform</h4>
                 <input class="bttn Bu_one" id="date" name="date" style="margin-bottom: 10px;" type="date" value="<?php echo date("Y-m-d");?>">
+                <input class="bttn Bu_one" id="price" name="price" style="margin-bottom: 10px;" type="number" required>
                 <button id="Bttn21" Class="swal-button" name="Action" value="0">Soled</button>
                 <button id="Bttn22" Class="bttn2" name="Action" value="1">1 Kojo</button>
                 <button id="Bttn23" Class="bttn2" name="Action" value="2">1Sale</button>
@@ -683,7 +685,7 @@ if(isset($carId)){
                 <button id="Bttn26" Class="bttn2" name="Action" value="5">3 Kojo</button>
                 <button id="Bttn27" Class="bttn2" name="Action" value="6">3Sale</button>
                 <button id="Bttn28" Class="bttn2" name="Action" value="7">Miho Kojo</button>
-                <button id="Bttn29" Class="bttn2" name="Action" value="-1">Export</button>
+                <button id="Bttn29" Class="bttn2" name="Action" value="-1"><?php echo $car->getIs_public()==1?"Remove Export":"Export" ?></button>
                 <button id="Bttn210" Class="bttn2" name="Action" value="8">USS</button>
                 <button id="Bttn211" Class="bttn2" name="Action" value="9">CAA</button>
                 <button id="Bttn212" Class="bttn2" name="Action" value="10">Other Option</button>
@@ -735,6 +737,7 @@ if(isset($carId)){
 
     var title = document.getElementById("title");
     var date = document.getElementById("date");
+    var price = document.getElementById("price");
 
     btn1.onclick = function() {
         modal.style.display = "block";
@@ -752,6 +755,8 @@ if(isset($carId)){
         btn213.style.display = "none";
         btn21.style.display = "block";
         date.style.display = "block";
+        price.style.display = "block";
+        price.setAttribute("required", ""); 
         title.innerHTML = "Please conform to add to Soled this Item and pick your soled date";
     }
 
@@ -771,6 +776,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to 1 Kojo";
     }
 
@@ -790,6 +797,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to 1 Sale";
     }
 
@@ -809,6 +818,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to 2 Kojo";
     }
 
@@ -828,6 +839,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to 2 Sale";
     }
 
@@ -847,6 +860,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to 3 Kojo";
     }
 
@@ -866,6 +881,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to 3 Sale";
     }
 
@@ -885,6 +902,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to Miho Kojo";
     }
 
@@ -904,7 +923,9 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
-        title.innerHTML = "Please conform to Add this Item to Export";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
+        title.innerHTML = "Please conform to Change Export Status";
     }
 
     btn10.onclick = function() {
@@ -923,6 +944,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to USS";
     }
 
@@ -942,6 +965,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to CAA";
     }
 
@@ -961,6 +986,8 @@ if(isset($carId)){
         btn212.style.display = "block";
         btn213.style.display = "none";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to Other Option";
     }
 
@@ -980,6 +1007,8 @@ if(isset($carId)){
         btn212.style.display = "none";
         btn213.style.display = "block";
         date.style.display = "none";
+        price.style.display = "none";
+        price.removeAttribute("required"); 
         title.innerHTML = "Please conform to Add this Item to Parts";
     }
 

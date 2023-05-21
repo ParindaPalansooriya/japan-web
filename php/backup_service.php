@@ -1,6 +1,6 @@
 <?php
 
-function backup($conn){
+function backup($conn,$folder){
 
 $conn->set_charset("utf8");
 
@@ -56,7 +56,12 @@ foreach ($tables as $table) {
 if(!empty($sqlScript))
 {
     // Save the SQL script to a backup file
-    $backup_file_name = 'backups/backup_' . time() . '.sql';
+    $backup_file_name = $folder.'/backup_' . date("Y")."-".date("W") . '.sql';
+
+    if (file_exists($backup_file_name)) {
+        return;
+    }
+
     $fileHandler = fopen($backup_file_name, 'w+');
     $number_of_lines = fwrite($fileHandler, $sqlScript);
     fclose($fileHandler); 

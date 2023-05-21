@@ -27,6 +27,9 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
     require_once "../php/contact_us_dao.php";
     require_once "../php/customer_dao.php";
 
+    require_once "../php/backup_service.php";
+    backup($link,"../backups");
+    
     $sellingCount = sizeof(getAllUserSellingCarsForAdminLists($link));
     $buyingCount = sizeof(getAllUserBuyingCarsForAdminLists($link));
     $contactCount = sizeof(getAllContactUs($link,false));
@@ -506,24 +509,24 @@ if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30))
                                 </td>
                             </tr>
                         </tbody>
-                        <tbody style="<?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
+                        <tbody>
                             <tr>
                                 <td style="padding-top: 100px;">
                                     <a href="insert_customer.php" target="_blank">
                                         <button  id="butt1" Class="butt2" name="Action">Add Business Customer</button>
                                     </a>
                                 </td>
-                                <td style="padding-top: 100px;">
+                                <td style="padding-top: 100px;" >
                                     <a href="customer_list.php" target="_blank">
                                         <button  id="butt2" Class="butt3" name="Action">Business Custom List</button>
                                     </a>
                                 </td>
-                                <td style="padding-top: 100px;">
+                                <td style="padding-top: 100px; <?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                     <a href="user_registor.php" target="_blank">
                                         <button  id="butt5" Class="butt2" name="Action">Add Controll User</button>
                                     </a>
                                 </td>
-                                <td style="padding-top: 100px;">
+                                <td style="padding-top: 100px; <?php if(!isset($type) || $type>1){echo 'display: none';} ?>">
                                     <a href="users_list.php" target="_blank">
                                         <button  id="butt5" Class="butt3" name="Action">User List</button>
                                     </a>

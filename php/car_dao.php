@@ -244,9 +244,96 @@ function moveCarToSoledList($link,$carId,$inquaryId,$date)
             )";
 
             $count = mysqli_query($link, $sql);
-            // print_r($count);
             if($count>0){
                 $sql3 = "DELETE FROM cars where id = $carId";
+                mysqli_query($link, $sql3);
+            }
+        }
+        mysqli_free_result($result);
+    }
+}
+
+function moveCarBackToStore($link,$carId)
+{
+    require_once "car_module.php";
+    $sql2 = "SELECT * FROM soled_cars where id = $carId;";
+
+    if($result = mysqli_query($link, $sql2)){
+        while($row = mysqli_fetch_array($result)){
+            $car = new Cars(
+                $row['maker_id'],
+                $row['model_id'],
+                $row['interior_color_id'],
+                $row['exterior_color_id'],
+                $row['current_action_id'],
+                $row['body_style_id'],
+                $row['passengers'],
+                $row['doors'],
+                $row['name'],
+                $row['grade'],
+                $row['power'],
+                $row['model_year'],
+                $row['evaluation'],
+                $row['running'],
+                $row['cooling'],
+                $row['note'],
+                $row['fuel'],
+                $row['chassis'],
+                $row['dimensions_L'],
+                $row['dimensions_W'],
+                $row['dimensions_H'],
+                $row['transmission_shift'],
+                $row['id'],
+                $row['is_public'],
+                $row['is_used'],
+                $row['is_two_weel'],
+                $row['is_steering_right'],
+                $row['interior_color'],
+                $row['exterior_color'],
+                $row['bank_date'],
+                $row['country'],
+                $row['topic'],
+                $row['options']
+            );
+            $sql = "INSERT INTO cars (id,maker_id, model_id, interior_color_id, exterior_color_id, current_action_id, body_style_id, 
+            passengers, doors, name, grade, power, model_year, evaluation, running, cooling, note, fuel, chassis, dimensions_L, dimensions_W, dimensions_H,
+            transmission_shift, is_used, is_two_weel, is_steering_right,is_public,interior_color,exterior_color,options,topic,country,bank_date) VALUES ({$car->getId()},{$car->getMaker_id()},
+            {$car->getModel_id()},
+            {$car->getInterior_color_id()},
+            {$car->getExterior_color_id()},
+            {$car->getCurrent_action_id()},
+            {$car->getBody_style_id()},
+            '{$car->getPassengers()}',
+            {$car->getDoors()},
+            '{$car->getName()}',
+            '{$car->getGrade()}',
+            '{$car->getPower()}',
+            '{$car->getModel_year()}',
+            '{$car->getEvaluation()}',
+            '{$car->getRunning()}',
+            '{$car->getCooling()}',
+            '{$car->getNote()}',
+            '{$car->getFuel()}',
+            '{$car->getChassis()}',
+            '{$car->getDimensions_L()}',
+            '{$car->getDimensions_W()}',
+            '{$car->getDimensions_H()}',
+            '{$car->getTransmission_shift()}',
+            {$car->getIs_used()},
+            {$car->getIs_two_weel()},
+            {$car->getIs_steering_right()},
+            {$car->getIs_public()},
+            '{$car->getIn_color()}',
+            '{$car->getEx_color()}',
+            '{$car->getOptions()}',
+            '{$car->getTopic()}',
+            '{$car->getCountry()}',
+            '{$car->getBank_date()}'
+            )";
+
+            $count = mysqli_query($link, $sql);
+            if($count>0){
+                $sql3 = "DELETE FROM soled_cars where id = $carId";
                 mysqli_query($link, $sql3);
             }
         }

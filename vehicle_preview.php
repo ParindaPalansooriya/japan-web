@@ -114,6 +114,12 @@ if(isset($carId)){
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!--===============================================================================================-->
+
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="css/style_menu.css">
 </head>
 
 <style>
@@ -403,11 +409,100 @@ if(isset($carId)){
         object-fit: contain;
     }
     /* End Two Equal Columns */
+    .card-price {
+	display: inline-block;
+  
+  width: auto;
+	height: 38px;
+	min-width: 200px;
+	background-color: red;
+	-webkit-border-radius: 3px 4px 4px 3px;
+	-moz-border-radius: 3px 4px 4px 3px;
+	border-radius: 3px 4px 4px 3px;
+	
+	border-left: 1px solid red;
+
+	/* This makes room for the triangle */
+	margin-left: 19px;
+	
+	position: relative;
+	
+	color: white;
+	font-weight: 600;
+	font-size: 25px;
+	line-height: 38px;
+
+	padding: 0 10px 0 10px;
+}
+
+/* Makes the triangle */
+.card-price:before {
+	content: "";
+	position: absolute;
+	display: block;
+	left: -19px;
+	width: 0;
+	height: 0;
+	border-top: 19px solid transparent;
+	border-bottom: 19px solid transparent;
+	border-right: 19px solid red;
+}
+
+/* Makes the circle */
+.card-price:after {
+	content: "";
+	background-color: white;
+	border-radius: 50%;
+	width: 4px;
+	height: 4px;
+	display: block;
+	position: absolute;
+	left: -9px;
+	top: 17px;
+}
+.neato-header{
+  color: black;
+  min-width: 50%;
+  padding: 30px;
+  text-align: center;
+  position: absolute;
+  /* left: 50%; */
+  /* top: 50%; */
+
+  /* border: 3px solid white; */
+  border-top: none;
+} 
+
 
 </style>
 
 <body>
-    <body class="">
+
+
+<section style="margin: 5px;">
+			<nav class="navbar navbar-expand-lg ftco_navbar ftco-navbar-light"  id="ftco-navbar">
+		    <div class="container">
+		    	<a class="navbar-brand" href="index.php"><img src="images/logo.png" style="object-fit: contain; margin-right: 20px;" width="80px" height="80px"> Oreant Japan</a>
+		    	<div class="social-media order-lg-last">
+		    		<p class="mb-0 d-flex">
+		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
+		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
+		    			<a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+		    		</p>
+	        </div>
+		      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+		        <span class="fa fa-bars"></span> Menu
+		      </button>
+		      <div class="collapse navbar-collapse" id="ftco-nav">
+		        <ul class="navbar-nav ml-auto mr-md-3">
+		        	<li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
+		        	<li class="nav-item"><a href="buy_new_car.php" class="nav-link">Buy A Car</a></li>
+		          <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
+		        </ul>
+		      </div>
+		    </div>
+		  </nav>
+	</section>
     <?php 
     if(isset($car)){
     ?>
@@ -464,61 +559,114 @@ if(isset($carId)){
                                 <thead>
                                     <tr>
                                         <th scope="col" style="width:70%"><h4><?php echo $car->getTopic()??"..."; ?></h4></th>
-                                        <th scope="col"><h4>FOB <?php echo $car->getPrice(); ?>¥</h4></th>
+                                        <th scope="col"><p class="card-price">FOB <?php echo number_format($car->getPrice()) ?> ¥</p></th>
                                     </tr>
                                 </thead>
                             </table></div>
                             <div class="row">
                                 <div  class="col-sm-6" style="background-color:#ffffff;">
-                                    <p style="padding-bottom: 5px; margin-top: 10px;">Code : <?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></p>
-                                    <p style="padding-bottom: 5px;">Name : <?php echo $car->getName(); ?></p>
-                                    <p style="padding-bottom: 5px;">Make : <?php echo $car->getMaker(); ?></p>
-                                    <p style="padding-bottom: 5px;">Body Style : <?php echo $car->getStyle(); ?></p>
-                                    <p style="padding-bottom: 5px;">Interior Color : <?php echo $car->getIn_color(); ?></p>
-                                    <p style="padding-bottom: 5px;">Exterior Color : <?php echo $car->getEx_color(); ?></p>
-                                    <p style="padding-bottom: 5px;">Transmission : <?php echo $car->getTransmission_shift(); ?></p>
-                                    <p style="padding-bottom: 5px;">Passengers : <?php echo $car->getPassengers(); ?></p>
-                                    <p style="padding-bottom: 5px;">Doors : <?php echo $car->getDoors(); ?></p>
-                                    <p style="padding-bottom: 5px;">Grade : <?php echo $car->getGrade(); ?></p>
-                                    <p style="padding-bottom: 5px;">Evaluation : <?php echo $car->getEvaluation(); ?></p>
-                                    <p style="padding-bottom: 5px;">Running : <?php echo $car->getRunning(); ?></p>
+                                    <table style="width:100%">
+                                        <tr style="margin-top: 10px;"><th>Code : </th><td><?php echo sprintf(" (VEH_%05d)", $car->getId()); ?></td></tr>
+                                        <tr><th>Name : </th><td><?php echo $car->getName(); ?></td></tr>
+                                        <tr><th>Make : </th><td><?php echo $car->getMaker(); ?></td></tr>
+                                        <tr><th>Body Style : </th><td><?php echo $car->getStyle(); ?></td></tr>
+                                        <tr><th>Interior Color : </th><td><?php echo $car->getIn_color(); ?></td></tr>
+                                        <tr><th>Exterior Color : </th><td><?php echo $car->getEx_color(); ?></td></tr>
+                                        <tr><th>Transmission : </th><td><?php echo $car->getTransmission_shift(); ?></td></tr>
+                                        <tr><th>Passengers : </th><td><?php echo $car->getPassengers(); ?></td></tr>
+                                        <tr><th>Doors : </th><td><?php echo $car->getDoors(); ?></td></tr>
+                                        <tr><th>Grade : </th><td><?php echo $car->getGrade(); ?></td></tr>
+                                        <tr><th>Evaluation : </th><td><?php echo $car->getEvaluation(); ?></td></tr>
+                                        <tr><th>Running : </th><td><?php echo $car->getRunning(); ?></td></tr>
+                                    </table>
                                     </br>
                                 </div>
                                 <div class="col-sm-6" style="background-color:#ffffff;">
-                                    <p style="padding-bottom: 5px; margin-top: 10px;">Fuel : <?php echo $car->getFuel(); ?></p>
-                                    <p style="padding-bottom: 5px;">Year : <?php echo $car->getModel_year(); ?></p>
-                                    <p style="padding-bottom: 5px;">Country : <?php echo $car->getCountry(); ?></p>
-                                    <p style="padding-bottom: 5px;">Chassis : <?php echo $car->getChassis(); ?></p>
-                                    <p style="padding-bottom: 5px;">Cooling : <?php echo $car->getCooling(); ?></p>
-                                    <p style="padding-bottom: 5px;">Lenght : <?php echo $car->getDimensions_L(); ?></p>
-                                    <p style="padding-bottom: 5px;">Width : <?php echo $car->getDimensions_W(); ?></p>
-                                    <p style="padding-bottom: 5px;">Hight : <?php echo $car->getDimensions_H(); ?></p>
-                                    <p style="padding-bottom: 5px;">Condition : <?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></p>
-                                    <p style="padding-bottom: 5px;">Wheel : <?php echo $car->getIs_two_weel()==0?"4 Wheel":"2 Wheel"; ?></p>
-                                    <p style="padding-bottom: 5px;">Steering : <?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></p>
+                                    <table style="width:100%">
+                                        <tr style="margin-top: 10px;"><th>Fuel : </th><td><?php echo $car->getFuel(); ?></td></tr>
+                                        <tr><th>Year : </th><td><?php echo $car->getModel_year(); ?></td></tr>
+                                        <tr><th>Country : </th><td><?php echo $car->getCountry(); ?></td></tr>
+                                        <tr><th>Chassis : </th><td><?php echo $car->getChassis(); ?></td></tr>
+                                        <tr><th>Cooling : </th><td><?php echo $car->getCooling(); ?></td></tr>
+                                        <tr><th>Lenght : </th><td><?php echo $car->getDimensions_L(); ?></td></tr>
+                                        <tr><th>Width : </th><td><?php echo $car->getDimensions_W(); ?></td></tr>
+                                        <tr><th>Hight : </th><td><?php echo $car->getDimensions_H(); ?></td></tr>
+                                        <tr><th>Condition : </th><td><?php echo $car->getIs_used()==2?"Accident Repair":($car->getIs_used()==0?"New":"Used"); ?></td></tr>
+                                        <tr><th>Wheel : </th><td><?php echo $car->getIs_two_weel()==0?"4 Wheel":"2 Wheel"; ?></td></tr>
+                                        <tr><th>Steering : </th><td><?php echo $car->getIs_steering_right()==0?"Left":"Right"; ?></td></tr>
+                                    </table>
                                     </br>
                                 </div>
                             </div>
                                 <p style="padding-bottom: 15px; font-weight: bold;">Options : <?php echo $car->getOptions(); ?></p>
-                            <?php if( null !== $car->getNote() && !empty($car->getNote())){?>
-                                <p style="padding-bottom: 15px; margin-top: 10px;">note : <?php echo $car->getNote(); ?></p>
-                            <?php } ?>
                         <div class="gjs-cell">
                             <div class="heading_container heading_center">
-                                <button id="Bttn" Class="swal-button" name="Action">Action</button>
+                                <button id="Bttn" Class="swal-button" name="Action">Buy This</button>
                             </div>
                         </div>
                         </div>
                     </div>
                 </div>
+                <div class="shadow" style="margin-top: 20px;">
+                <div style="padding-top: 30px;">
+					<div class="flex-w w-full p-b-42">
+						<span class="fs-18 cl5 txt-center size-211">
+							<span class="lnr lnr-map-marker"></span>
+						</span>
+
+						<div class="size-212 p-t-2">
+							<span class="mtext-110 cl2">
+								Address
+							</span>
+
+							<p class="stext-115 cl6 size-213 p-t-18">
+								Car Store Center, 6-Chome-14-3 Ginza, Chuo City, Tokyo, Japan
+							</p>
+						</div>
+					</div>
+
+					<div class="flex-w w-full p-b-42">
+						<span class="fs-18 cl5 txt-center size-211">
+							<span class="lnr lnr-phone-handset"></span>
+						</span>
+
+						<div class="size-212 p-t-2">
+							<span class="mtext-110 cl2">
+								Lets Talk
+							</span>
+
+							<p class="stext-115 cl1 size-213 p-t-18">
+								+81 012 3456 7890
+							</p>
+						</div>
+					</div>
+
+					<div class="flex-w w-full p-b-42">
+						<span class="fs-18 cl5 txt-center size-211">
+							<span class="lnr lnr-envelope"></span>
+						</span>
+
+						<div class="size-212 p-t-2">
+							<span class="mtext-110 cl2">
+								Custom Support
+							</span>
+
+							<p class="stext-115 cl6 size-213 p-t-18">
+								contactus@gmail.com
+							</p>
+  
+						</div>
+
+
+					</div>
+				</div></div>
             </div>
+            
         </div>
     </div>
     <?php }?>
 
-    
-
-<div class="heading_container heading_center"  style="margin-top: 50px; margin-bottom: 80px; padding-left: 100px; padding-right: 100px;">
+    <div class="heading_container heading_center"  style="margin-top: 50px; margin-bottom: 80px; padding-left: 100px; padding-right: 100px;">
                   <div class="col-center">
                      <div class="row">
                         <div class="col">
@@ -592,8 +740,7 @@ if(isset($carId)){
          </div>
 
 
-
-</body>
+<!-- </body> -->
 <!-- end box with filter section -->
 
 
@@ -641,7 +788,7 @@ if(isset($carId)){
                             </div>
                             <div class="gjs-cell">
                                 <div class="heading_container heading_center">
-                                    <button id="Bttn" Class="swal-button" name="submit">Action</button>
+                                    <button id="Bttn" Class="swal-button" name="submit">Buy This</button>
                                 </div>
                             </div>
                             </div>
@@ -797,6 +944,11 @@ if(isset($carId)){
 <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js'></script>
 <script  src="./js/script.js"></script>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main_menu.js"></script>
 
 </body>
 </html>

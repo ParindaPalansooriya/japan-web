@@ -7,7 +7,7 @@ session_start();
 $id = $_SESSION['id'];
 $type = $_SESSION['type'];
 
-if(!isset($id) || !isset($type) || $type>1 || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
+if(!isset($id) || !isset($_SESSION['timeout']) || ($_SESSION['timeout']+(60*30)) < time()){
     header("Location: login.php"); 
 }else{
     $_SESSION['timeout'] = time();
@@ -313,7 +313,7 @@ if(isset($_POST['Submit']))
                                     Customer Name
                                     </label>
                                     <div class="col-sm-6">
-                                    <input type="text" value='<?php echo $selectedCustomer!==null?($selectedCustomer->getName()):""; ?>' name="c_name" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
+                                    <input type="text" value='<?php echo $selectedCustomer!==null?($selectedCustomer->getName()):($_REQUEST['c_name']!==null?$_REQUEST['c_name']:""); ?>' name="c_name" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -352,7 +352,7 @@ if(isset($_POST['Submit']))
                                     Contact Email Address
                                     </label>
                                     <div class="col-sm-6">
-                                    <input type="text" value='<?php echo $selectedCustomer!==null?($selectedCustomer->getContact_num2()):""; ?>' name="c_2" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com" required>
+                                    <input type="text" value='<?php echo $selectedCustomer!==null?($selectedCustomer->getContact_num2()):""; ?>' name="c_2" style="font-size:0.8em" class="form-control" id="sale" placeholder="john.doe@email.com">
                                     </div>
                                 </div>
                                 <div class="form-group row">

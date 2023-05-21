@@ -6,7 +6,7 @@ $new_cars = getAllFirld10Cars($link);
 $recoment_foryou_cars = getAllFirld10Cars($link);
 
 require_once "./php/backup_service.php";
-// backup($link);
+    backup($link,"./backups");
 
 ?>
 
@@ -340,6 +340,197 @@ require_once "./php/backup_service.php";
 	}
 
 }
+    .card-price {
+	display: inline-block;
+  
+  width: auto;
+	height: 30px;
+	
+	background-color: red;
+	-webkit-border-radius: 3px 4px 4px 3px;
+	-moz-border-radius: 3px 4px 4px 3px;
+	border-radius: 3px 4px 4px 3px;
+	
+	border-left: 1px solid red;
+
+	/* This makes room for the triangle */
+	margin-left: 19px;
+	
+	position: relative;
+	
+	color: white;
+	font-weight: 600;
+	font-size: 20px;
+	line-height: 30px;
+
+	padding: 0 10px 0 10px;
+}
+
+/* Makes the triangle */
+.card-price:before {
+	content: "";
+	position: absolute;
+	display: block;
+	left: -15px;
+	width: 0;
+	height: 0;
+	border-top: 15px solid transparent;
+	border-bottom: 15px solid transparent;
+	border-right: 15px solid red;
+}
+
+/* Makes the circle */
+.card-price:after {
+	content: "";
+	background-color: white;
+	border-radius: 50%;
+	width: 4px;
+	height: 4px;
+	display: block;
+	position: absolute;
+	left: -6px;
+	top: 14px;
+}
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+*
+{
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body
+{
+    font-family: 'Roboto', sans-serif;
+}
+a
+{
+    text-decoration: none;
+}
+.product-card {
+    /* width: 380px; */
+    position: relative;
+    box-shadow: 0 2px 7px #dfdfdf;
+    margin: 50px auto;
+    background: #fafafa;
+}
+
+.badge {
+    position: absolute;
+    left: 0;
+    top: 20px;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 700;
+    background: red;
+    color: #fff;
+    padding: 3px 10px;
+}
+
+.product-tumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    /* padding: 50px; */
+    background: #f0f0f0;
+}
+
+.product-tumb img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.product-details {
+    padding: 30px;
+}
+
+.product-catagory {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ccc;
+    margin-bottom: 18px;
+}
+
+.product-details h4 a {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+    color: #363636;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.product-details h4 a:hover {
+    color: #fbb72c;
+}
+
+.product-details p {
+    font-size: 15px;
+    line-height: 22px;
+    margin-bottom: 18px;
+    color: #999;
+}
+
+.product-bottom-details {
+    overflow: hidden;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.product-bottom-details div {
+    float: left;
+    /* width: 50%; */
+}
+
+.product-price {
+    font-size: 20px;
+    color: #fbb72c;
+    font-weight: 600;
+}
+
+.product-price small {
+    font-size: 80%;
+    font-weight: 400;
+    text-decoration: line-through;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.product-links {
+    text-align: right;
+}
+
+.product-links a {
+    display: inline-block;
+    margin-left: 5px;
+    color: #e1e1e1;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+.product-links a:hover {
+    color: #fbb72c;
+}
+.container_card {
+  display: table;
+  table-layout: fixed; /*euqal column width*/
+  width: 100%;
+}
+
+.section_card {
+  display: table-cell;
+  border: 1px solid;
+}
+
+@media (max-width: 768px) { /*breakpoint*/
+  .section_card {
+    display: block;
+  }
+}
 
    </style>
    <body>
@@ -349,8 +540,6 @@ require_once "./php/backup_service.php";
    </a>
 
       <div class="hero_area">
-      <!-- head section -->
-
       <section data-bs-version="5.1" class="header18  mbr-fullscreen" id="header18-k" style="background-image: url('images/back.png'); height: 100vh">
          <div class="align-center container">
             <div class="row justify-content-center">
@@ -376,60 +565,6 @@ require_once "./php/backup_service.php";
             </div>
          </div>
          </section>
-
-         <!-- <section class="slider_section ">
-            <div class="slider_bg_box">
-
-               <img src="images/Car_full_photo.png">
-            </div>
-            <div id="customCarousel1" class="carousel slide" data-ride="carousel">
-               <div class="carousel-inner">
-                  <div class="carousel-item active">
-                     <div class="container-fluid">
-                        <div class="row">
-                           <div class="col-md-7 col-lg-0 ">
-                              <div class="detail-box" style="max-width: 800px;">
-                                 <div class="heading_container heading_center">
-                                 <img src="images/logo.png" style="margin-bottom: 50px;" width="150" height="150">
-                                 </div>
-                                 <h2>
-                                    GET THE LATEST NEW OR <br>USED CAR AT A FAIR PRICE
-                                 </h2>
-                                 <p>
-                                    Passenger cars, vans, light trucks and even margin cars or damaged vehicles,
-                                    you’re sure to find what you’re looking for.  </p>
-
-                                 <div class="form_sub">
-                                    <div class="search">
-                                       <form class="search-form" action="buy_new_car.php" enctype="multipart/form-data" method="post">
-                                          <input type="text" name="search-product" placeholder="Search for Maker, Name, Grade">
-                                          <input type="submit" value="Submit" name="Search">
-                                       </form>
-                                    </div>
-                                 </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               </div>
-            </div>
-         </section> -->
-
-      <!-- color buttons -3  section -->
-         <!-- <div class="heading_container heading_center"  style="margin-top: 100px;">
-            <div class="col-center">
-               <a style="text-decoration: none"  href="https://www.carsensor.net/shop/ibaraki/226235001/" target="_blank">
-                  <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: #4caeca"><span>Sale 1</span></button>
-               </a>
-               <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235002/" target="_blank">
-                  <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: #4caeca"><span>Sale 2</span></button>
-               </a>
-               <a style="text-decoration: none" href="https://www.carsensor.net/shop/ibaraki/226235003/" target="_blank">
-                  <button  id="butt2" Class="button" name="Action" style="vertical-align:middle; background-color: #4caeca"><span>Sale 3</span></button>
-               </a>
-            </div> -->
-            <!-- End color buttons -3  section -->
          </div>
       
          <!-- text section -->
@@ -735,7 +870,7 @@ require_once "./php/backup_service.php";
                                  <p class="card-text car_manufacturer float-start" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
                               </div>
                               <div class="col-7 text-right">
-                                 <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?>¥</p>
+                                 <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo number_format($value1->getPrice()); ?> ¥</p>
                               </div>
                            </div>
 
@@ -821,36 +956,33 @@ If you're searching for a new or used car, we are here to help. Explore our sele
          if(isset($recoment_foryou_cars)){
             foreach ($recoment_foryou_cars as $key2 => $value1) {
                ?> 
-               <div class="col-sm-12 col-md-6 col-lg-4"  style="min-width: 500px;">
-                  <div class="card border rounded m-3">
+               <div class="col-sm-12 col-md-1 col-lg-1"  style="min-width: 400px; max-width: 500px;">
+                  <!-- <div class="card border rounded m-3">
                      <div class="shadow">
                         <div class="card-body" style="min-width: 400px;">
-                           <div class="row d-flex  justify-content-between align-items-center px-0">
-                              <div class="col-7 text-left">
-                                 <p class="card-text car_manufacturer float-start" style="color: black;"><?php echo $value1->maker; ?></p>
-                              </div>
-                              <div class="col-5 text-right">
-                                 <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
-                                    <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
-                                       <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
-                                    </a>
-                                 </div>
-                              </div>
+                        <div class="row">
+                        <div class="col-6 text-left">
+                           <div class="row">
+                              <div class="card-text car_manufacturer float-start"><?php echo $value1->maker; ?><span style="font-size: x-small;"><?php echo  sprintf(" (VEH_%05d)", $value1->id); ?></span></div>
                            </div>
-                           <div class="row d-flex mt-0 mb-3  justify-content-between  align-items-center " style="margin-left: -6px;">
-                              <a style="font-size: xx-large;"><?php echo $value1->name; ?><span style="font-size: medium;"><?php echo $value1->grade; ?></span></a>
-                            </div>
-                            <div class="row d-flex  justify-content-between align-items-center px-0">
-                              <div class="col-4 text-left">
-                                 <p class="card-text car_manufacturer float-start" style="font-size: smaller;"><?php echo sprintf(" (VEH_%05d)", $value1->id); ?></p>
-                              </div>
-                              <div class="col-7 text-right">
-                                 <p class="card-text pricetext font-weigh-bold" style="font-size: xx-large;">FOB <?php echo $value1->getPrice(); ?>¥</p>
-                              </div>
+                           <div class="row">
+                              <div style="font-size: x-large;"><?php echo $value1->name; ?><span style="font-size: medium;"><?php echo $value1->grade; ?></span></div>
                            </div>
-
+                        </div>
+                        <div class="col-6 text-right">
+                           <div class="row " style="float: right">
+                           <div class="btn-group btn-addtocart float-end " role="group" aria-label="Basic mixed styles">
+                              <a href="vehicle_preview.php?id=<?php echo $value1->id; ?>">
+                                 <button type="button" class="btn btn-sm  addtocart_button ">Buy This</button>
+                              </a>
+                           </div>
+                           </div>
+                           <div class="row" style="float: right; padding-right: 20px;">
+                              <p  class="card-price">FOB <?php echo number_format($value1->getPrice()); ?> ¥</p>
+                           </div>
+                        </div>
+                        </div>
                            <div class="row mt-4  px-0">
-                              
                               <div class="col-12  px-0">
                                  <img src="<?php echo file_exists("images/cars/".$value1->getImage())?"images/cars/".$value1->getImage():"images/cars/noimage.jpg"; ?>" class="w-100 img-fluid  px-0" style="max-height: 300px; object-fit: cover;" alt="Full width image">
                               </div>
@@ -871,6 +1003,35 @@ If you're searching for a new or used car, we are here to help. Explore our sele
                                  </div>
                               </div>
 
+                           </div>
+                        </div>
+                     </div>
+                  </div> -->
+                  <div class="product-card">
+                     <div class="product-tumb">
+                        <img src="<?php echo file_exists("images/cars/".$value1->getImage())?"images/cars/".$value1->getImage():"images/cars/noimage.jpg"; ?>" alt="">
+                     </div>
+                     <div class="product-details">
+                        <span class="product-catagory"><?php echo $value1->maker; ?></span>
+                        <h4><a href=""><div style="font-size: large;"><?php echo $value1->name; ?><span style="font-size: small;"><?php echo $value1->grade; ?></span></div></a></h4>
+                        <p><?php echo $value1->options; ?></p>
+                        <div class=" d-flex row mt-4">
+                              <div class="col-md-12">
+                                 <div class=" p-1 featuremain">
+                                    <p style="font-size: 15px;"><i class="fa fa-tachometer" style="color: #ccc; padding-right: 10px;"></i><?php echo $value1->power; ?> cc</p>
+                                 </div>
+                                 <div class=" p-1 featuremain">
+                                    <p style="font-size: 15px;"><i class="fa fa-calendar-o" style="color: #ccc; padding-right: 10px;"></i><?php echo $value1->model_year; ?></p>
+                                 </div>
+                                 <div class=" p-1 featuremain">
+                                    <p style="font-size: 15px;"><i class="fa fa-taxi" style="color: #ccc; padding-right: 10px;"></i><?php echo $value1->running; ?> KM</p>
+                                 </div>
+                              </div>
+                           </div>
+                        <div class="product-bottom-details">
+                           <div class=" col-8 product-price">FOB <?php echo number_format($value1->getPrice()); ?> ¥</div>
+                           <div class="col-4 product-links">
+                              <a href=""><i>Buy This</i></a>
                            </div>
                         </div>
                      </div>

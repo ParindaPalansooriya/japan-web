@@ -5,7 +5,8 @@ server with default setting (user 'root' with no password) */
 /* Attempt to connect to MySQL database */
 // $link = mysqli_connect('sql.freedb.tech', 'freedb_paridb', 'ywfY@N6B96hVbGw', 'freedb_japan_web');
 // $link = mysqli_connect('localhost', 'root', '', 'japan_web');
-$link = mysqli_connect('sql303.epizy.com', 'epiz_33557197', 'zspoqJEknmtJb', 'epiz_33557197_japan_web');
+// $link = mysqli_connect('sql303.epizy.com', 'epiz_33557197', 'zspoqJEknmtJb', 'epiz_33557197_japan_web');
+$link = mysqli_connect('localhost', 'orientc1_local_user', 'END43B408248', 'orientc1_japan_web');
  
 // Check connection
 if($link === false){
@@ -349,8 +350,8 @@ if($link === false){
         console_log($th);
     }
 
-    try { // 1: selling, 0:buying
-        $user_inquary_add_status = "ALTER TABLE `soled_cars` ADD `date` VARCHAR(12) NOT NULL default CURDATE()";
+    try { // 1: selling, 0:buying`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        $user_inquary_add_status = "ALTER TABLE `soled_cars` ADD `date` timestamp NOT NULL defaultCURRENT_TIMESTAMP";
         mysqli_query($link, $user_inquary_add_status);
     } catch (Throwable $th) {
         console_log($th);
